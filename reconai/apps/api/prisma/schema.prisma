@@ -1,0 +1,721 @@
+// ─────────────────────────────────────────────────────────────
+// ReconAI — Prisma schema (PostgreSQL 16)
+// Mirrors TRD §Database + recommended additions.
+// Multi-tenancy: every business table carries `firmId` and is
+// always filtered by it at query time.
+// ─────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // used by Prisma Migrate (bypasses pooler)
+}
+
+// ── Tenancy & identity ───────────────────────────────────────
+
+model Firm {
+  id        String   @id @default(cuid())
+  name      String
+  gstin     String?
+  pan       String?
+  tan       String?
+  address   String?
+  settings  Json?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members       FirmMember[]
+  invites       Invitation[]
+  clients       Client[]
+  engagements   Engagement[]
+  documents     Document[]
+  runs          ReconRun[]
+  varianceRuns  VarianceAnalysisRun[]
+  tdsRuns       TdsChecklistRun[]
+  exceptions    Exception[]
+  workingPapers WorkingPaper[]
+  auditLogs     AuditLog[]
+
+  @@index([name])
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  phone        String?
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  memberships FirmMember[]
+  engagements EngagementMember[]
+}
+
+model FirmMember {
+  id        String   @id @default(cuid())
+  firmId    String
+  userId    String
+  role      String // Role enum
+  createdAt DateTime @default(now())
+
+  firm Firm @relation(fields: [firmId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([firmId, userId])
+  @@index([userId])
+  @@index([firmId])
+}
+
+model Invitation {
+  id          String    @id @default(cuid())
+  firmId      String
+  email       String
+  role        String // Role enum
+  token       String    @unique
+  message     String?
+  status      String    @default("pending") // pending | accepted | revoked | expired
+  invitedById String
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  firm Firm @relation(fields: [firmId], references: [id])
+
+  @@index([firmId])
+  @@index([email])
+}
+
+// ── Clients & engagements ────────────────────────────────────
+
+model Client {
+  id        String   @id @default(cuid())
+  firmId    String
+  name      String
+  type      String // company | llp | partnership | proprietorship | trust | individual
+  gstin     String?
+  pan       String?
+  tan       String?
+  cin       String?
+  address   String?
+  status    String   @default("active") // active | inactive | archived
+  contacts  Json? // [{name,email,phone,role}]
+  tags      Json? // string[]
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firm          Firm                  @relation(fields: [firmId], references: [id])
+  engagements   Engagement[]
+  documents     Document[]
+  runs          ReconRun[]
+  varianceRuns  VarianceAnalysisRun[]
+  tdsRuns       TdsChecklistRun[]
+  exceptions    Exception[]
+  workingPapers WorkingPaper[]
+
+  @@index([firmId])
+  @@index([gstin])
+  @@index([pan])
+  @@index([status])
+  @@index([isDeleted])
+}
+
+model Engagement {
+  id            String   @id @default(cuid())
+  firmId        String
+  clientId      String
+  title         String
+  kind          String // gst_compliance | tax_audit | reconciliation | management_audit | other
+  status        String   @default("draft") // draft|in_setup|in_progress|under_review|completed|archived
+  financialYear Json? // {start, end}
+  scope         Json? // per engagement-scope schema
+  taxBase       Json? // {gstin, pan, tan}
+  conclusion    String?
+  createdById   String?
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  firm          Firm                  @relation(fields: [firmId], references: [id])
+  client        Client                @relation(fields: [clientId], references: [id])
+  members       EngagementMember[]
+  checklist     SetupChecklistItem[]
+  documents     Document[]
+  runs          ReconRun[]
+  varianceRuns  VarianceAnalysisRun[]
+  tdsRuns       TdsChecklistRun[]
+  exceptions    Exception[]
+  workingPapers WorkingPaper[]
+  reports       Report[]
+
+  @@index([firmId])
+  @@index([clientId])
+  @@index([status])
+  @@index([isDeleted])
+}
+
+model EngagementMember {
+  id           String   @id @default(cuid())
+  engagementId String
+  userId       String
+  role         String? // role within engagement (optional)
+  createdAt    DateTime @default(now())
+
+  engagement Engagement @relation(fields: [engagementId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+
+  @@unique([engagementId, userId])
+  @@index([userId])
+}
+
+model SetupChecklistItem {
+  id            String    @id @default(cuid())
+  engagementId  String
+  key           String // e.g. client_data, gstr1, gstr2b, bank_stmt, ais26as, purchase_ledger
+  label         String
+  done          Boolean   @default(false)
+  completedById String?
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+
+  engagement Engagement @relation(fields: [engagementId], references: [id])
+
+  @@unique([engagementId, key])
+}
+
+// ── Documents & processing ───────────────────────────────────
+
+model Document {
+  id              String   @id @default(cuid())
+  firmId          String
+  clientId        String
+  engagementId    String
+  category        String? // DocumentCategory
+  fileName        String
+  originalName    String
+  storagePath     String // MinIO object key
+  mime            String
+  size            BigInt
+  sha256          String?
+  uploadedById    String
+  status          String   @default("uploaded") // ProcessingStage
+  failureReason   String?
+  columns         Json? // detected column headers [{name,index,type}]
+  mapping         Json? // source column → target field
+  pageCount       Int?
+  recordCount     Int      @default(0)
+  virusScanResult String? // clean | infected | not_scanned
+  isDuplicateOf   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  firm                Firm                  @relation(fields: [firmId], references: [id])
+  client              Client                @relation(fields: [clientId], references: [id])
+  engagement          Engagement            @relation(fields: [engagementId], references: [id])
+  records             SourceRecord[]
+  jobs                ProcessingJob[]
+  runA                ReconRun[]            @relation("runSourceA")
+  runB                ReconRun[]            @relation("runSourceB")
+  aisRuns             ReconRun[]            @relation("runAisSource")
+  variancePriorRuns   VarianceAnalysisRun[] @relation("variancePriorRuns")
+  varianceCurrentRuns VarianceAnalysisRun[] @relation("varianceCurrentRuns")
+  tdsChecklistLedgers TdsChecklistLedger[]
+  tdsPayableRuns      TdsChecklistRun[]     @relation("tdsPayableDoc")
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([clientId])
+  @@index([status])
+  @@index([sha256])
+}
+
+model SourceRecord {
+  id               String   @id @default(cuid())
+  firmId           String
+  documentId       String
+  rowIndex         Int?
+  page             Int?
+  data             Json // normalized record
+  confidence       Float    @default(0)
+  validationStatus String   @default("valid") // valid | warning | error
+  warnings         Json?
+  raw              Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  document               Document                 @relation(fields: [documentId], references: [id])
+  itemsA                 ReconItem[]              @relation("itemRecordA")
+  itemsB                 ReconItem[]              @relation("itemRecordB")
+  variancePriorResults   VarianceAnalysisResult[] @relation("variancePriorResults")
+  varianceCurrentResults VarianceAnalysisResult[] @relation("varianceCurrentResults")
+  tdsResults             TdsChecklistResult[]
+
+  @@index([firmId])
+  @@index([documentId])
+  @@index([documentId, validationStatus])
+}
+
+model ProcessingJob {
+  id          String    @id @default(cuid())
+  firmId      String
+  documentId  String
+  jobType     String // process | reprocess | virus_scan
+  queueJobId  String?
+  state       String    @default("queued") // JobState
+  progress    Int       @default(0)
+  stage       String?
+  error       String?
+  output      Json?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@index([firmId])
+  @@index([documentId])
+  @@index([state])
+}
+
+// ── Reconciliation ───────────────────────────────────────────
+
+model ReconRun {
+  id           String    @id @default(cuid())
+  firmId       String
+  engagementId String
+  clientId     String
+  type         String // ReconType: gst | bank | ais_26as | invoice | expense
+  status       String    @default("queued") // queued|running|completed|failed|cancelled
+  config       Json? // {toleranceDays, amountTolerancePaise, creditNoteMode, fuzzyMatch, ...}
+  sourceAId    String?
+  sourceBId    String?
+  aisSourceId  String?
+  sourceA      Document? @relation("runSourceA", fields: [sourceAId], references: [id])
+  sourceB      Document? @relation("runSourceB", fields: [sourceBId], references: [id])
+  aisSource    Document? @relation("runAisSource", fields: [aisSourceId], references: [id])
+  periodFrom   DateTime?
+  periodTo     DateTime?
+  progress     Int       @default(0)
+  metrics      Json? // matched/unmatched counts, matchRate, ITC, variance
+  error        String?
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  firm          Firm           @relation(fields: [firmId], references: [id])
+  engagement    Engagement     @relation(fields: [engagementId], references: [id])
+  client        Client         @relation(fields: [clientId], references: [id])
+  items         ReconItem[]
+  exceptions    Exception[]
+  workingPapers WorkingPaper[]
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([clientId])
+  @@index([status])
+}
+
+model ReconItem {
+  id            String        @id @default(cuid())
+  firmId        String
+  runId         String
+  recordAId     String? // books / ledger side
+  recordBId     String? // statement / 2B / 26AS side
+  recordA       SourceRecord? @relation("itemRecordA", fields: [recordAId], references: [id])
+  recordB       SourceRecord? @relation("itemRecordB", fields: [recordBId], references: [id])
+  matchStatus   String // MatchStatus
+  score         Float         @default(0) // 0..1
+  reasons       Json? // ["exact invoice", "amount matched"]
+  amountPaiseA  BigInt?
+  amountPaiseB  BigInt?
+  variancePaise BigInt?
+  dateA         DateTime?
+  dateB         DateTime?
+  deleted       Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  run        ReconRun    @relation(fields: [runId], references: [id])
+  aiConsults AiConsult[]
+
+  @@index([firmId])
+  @@index([runId])
+  @@index([runId, matchStatus])
+  @@index([recordAId])
+  @@index([recordBId])
+}
+
+model AiConsult {
+  id          String     @id @default(cuid())
+  firmId      String
+  runId       String?
+  itemId      String?
+  item        ReconItem? @relation(fields: [itemId], references: [id])
+  provider    String // AiProvider
+  model       String
+  input       Json?
+  output      Json? // {suggestion, confidence, reasons, source}
+  status      String     @default("suggested") // AiLabel
+  confidence  Float?
+  requesterId String?
+  reviewerId  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime   @default(now())
+
+  @@index([firmId])
+  @@index([runId])
+  @@index([itemId])
+  @@index([status])
+}
+
+// ── TB / P&L variance analysis ───────────────────────────────
+
+model VarianceAnalysisRun {
+  id           String    @id @default(cuid())
+  firmId       String
+  engagementId String
+  clientId     String
+  status       String    @default("queued") // queued|running|completed|failed|cancelled
+  progress     Int       @default(0)
+  config       Json? // {plKeywords, plAllLedgers, quickThreshold, detailedThreshold, obTolerance}
+  priorDocId   String?
+  currentDocId String?
+  priorDoc     Document? @relation("variancePriorRuns", fields: [priorDocId], references: [id])
+  currentDoc   Document? @relation("varianceCurrentRuns", fields: [currentDocId], references: [id])
+  metrics      Json? // summary from analyze_tb + exception counts
+  error        String?
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  firm       Firm                     @relation(fields: [firmId], references: [id])
+  engagement Engagement               @relation(fields: [engagementId], references: [id])
+  client     Client                   @relation(fields: [clientId], references: [id])
+  results    VarianceAnalysisResult[]
+  exceptions Exception[]
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([clientId])
+  @@index([status])
+}
+
+model VarianceAnalysisResult {
+  id              String        @id @default(cuid())
+  runId           String
+  firmId          String
+  particulars     String
+  category        String // new_ledger | no_movement | dropped | within_threshold | quick_review | detailed_review
+  priorRecordId   String?
+  currentRecordId String?
+  priorRecord     SourceRecord? @relation("variancePriorResults", fields: [priorRecordId], references: [id])
+  currentRecord   SourceRecord? @relation("varianceCurrentResults", fields: [currentRecordId], references: [id])
+  priorClosing    Float?
+  currentClosing  Float?
+  variance        Float?
+  varPct          Float?
+  obMismatch      Float?
+  createdAt       DateTime      @default(now())
+
+  run VarianceAnalysisRun @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@index([firmId])
+  @@index([runId, category])
+  @@index([priorRecordId])
+  @@index([currentRecordId])
+}
+
+// ── TDS compliance checklist ───────────────────────────────
+
+model TdsChecklistRun {
+  id           String    @id @default(cuid())
+  firmId       String
+  engagementId String
+  clientId     String
+  status       String    @default("queued") // queued|running|completed|failed|cancelled
+  progress     Int       @default(0)
+  config       Json? // {financialYear:{from,to}, clientName}
+  payableDocId String? // optional TDS Payable ledger document
+  metrics      Json? // summary + sectionSummary + monthReconMeta
+  error        String?
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  firm       Firm                 @relation(fields: [firmId], references: [id])
+  engagement Engagement           @relation(fields: [engagementId], references: [id])
+  client     Client               @relation(fields: [clientId], references: [id])
+  payableDoc Document?            @relation("tdsPayableDoc", fields: [payableDocId], references: [id])
+  ledgers    TdsChecklistLedger[]
+  results    TdsChecklistResult[]
+  exceptions Exception[]
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([clientId])
+  @@index([status])
+}
+
+/** One configured expense ledger feeding a TDS run (which document + section + columns). */
+model TdsChecklistLedger {
+  id         String @id @default(cuid())
+  runId      String
+  documentId String
+  name       String
+  section    String // section key e.g. 194I_land
+  tdsCol     String?
+  amountCol  String?
+  position   Int    @default(0)
+
+  run      TdsChecklistRun @relation(fields: [runId], references: [id])
+  document Document        @relation(fields: [documentId], references: [id])
+  results  TdsChecklistResult[]
+
+  @@index([runId])
+  @@index([documentId])
+}
+
+model TdsChecklistResult {
+  id             String    @id @default(cuid())
+  runId          String
+  firmId         String
+  ledgerId       String?
+  sourceRecordId String? // transaction row in the expense ledger document
+  section        String
+  sectionKey     String
+  sectionName    String
+  party          String
+  partyType      String
+  date           DateTime?
+  voucher        String?
+  narration      String?
+  gross          Float
+  cumulative     Float
+  rate           Float
+  tdsReq         Float
+  tdsDed         Float
+  diff           Float
+  dedStatus      String
+  dedKey         String
+  remark         String?
+  quarter        String?
+  due            DateTime?
+  depDate        DateTime?
+  depAmt         Float
+  depStatus      String
+  daysLate       Int?
+  interest       Int
+  createdAt      DateTime  @default(now())
+
+  run          TdsChecklistRun     @relation(fields: [runId], references: [id])
+  sourceRecord SourceRecord?       @relation(fields: [sourceRecordId], references: [id])
+  ledger       TdsChecklistLedger? @relation(fields: [ledgerId], references: [id])
+
+  @@index([runId])
+  @@index([firmId])
+  @@index([runId, dedKey])
+  @@index([ledgerId])
+  @@index([sourceRecordId])
+}
+
+// ── Exceptions & risk ────────────────────────────────────────
+
+model Exception {
+  id           String    @id @default(cuid())
+  firmId       String
+  runId        String?
+  engagementId String
+  clientId     String
+  kind         String
+  severity     String // Severity
+  status       String    @default("open") // ExceptionStatus
+  title        String
+  description  String?
+  assigneeId   String?
+  resolution   String?
+  createdById  String?
+  resolvedById String?
+  resolvedAt   DateTime?
+  reopenedAt   DateTime?
+  references   Json? // [{kind:'recon_item'|'source_record', id}]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  firm                  Firm                 @relation(fields: [firmId], references: [id])
+  engagement            Engagement           @relation(fields: [engagementId], references: [id])
+  client                Client               @relation(fields: [clientId], references: [id])
+  run                   ReconRun?            @relation(fields: [runId], references: [id])
+  comments              ExceptionComment[]
+  evidence              ExceptionEvidence[]
+  activities            ExceptionActivity[]
+  varianceAnalysisRun   VarianceAnalysisRun? @relation(fields: [varianceAnalysisRunId], references: [id])
+  varianceAnalysisRunId String?
+  tdsChecklistRun       TdsChecklistRun?     @relation(fields: [tdsChecklistRunId], references: [id])
+  tdsChecklistRunId     String?
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([clientId])
+  @@index([status])
+  @@index([severity])
+}
+
+model ExceptionComment {
+  id          String   @id @default(cuid())
+  exceptionId String
+  userId      String
+  text        String
+  createdAt   DateTime @default(now())
+
+  exception Exception @relation(fields: [exceptionId], references: [id])
+
+  @@index([exceptionId])
+}
+
+model ExceptionEvidence {
+  id           String   @id @default(cuid())
+  exceptionId  String
+  kind         String   @default("document") // EvidenceKind
+  text         String?
+  documentId   String?
+  uploadedById String?
+  uploadedAt   DateTime @default(now())
+
+  exception Exception @relation(fields: [exceptionId], references: [id])
+
+  @@index([exceptionId])
+}
+
+model ExceptionActivity {
+  id          String   @id @default(cuid())
+  exceptionId String
+  action      String // AuditAction-like
+  userId      String?
+  fromStatus  String?
+  toStatus    String?
+  detail      String?
+  createdAt   DateTime @default(now())
+
+  exception Exception @relation(fields: [exceptionId], references: [id])
+
+  @@index([exceptionId])
+}
+
+model RiskFinding {
+  id             String    @id @default(cuid())
+  firmId         String
+  engagementId   String
+  runId          String?
+  sourceRecordId String?
+  tag            String // RiskTag
+  score          Float     @default(0)
+  message        String
+  evidence       Json?
+  resolved       Boolean   @default(false)
+  resolvedBy     String?
+  resolvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([sourceRecordId])
+  @@index([tag])
+}
+
+// ── Working papers, reports ──────────────────────────────────
+
+model WorkingPaper {
+  id                String    @id @default(cuid())
+  firmId            String
+  engagementId      String
+  clientId          String
+  title             String
+  deliverable       String
+  runId             String?
+  run               ReconRun? @relation(fields: [runId], references: [id])
+  procedures        Json?
+  conclusion        String?
+  status            String    @default("draft") // WorkingPaperStatus
+  reviewerNote      String?
+  createdById       String?
+  seniorSignedById  String?
+  partnerSignedById String?
+  evidenceHash      String? // SHA-256 over serialized content (SA 230)
+  signedAt          DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  firm       Firm       @relation(fields: [firmId], references: [id])
+  engagement Engagement @relation(fields: [engagementId], references: [id])
+  client     Client     @relation(fields: [clientId], references: [id])
+  reports    Report[]
+
+  @@index([firmId])
+  @@index([engagementId])
+  @@index([status])
+}
+
+model Report {
+  id             String        @id @default(cuid())
+  firmId         String
+  engagementId   String
+  workingPaperId String?
+  workingPaper   WorkingPaper? @relation(fields: [workingPaperId], references: [id])
+  format         String // ReportFormat
+  storagePath    String
+  size           BigInt?
+  generatedById  String?
+  createdAt      DateTime      @default(now())
+
+  engagement Engagement @relation(fields: [engagementId], references: [id])
+
+  @@index([firmId])
+  @@index([engagementId])
+}
+
+// ── Audit & notifications ────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  firmId     String
+  userId     String?
+  action     String // AuditAction
+  entityType String
+  entityId   String?
+  detail     Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  firm Firm @relation(fields: [firmId], references: [id])
+
+  @@index([firmId])
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  firmId    String
+  userId    String
+  kind      String // run_completed | exception_assigned | high_risk | signoff
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([firmId])
+  @@index([read])
+}

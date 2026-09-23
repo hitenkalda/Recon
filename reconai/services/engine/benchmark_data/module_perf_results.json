@@ -1,0 +1,238 @@
+{
+  "benchmark": "ReconAI Module Performance Benchmark",
+  "dataset": "C:\\Users\\DELL\\Desktop\\ReconAI\\ReconAI_real_world_stress_dataset_v1",
+  "timestamp": "2026-09-20T09:13:51.996772+00:00",
+  "modules": {
+    "parsing": {
+      "total_rows": 803912,
+      "total_seconds": 91.4,
+      "rows_per_sec": 8795.1,
+      "stages": {
+        "gst_purchase_ledger_100k.csv": 11.62,
+        "gst_gstr2b_107k.csv": 15.43,
+        "bank_book_105k.csv": 12.5,
+        "bank_statement_106k.csv": 10.83,
+        "ais_26as_portal_50k.csv": 4.35,
+        "ais_books_tds_50k.csv": 5.06,
+        "tds_expense_ledger_100k.csv": 12.21,
+        "tds_payable_15k_debit_balance.csv": 1.12,
+        "variance_prior_tb_10k.csv": 0.48,
+        "variance_current_tb_10k.csv": 0.82,
+        "audit_ledger_152k.csv": 15.99
+      },
+      "peak_mb": 1169.2
+    },
+    "gst": {
+      "rows_a": 100000,
+      "rows_b": 105012,
+      "total_rows": 205012,
+      "probe_size": 2000,
+      "probe_seconds": 28.86,
+      "probe_rows_per_sec": 138589.0,
+      "scaling_curve": [
+        [
+          100,
+          0.081
+        ],
+        [
+          500,
+          1.607
+        ],
+        [
+          1000,
+          6.73
+        ],
+        [
+          2000,
+          29.271
+        ]
+      ],
+      "eta_full": {
+        "eq": "t\u22486.430e-06\u00b7(A\u00b7B)",
+        "eta_seconds": 67522.5,
+        "eta_minutes": 1125.4,
+        "points": [
+          [
+            100,
+            0.081
+          ],
+          [
+            500,
+            1.607
+          ],
+          [
+            1000,
+            6.73
+          ],
+          [
+            2000,
+            29.271
+          ]
+        ]
+      },
+      "peak_mb": 1169.2,
+      "note": "O(A\u00d7B) quadratic matcher \u2014 full 100k\u00d7107k estimated from probe fit"
+    },
+    "bank": {
+      "rows_a": 105000,
+      "rows_b": 106000,
+      "total_rows": 211000,
+      "probe_size": 2000,
+      "probe_seconds": 40.13,
+      "probe_rows_per_sec": 99684.0,
+      "scaling_curve": [
+        [
+          100,
+          0.079
+        ],
+        [
+          500,
+          2.69
+        ],
+        [
+          1000,
+          10.17
+        ],
+        [
+          2000,
+          38.736
+        ]
+      ],
+      "eta_full": {
+        "eq": "t\u22487.872e-06\u00b7(A\u00b7B)",
+        "eta_seconds": 87616.5,
+        "eta_minutes": 1460.3,
+        "points": [
+          [
+            100,
+            0.079
+          ],
+          [
+            500,
+            2.69
+          ],
+          [
+            1000,
+            10.17
+          ],
+          [
+            2000,
+            38.736
+          ]
+        ]
+      },
+      "peak_mb": 1169.2,
+      "note": "O(A\u00d7B) quadratic matcher \u2014 full 105k\u00d7106k estimated from probe fit"
+    },
+    "ais_26as": {
+      "rows_a": 50500,
+      "rows_b": 50000,
+      "total_rows": 100500,
+      "probe_size": 1000,
+      "probe_seconds": 0.97,
+      "probe_rows_per_sec": 1030240.0,
+      "scaling_curve": [
+        [
+          100,
+          0.03
+        ],
+        [
+          500,
+          0.269
+        ],
+        [
+          1000,
+          0.886
+        ]
+      ],
+      "eta_full": {
+        "eq": "t\u22488.859e-07\u00b7(A\u00b7B)",
+        "eta_seconds": 2237.0,
+        "eta_minutes": 37.3,
+        "points": [
+          [
+            100,
+            0.03
+          ],
+          [
+            500,
+            0.269
+          ],
+          [
+            1000,
+            0.886
+          ]
+        ]
+      },
+      "peak_mb": 1169.2,
+      "note": "O(A\u00d7B) with fuzzy name scoring \u2014 full 50k\u00d750k estimated from probe fit"
+    },
+    "tds": {
+      "expense_rows": 100000,
+      "payable_rows": 15000,
+      "total_rows": 115000,
+      "n_ledgers": 5,
+      "stages": {
+        "parse_payable": {
+          "seconds": 0.25,
+          "rows": 15000
+        },
+        "parse_expense": {
+          "seconds": 9.0,
+          "rows": 100000,
+          "ledgers": 5
+        },
+        "run_checklist": {
+          "seconds": 0.28,
+          "results": 0
+        },
+        "export_xlsx": {
+          "seconds": 0.46,
+          "bytes": 7767
+        }
+      },
+      "total_seconds": 9.99,
+      "rows_per_sec": 11506.0,
+      "peak_mb": 1176.9
+    },
+    "tb_variance": {
+      "prior_rows": 10200,
+      "current_rows": 10200,
+      "total_rows": 20400,
+      "stages": {
+        "analyze": {
+          "seconds": 0.5,
+          "results": 5393
+        },
+        "export_xlsx": {
+          "seconds": 14.35,
+          "bytes": 888038
+        }
+      },
+      "total_seconds": 14.85,
+      "rows_per_sec": 1373.6,
+      "peak_mb": 1191.3
+    },
+    "audit_analytics": {
+      "rows": 152000,
+      "stages": {
+        "analyze_transactions": {
+          "seconds": 34.33,
+          "risk_items": 152000
+        }
+      },
+      "total_seconds": 34.33,
+      "rows_per_sec": 4427.1,
+      "metrics": {
+        "total": 152000,
+        "criticalRisk": 1437,
+        "highRisk": 8597,
+        "mediumRisk": 26921,
+        "lowRisk": 115045
+      },
+      "peak_mb": 1270.9
+    }
+  },
+  "total_seconds": 150.57,
+  "total_rows": 1455824
+}

@@ -1,0 +1,25 @@
+# ReconAI Python processing engine — FastAPI
+# Python 3.9 compatible.
+
+fastapi>=0.115.0,<1
+uvicorn[standard]>=0.32.0,<1
+pydantic>=2.10.0,<3
+python-multipart>=0.0.19
+httpx>=0.27.0,<1
+
+# Parsing
+pandas>=2.2.0,<3
+openpyxl>=3.1.5,<4
+xlsxwriter>=3.2.0,<4
+xlrd>=2.0.1,<3
+python-dateutil>=2.9.0,<4
+PyMuPDF>=1.24.0,<2
+
+# AI provider clients
+google-genai>=1.0.0,<2
+
+# OCR (scanned images + image-only PDFs) — RapidOCR PP-OCRv4 (ONNX, CPU)
+rapidocr-onnxruntime>=1.3,<2
+
+# Testing
+pytest>=8.3.0,<9

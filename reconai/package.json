@@ -1,0 +1,30 @@
+{
+  "name": "reconai",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ReconAI — AI audit & reconciliation platform for Indian CA firms",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build -w @reconai/shared && npm run build -w @reconai/api && npm run build -w @reconai/web",
+    "dev": "concurrently -n api,web,worker -c cyan,green,magenta \"npm:dev:api\" \"npm:dev:web\" \"npm:dev:worker\"",
+    "dev:api": "npm run dev -w @reconai/api",
+    "dev:web": "npm run dev -w @reconai/web",
+    "dev:worker": "npm run dev:worker -w @reconai/api",
+    "db:generate": "npm run db:generate -w @reconai/api",
+    "db:migrate": "npm run db:migrate -w @reconai/api",
+    "db:seed": "npm run db:seed -w @reconai/api",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "typescript": "^5.6.3"
+  }
+}

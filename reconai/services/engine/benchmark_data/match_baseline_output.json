@@ -1,0 +1,5688 @@
+{
+  "gst_200": {
+    "metrics": {
+      "total": 204,
+      "totalA": 200,
+      "totalB": 200,
+      "matched": 196,
+      "matchedCount": 196,
+      "unmatched": 8,
+      "unmatchedCount": 8,
+      "unmatchedA": 4,
+      "unmatchedB": 4,
+      "duplicates": 0,
+      "byStatus": {
+        "exact_invoice": 175,
+        "amount": 21,
+        "unmatched": 8
+      },
+      "byTier": {
+        "exact_invoice": 175,
+        "amount": 21
+      },
+      "tolerances": {
+        "amountToleranceAbs": 1.0,
+        "amountTolerancePct": 2.0,
+        "dateToleranceDays": 3
+      }
+    },
+    "count": 204,
+    "seconds": 40.47,
+    "matched": 196,
+    "duplicates": 0,
+    "items_keys": [
+      [
+        -1,
+        196,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        197,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        198,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        199,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        0,
+        0,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        1,
+        1,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        2,
+        2,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        3,
+        3,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        4,
+        4,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        5,
+        5,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        6,
+        6,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        7,
+        7,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        8,
+        8,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        9,
+        9,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        10,
+        10,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        11,
+        11,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        12,
+        12,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        13,
+        13,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        14,
+        14,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        15,
+        15,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        16,
+        16,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        17,
+        17,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        18,
+        18,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        19,
+        19,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        20,
+        20,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        21,
+        21,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        22,
+        22,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        23,
+        23,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        24,
+        24,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        25,
+        25,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        26,
+        26,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        27,
+        27,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        28,
+        28,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        29,
+        29,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        30,
+        30,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        31,
+        31,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        32,
+        32,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        33,
+        33,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        34,
+        34,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        35,
+        35,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        36,
+        36,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        37,
+        37,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        38,
+        38,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        39,
+        39,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        40,
+        40,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        41,
+        41,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        42,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        43,
+        42,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        44,
+        43,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        45,
+        44,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        46,
+        45,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        47,
+        46,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        48,
+        47,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        49,
+        48,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        50,
+        49,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        51,
+        50,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        52,
+        51,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        53,
+        52,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        54,
+        53,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        55,
+        54,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        56,
+        55,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        57,
+        56,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        58,
+        57,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        59,
+        58,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        60,
+        59,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        61,
+        60,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        62,
+        61,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        63,
+        62,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        64,
+        63,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        65,
+        64,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        66,
+        65,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        67,
+        66,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        68,
+        67,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        69,
+        68,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        70,
+        69,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        71,
+        70,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        72,
+        71,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        73,
+        72,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        74,
+        73,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        75,
+        74,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        76,
+        75,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        77,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        78,
+        76,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        79,
+        77,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        80,
+        78,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        81,
+        79,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        82,
+        80,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        83,
+        81,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        84,
+        82,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        85,
+        83,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        86,
+        84,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        87,
+        85,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        88,
+        86,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        89,
+        87,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        90,
+        88,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        91,
+        89,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        92,
+        90,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        93,
+        91,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        94,
+        92,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        95,
+        93,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        96,
+        94,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        97,
+        95,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        98,
+        96,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        99,
+        97,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        100,
+        98,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        101,
+        99,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        102,
+        100,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        103,
+        101,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        104,
+        102,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        105,
+        103,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        106,
+        104,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        107,
+        105,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        108,
+        106,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        109,
+        107,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        110,
+        108,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        111,
+        109,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        112,
+        110,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        113,
+        111,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        114,
+        112,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        115,
+        113,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        116,
+        114,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        117,
+        115,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        118,
+        116,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        119,
+        117,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        120,
+        118,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        121,
+        119,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        122,
+        120,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        123,
+        121,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        124,
+        122,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        125,
+        123,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        126,
+        124,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        127,
+        125,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        128,
+        126,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        129,
+        127,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        130,
+        128,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        131,
+        129,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        132,
+        130,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        133,
+        131,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        134,
+        132,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        135,
+        133,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        136,
+        134,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        137,
+        135,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        138,
+        136,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        139,
+        137,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        140,
+        138,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        141,
+        139,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        142,
+        140,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        143,
+        141,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        144,
+        142,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        145,
+        143,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        146,
+        144,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        147,
+        145,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        148,
+        146,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        149,
+        147,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        150,
+        148,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        151,
+        149,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        152,
+        150,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        153,
+        151,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        154,
+        152,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        155,
+        153,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        156,
+        154,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        157,
+        155,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        158,
+        156,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        159,
+        157,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        160,
+        158,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        161,
+        159,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        162,
+        160,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        163,
+        161,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        164,
+        162,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        165,
+        163,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        166,
+        164,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        167,
+        165,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        168,
+        166,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        169,
+        167,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        170,
+        168,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        171,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        172,
+        169,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        173,
+        170,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        174,
+        171,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        175,
+        172,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        176,
+        173,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        177,
+        174,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        178,
+        175,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        179,
+        176,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        180,
+        177,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        181,
+        178,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        182,
+        179,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        183,
+        180,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        184,
+        181,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        185,
+        182,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        186,
+        183,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        187,
+        184,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        188,
+        185,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        189,
+        186,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        190,
+        187,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        191,
+        188,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        192,
+        189,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        193,
+        190,
+        "amount",
+        0.9,
+        "amount",
+        [
+          "Identical amount"
+        ]
+      ],
+      [
+        194,
+        191,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        195,
+        192,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        196,
+        193,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        197,
+        194,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        198,
+        195,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Exact invoice + amount"
+        ]
+      ],
+      [
+        199,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ]
+    ]
+  },
+  "bank_200": {
+    "metrics": {
+      "total": 206,
+      "totalA": 200,
+      "totalB": 200,
+      "matched": 194,
+      "matchedCount": 194,
+      "unmatched": 12,
+      "unmatchedCount": 12,
+      "unmatchedA": 6,
+      "unmatchedB": 6,
+      "duplicates": 0,
+      "byStatus": {
+        "exact_invoice": 189,
+        "unmatched": 12,
+        "date_tolerance": 5
+      },
+      "byTier": {
+        "exact_invoice": 189,
+        "gstin_pan": 5
+      },
+      "tolerances": {
+        "amountToleranceAbs": 1.0,
+        "amountTolerancePct": 2.0,
+        "dateToleranceDays": 3
+      }
+    },
+    "count": 206,
+    "seconds": 59.37,
+    "matched": 194,
+    "duplicates": 0,
+    "items_keys": [
+      [
+        -1,
+        42,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        75,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        94,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        174,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        196,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        -1,
+        198,
+        "unmatched",
+        0,
+        "",
+        [
+          "Record present on counterpart side without a books match (ITC to verify)"
+        ]
+      ],
+      [
+        0,
+        0,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        1,
+        1,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        2,
+        2,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        3,
+        3,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        4,
+        4,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        5,
+        5,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        6,
+        6,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        7,
+        7,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        8,
+        8,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        9,
+        9,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        10,
+        10,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        11,
+        11,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        12,
+        12,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        13,
+        13,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        14,
+        14,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        15,
+        15,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        16,
+        16,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        17,
+        17,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        18,
+        18,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        19,
+        19,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        20,
+        20,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        21,
+        21,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        22,
+        22,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        23,
+        23,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        24,
+        24,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        25,
+        25,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        26,
+        26,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        27,
+        27,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        28,
+        28,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        29,
+        29,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        30,
+        30,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        31,
+        31,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        32,
+        32,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        33,
+        33,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        34,
+        34,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        35,
+        35,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        36,
+        36,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        37,
+        37,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        38,
+        38,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        39,
+        39,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        40,
+        40,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        41,
+        41,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        42,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        43,
+        43,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        44,
+        44,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        45,
+        45,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        46,
+        46,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        47,
+        47,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        48,
+        48,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        49,
+        49,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        50,
+        50,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        51,
+        51,
+        "date_tolerance",
+        0.95,
+        "gstin_pan",
+        [
+          "Amount + date within tolerance"
+        ]
+      ],
+      [
+        52,
+        52,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        53,
+        53,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        54,
+        54,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        55,
+        55,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        56,
+        56,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        57,
+        57,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        58,
+        58,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        59,
+        59,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        60,
+        60,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        61,
+        61,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        62,
+        62,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        63,
+        63,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        64,
+        64,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        65,
+        65,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        66,
+        66,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        67,
+        67,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        68,
+        68,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        69,
+        69,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        70,
+        70,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        71,
+        71,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        72,
+        72,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        73,
+        73,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        74,
+        74,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        75,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        76,
+        76,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        77,
+        77,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        78,
+        78,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        79,
+        79,
+        "date_tolerance",
+        0.95,
+        "gstin_pan",
+        [
+          "Amount + date within tolerance"
+        ]
+      ],
+      [
+        80,
+        80,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        81,
+        81,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        82,
+        82,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        83,
+        83,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        84,
+        84,
+        "date_tolerance",
+        0.95,
+        "gstin_pan",
+        [
+          "Amount + date within tolerance"
+        ]
+      ],
+      [
+        85,
+        85,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        86,
+        86,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        87,
+        87,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        88,
+        88,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        89,
+        89,
+        "date_tolerance",
+        0.95,
+        "gstin_pan",
+        [
+          "Amount + date within tolerance"
+        ]
+      ],
+      [
+        90,
+        90,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        91,
+        91,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        92,
+        92,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        93,
+        93,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        94,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        95,
+        95,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        96,
+        96,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        97,
+        97,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        98,
+        98,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        99,
+        99,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        100,
+        100,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        101,
+        101,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        102,
+        102,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        103,
+        103,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        104,
+        104,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        105,
+        105,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        106,
+        106,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        107,
+        107,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        108,
+        108,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        109,
+        109,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        110,
+        110,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        111,
+        111,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        112,
+        112,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        113,
+        113,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        114,
+        114,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        115,
+        115,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        116,
+        116,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        117,
+        117,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        118,
+        118,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        119,
+        119,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        120,
+        120,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        121,
+        121,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        122,
+        122,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        123,
+        123,
+        "date_tolerance",
+        0.95,
+        "gstin_pan",
+        [
+          "Amount + date within tolerance"
+        ]
+      ],
+      [
+        124,
+        124,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        125,
+        125,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        126,
+        126,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        127,
+        127,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        128,
+        128,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        129,
+        129,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        130,
+        130,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        131,
+        131,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        132,
+        132,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        133,
+        133,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        134,
+        134,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        135,
+        135,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        136,
+        136,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        137,
+        137,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        138,
+        138,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        139,
+        139,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        140,
+        140,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        141,
+        141,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        142,
+        142,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        143,
+        143,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        144,
+        144,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        145,
+        145,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        146,
+        146,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        147,
+        147,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        148,
+        148,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        149,
+        149,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        150,
+        150,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        151,
+        151,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        152,
+        152,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        153,
+        153,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        154,
+        154,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        155,
+        155,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        156,
+        156,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        157,
+        157,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        158,
+        158,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        159,
+        159,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        160,
+        160,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        161,
+        161,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        162,
+        162,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        163,
+        163,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        164,
+        164,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        165,
+        165,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        166,
+        166,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        167,
+        167,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        168,
+        168,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        169,
+        169,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        170,
+        170,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        171,
+        171,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        172,
+        172,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        173,
+        173,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        174,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        175,
+        175,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        176,
+        176,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        177,
+        177,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        178,
+        178,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        179,
+        179,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        180,
+        180,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        181,
+        181,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        182,
+        182,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        183,
+        183,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        184,
+        184,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        185,
+        185,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        186,
+        186,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        187,
+        187,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        188,
+        188,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        189,
+        189,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        190,
+        190,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        191,
+        191,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        192,
+        192,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        193,
+        193,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        194,
+        194,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        195,
+        195,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        196,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        197,
+        197,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ],
+      [
+        198,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No matching record found on the counterpart side"
+        ]
+      ],
+      [
+        199,
+        199,
+        "exact_invoice",
+        1.0,
+        "exact_invoice",
+        [
+          "Amount + reference/date"
+        ]
+      ]
+    ]
+  },
+  "ais_100": {
+    "metrics": {
+      "total": 105,
+      "totalA": 100,
+      "totalB": 100,
+      "matched": 95,
+      "matchedCount": 95,
+      "unmatched": 10,
+      "unmatchedCount": 10,
+      "unmatchedA": 5,
+      "unmatchedB": 5,
+      "duplicates": 0,
+      "byStatus": {
+        "gstin_pan": 79,
+        "section_mismatch": 4,
+        "amount_tolerance": 12,
+        "unmatched": 10
+      },
+      "byTier": {},
+      "tax": {
+        "matched": {
+          "count": 79,
+          "tds": 2044490.97,
+          "gross": 53791757.95000001
+        },
+        "amountDiff": {
+          "count": 12,
+          "tds": 465758.11,
+          "variance": 197870.38000000003
+        },
+        "incomeMismatch": {
+          "count": 0,
+          "tds": 0.0,
+          "grossDiff": 0.0
+        },
+        "sectionMismatch": {
+          "count": 4,
+          "tds": 103413.85
+        },
+        "missingInBooks": {
+          "count": 5,
+          "tds": 177227.66
+        },
+        "missingIn26AS": {
+          "count": 5,
+          "tds": 155332.47
+        },
+        "duplicates": {
+          "count": 0,
+          "tds": 0.0
+        },
+        "highRisk": {
+          "count": 8,
+          "tds": 558608.3
+        },
+        "tds26": 2678026.33,
+        "tdsBooks": 2683969.28,
+        "netDiff": -5942.95,
+        "pairs": 95,
+        "matchRate": 95.0,
+        "taxCreditLoss": 177227.66,
+        "thresholds": {
+          "tdsTolerance": 10.0,
+          "matchGate": 40.0,
+          "highRiskTds": 50000.0
+        }
+      },
+      "sectionSummary": [
+        {
+          "section": "194J",
+          "count": 18,
+          "gross": 9729345.32,
+          "tds": 600185.21,
+          "matched": 11,
+          "missingInBooks": 1,
+          "missingIn26AS": 2,
+          "amountDiff": 3,
+          "incomeMismatch": 0,
+          "sectionMismatch": 1,
+          "duplicates": 0
+        },
+        {
+          "section": "194A",
+          "count": 19,
+          "gross": 11097848.09,
+          "tds": 567421.56,
+          "matched": 12,
+          "missingInBooks": 1,
+          "missingIn26AS": 1,
+          "amountDiff": 4,
+          "incomeMismatch": 0,
+          "sectionMismatch": 1,
+          "duplicates": 0
+        },
+        {
+          "section": "194C",
+          "count": 17,
+          "gross": 8397654.7,
+          "tds": 555782.2699999999,
+          "matched": 14,
+          "missingInBooks": 0,
+          "missingIn26AS": 0,
+          "amountDiff": 3,
+          "incomeMismatch": 0,
+          "sectionMismatch": 0,
+          "duplicates": 0
+        },
+        {
+          "section": "194Q",
+          "count": 19,
+          "gross": 12653311.500000002,
+          "tds": 518447.4000000001,
+          "matched": 16,
+          "missingInBooks": 1,
+          "missingIn26AS": 1,
+          "amountDiff": 0,
+          "incomeMismatch": 0,
+          "sectionMismatch": 1,
+          "duplicates": 0
+        },
+        {
+          "section": "194H",
+          "count": 13,
+          "gross": 7883202.669999999,
+          "tds": 476607.51,
+          "matched": 11,
+          "missingInBooks": 1,
+          "missingIn26AS": 0,
+          "amountDiff": 0,
+          "incomeMismatch": 0,
+          "sectionMismatch": 1,
+          "duplicates": 0
+        },
+        {
+          "section": "194I",
+          "count": 19,
+          "gross": 9854700.6,
+          "tds": 227779.11,
+          "matched": 15,
+          "missingInBooks": 1,
+          "missingIn26AS": 1,
+          "amountDiff": 2,
+          "incomeMismatch": 0,
+          "sectionMismatch": 0,
+          "duplicates": 0
+        }
+      ],
+      "deductorSummary": [
+        {
+          "deductor": "AAECA1234F",
+          "pan": null,
+          "tan": null,
+          "count": 10,
+          "tds": 492615.6099999999,
+          "gross": 7797942.01,
+          "matched": 0,
+          "missing": 2
+        },
+        {
+          "deductor": "DDDCW4567J",
+          "pan": null,
+          "tan": null,
+          "count": 11,
+          "tds": 391254.37,
+          "gross": 7227567.29,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "IIIEM9012P",
+          "pan": null,
+          "tan": null,
+          "count": 15,
+          "tds": 346474.06,
+          "gross": 9364505.2,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "BBBCG2345G",
+          "pan": null,
+          "tan": null,
+          "count": 11,
+          "tds": 340285.35,
+          "gross": 10166308.7,
+          "matched": 0,
+          "missing": 0
+        },
+        {
+          "deductor": "CCCTM3456H",
+          "pan": null,
+          "tan": null,
+          "count": 11,
+          "tds": 336918.6699999999,
+          "gross": 6795900.4,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "FFFLK6789L",
+          "pan": null,
+          "tan": null,
+          "count": 10,
+          "tds": 319437.29000000004,
+          "gross": 7437245.55,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "JJJTR0123Q",
+          "pan": null,
+          "tan": null,
+          "count": 11,
+          "tds": 260130.86,
+          "gross": 6480915.54,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "EEENP5678K",
+          "pan": null,
+          "tan": null,
+          "count": 8,
+          "tds": 175596.75,
+          "gross": 8371757.450000001,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "HHHUP8901N",
+          "pan": null,
+          "tan": null,
+          "count": 7,
+          "tds": 146650.96000000002,
+          "gross": 4638342.05,
+          "matched": 0,
+          "missing": 1
+        },
+        {
+          "deductor": "GGGFP7890M",
+          "pan": null,
+          "tan": null,
+          "count": 11,
+          "tds": 136859.14,
+          "gross": 4625570.78,
+          "matched": 0,
+          "missing": 1
+        }
+      ],
+      "tolerances": {
+        "amountToleranceAbs": 10.0,
+        "matchGate": 40.0,
+        "highRiskTds": 50000.0
+      }
+    },
+    "count": 105,
+    "seconds": 1.61,
+    "matched": 95,
+    "duplicates": 0,
+    "items_keys": [
+      [
+        -1,
+        94,
+        "unmatched",
+        0,
+        "",
+        [
+          "Booked TDS not reflecting in 26AS \u2014 verify the deductor filed/deposited"
+        ]
+      ],
+      [
+        -1,
+        95,
+        "unmatched",
+        0,
+        "",
+        [
+          "Booked TDS not reflecting in 26AS \u2014 verify the deductor filed/deposited"
+        ]
+      ],
+      [
+        -1,
+        96,
+        "unmatched",
+        0,
+        "",
+        [
+          "Booked TDS not reflecting in 26AS \u2014 verify the deductor filed/deposited"
+        ]
+      ],
+      [
+        -1,
+        98,
+        "unmatched",
+        0,
+        "",
+        [
+          "Booked TDS not reflecting in 26AS \u2014 verify the deductor filed/deposited"
+        ]
+      ],
+      [
+        -1,
+        99,
+        "unmatched",
+        0,
+        "",
+        [
+          "Booked TDS not reflecting in 26AS \u2014 verify the deductor filed/deposited"
+        ]
+      ],
+      [
+        0,
+        0,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        1,
+        1,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        2,
+        2,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        3,
+        3,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        4,
+        4,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        5,
+        5,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        6,
+        6,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        7,
+        7,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        8,
+        8,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        9,
+        9,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        10,
+        10,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        11,
+        11,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        12,
+        12,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        13,
+        13,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        14,
+        14,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        15,
+        15,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        16,
+        16,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        17,
+        17,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        18,
+        18,
+        "section_mismatch",
+        0.91,
+        "PAN/TAN + amount",
+        [
+          "Score 91 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%",
+          "Section differs: 194J vs 194Q"
+        ]
+      ],
+      [
+        19,
+        19,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        20,
+        20,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        21,
+        21,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        22,
+        22,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        23,
+        23,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        24,
+        24,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        25,
+        25,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        26,
+        26,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        27,
+        27,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        28,
+        28,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        29,
+        29,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        30,
+        30,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        31,
+        39,
+        "amount_tolerance",
+        0.55,
+        "Amount diff",
+        [
+          "Score 55 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b97,868"
+        ]
+      ],
+      [
+        32,
+        31,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        33,
+        32,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        34,
+        33,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        35,
+        34,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        36,
+        35,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        37,
+        36,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        38,
+        37,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        39,
+        38,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        40,
+        47,
+        "amount_tolerance",
+        0.65,
+        "Amount diff",
+        [
+          "Score 65 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b918,313"
+        ]
+      ],
+      [
+        41,
+        40,
+        "section_mismatch",
+        0.91,
+        "PAN/TAN + amount",
+        [
+          "Score 91 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%",
+          "Section differs: 194A vs 194C"
+        ]
+      ],
+      [
+        42,
+        41,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        43,
+        42,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        44,
+        43,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        45,
+        44,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        46,
+        45,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        47,
+        46,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        48,
+        63,
+        "amount_tolerance",
+        0.67,
+        "Amount diff",
+        [
+          "Score 67 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b91,329"
+        ]
+      ],
+      [
+        49,
+        48,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        50,
+        49,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        51,
+        50,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        52,
+        51,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        53,
+        52,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        54,
+        70,
+        "amount_tolerance",
+        0.61,
+        "Amount diff",
+        [
+          "Score 61 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b93,873"
+        ]
+      ],
+      [
+        55,
+        53,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        56,
+        54,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        57,
+        55,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        58,
+        56,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        59,
+        57,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        60,
+        58,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        61,
+        92,
+        "amount_tolerance",
+        0.55,
+        "Amount diff",
+        [
+          "Score 55 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b910,435"
+        ]
+      ],
+      [
+        62,
+        59,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        63,
+        60,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        64,
+        61,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        65,
+        62,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        66,
+        66,
+        "amount_tolerance",
+        0.77,
+        "Amount diff",
+        [
+          "Score 77 \u2014 Strong",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b9509"
+        ]
+      ],
+      [
+        67,
+        64,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        68,
+        65,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        69,
+        75,
+        "amount_tolerance",
+        0.71,
+        "Amount diff",
+        [
+          "Score 71 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b951,134"
+        ]
+      ],
+      [
+        70,
+        80,
+        "amount_tolerance",
+        0.55,
+        "Amount diff",
+        [
+          "Score 55 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b948,542"
+        ]
+      ],
+      [
+        71,
+        67,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        72,
+        68,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        73,
+        69,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        74,
+        81,
+        "amount_tolerance",
+        0.65,
+        "Amount diff",
+        [
+          "Score 65 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b939,007"
+        ]
+      ],
+      [
+        75,
+        71,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        76,
+        72,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        77,
+        73,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        78,
+        74,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        79,
+        78,
+        "amount_tolerance",
+        0.61,
+        "Amount diff",
+        [
+          "Score 61 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b95,310"
+        ]
+      ],
+      [
+        80,
+        76,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        81,
+        77,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        82,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No books entry found \u2014 26AS TDS credit may not be booked in accounts"
+        ]
+      ],
+      [
+        83,
+        79,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        84,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No books entry found \u2014 26AS TDS credit may not be booked in accounts"
+        ]
+      ],
+      [
+        85,
+        91,
+        "amount_tolerance",
+        0.55,
+        "Amount diff",
+        [
+          "Score 55 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b96,879"
+        ]
+      ],
+      [
+        86,
+        82,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        87,
+        83,
+        "section_mismatch",
+        0.91,
+        "PAN/TAN + amount",
+        [
+          "Score 91 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%",
+          "Section differs: 194Q vs 194I"
+        ]
+      ],
+      [
+        88,
+        84,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        89,
+        85,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        90,
+        86,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        91,
+        87,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        92,
+        88,
+        "section_mismatch",
+        0.91,
+        "PAN/TAN + amount",
+        [
+          "Score 91 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%",
+          "Section differs: 194H vs 194J"
+        ]
+      ],
+      [
+        93,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No books entry found \u2014 26AS TDS credit may not be booked in accounts"
+        ]
+      ],
+      [
+        94,
+        89,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        95,
+        90,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ],
+      [
+        96,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No books entry found \u2014 26AS TDS credit may not be booked in accounts"
+        ]
+      ],
+      [
+        97,
+        97,
+        "amount_tolerance",
+        0.61,
+        "Amount diff",
+        [
+          "Score 61 \u2014 Potential",
+          "PAN/TAN match",
+          "Name 100%",
+          "TDS differs by \u20b94,672"
+        ]
+      ],
+      [
+        98,
+        -1,
+        "unmatched",
+        0,
+        "",
+        [
+          "No books entry found \u2014 26AS TDS credit may not be booked in accounts"
+        ]
+      ],
+      [
+        99,
+        93,
+        "gstin_pan",
+        1.0,
+        "PAN/TAN + TDS",
+        [
+          "Score 100 \u2014 Exact",
+          "PAN/TAN match",
+          "Name 100%"
+        ]
+      ]
+    ]
+  }
+}

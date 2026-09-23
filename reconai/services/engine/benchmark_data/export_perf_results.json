@@ -1,0 +1,69 @@
+{
+  "mod": "tds_export_bench",
+  "timestamp": "2026-09-20T09:03:15.311361+00:00",
+  "dataset": "C:\\Users\\DELL\\Desktop\\ReconAI\\ReconAI_real_world_stress_dataset_v1",
+  "cases": {
+    "current_xlsxwriter_full": {
+      "n": 100000,
+      "total_seconds": 20.09,
+      "rows_per_sec": 4978.2,
+      "phases": {
+        "row_write_seconds": 8.08,
+        "close_save_seconds": 12.0
+      },
+      "peak_mb": 450.6,
+      "bytes": 10717518,
+      "artifact": "C:\\Users\\DELL\\Desktop\\ReconAI\\reconai\\services\\engine\\benchmark_data\\tds_100k_export.xlsx",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "rows": true,
+        "data_rows": 100000,
+        "cols": true,
+        "sheets": [
+          "TDS Checklist",
+          "Payment Reconciliation"
+        ],
+        "header_ok": true,
+        "row1_matches": true,
+        "row_mid_matches": true,
+        "row_last_matches": true
+      }
+    }
+  },
+  "before_openpyxl": {
+    "tds_analysis_seconds": 53.34,
+    "analysis_rows": 100000,
+    "current_openpyxl": {
+      "n": 20000,
+      "seconds": 7359.0,
+      "peak_mb": 186.0,
+      "bytes": 2426049,
+      "note": "measured at 20,000 rows; extrapolated x5.0 to full",
+      "extrap_from_seconds": 1471.8
+    },
+    "optimized_openpyxl_bulk": {
+      "seconds": 433.15,
+      "phases": {
+        "prep": 8.4,
+        "append": 39.44,
+        "numfmt": 8.14,
+        "save": 377.17
+      },
+      "peak_mb": 706.3,
+      "bytes": 11855872
+    },
+    "optimized_xlsxwriter": {
+      "seconds": 40281.38,
+      "phases": {
+        "prep": 8.95,
+        "write": 50.52,
+        "close": 40221.92
+      },
+      "peak_mb": 265.0,
+      "bytes": 11055185
+    }
+  },
+  "tds_analysis_seconds": 18.44,
+  "analysis_rows": 100000
+}

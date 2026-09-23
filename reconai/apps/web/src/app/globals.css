@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── ReconAI "asset-defense" design base ──────────────────────────────── */
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #07090e;
+    color: #f8fafc;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  ::selection {
+    background: #00f0ff;
+    color: #000;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+  /* Cinematic amlient aurora — grounded on ink 950 per the design system. */
+  .aurora-bg {
+    background-color: #07090e;
+    background-image:
+      radial-gradient(circle at 85% 12%, rgba(148, 189, 164, 0.16) 0%, rgba(78, 205, 196, 0.09) 30%, transparent 60%),
+      radial-gradient(circle at 8% 40%, rgba(0, 119, 255, 0.1) 0%, transparent 55%),
+      radial-gradient(circle at 78% 78%, rgba(0, 240, 255, 0.07) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .glass-card {
+    background: rgba(13, 20, 29, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card-interactive {
+    background: rgba(13, 20, 29, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s ease;
+  }
+  .glass-card-interactive:hover {
+    background: rgba(18, 28, 42, 0.85);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .hero-title-gradient {
+    background: linear-gradient(110deg, #ffffff 45%, #e2f1ea 70%, #9dd7c6 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .font-caps {
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hairline {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Landing page hero ─────────────────────────────────────────────── */
+  .hero-aurora-bg {
+    background: radial-gradient(circle at 82% 38%, rgba(148, 189, 164, 0.28) 0%, rgba(78, 205, 196, 0.16) 24%, rgba(56, 189, 248, 0.08) 46%, rgba(7, 9, 14, 0) 72%),
+                radial-gradient(circle at 18% 78%, rgba(0, 119, 255, 0.08) 0%, rgba(7, 9, 14, 0) 50%);
+    background-attachment: fixed;
+  }
+
+  .glass-pill {
+    background: rgba(22, 27, 34, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+  }
+
+  .circuit-node-line {
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 1.2;
+    stroke-dasharray: 4 2;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+}

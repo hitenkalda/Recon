@@ -1,0 +1,56 @@
+{
+  "gst": {
+    "purchase_rows": 50,
+    "gstr2b_rows": 45,
+    "expected_matched": 40,
+    "expected_only_a": 10,
+    "expected_only_b": 5,
+    "expected_total": 55
+  },
+  "bank": {
+    "bank_rows": 40,
+    "book_rows": 40,
+    "expected_matched": 35,
+    "expected_only_a": 5,
+    "expected_only_b": 5,
+    "expected_total": 45
+  },
+  "ais": {
+    "portal_rows": 21,
+    "books_rows": 19,
+    "expected_matched": 16,
+    "expected_missing_in_books": 2,
+    "expected_missing_in_26as": 1,
+    "expected_amount_diff": 1,
+    "expected_section_mismatch": 1,
+    "expected_duplicates": 1
+  },
+  "variance": {
+    "prior_ledgers": 34,
+    "current_ledgers": 34,
+    "expected_new_ledgers": 2,
+    "expected_dropped": 2
+  },
+  "tds": {
+    "expense_rows": 40,
+    "payable_rows": 10,
+    "expected_sections": 5,
+    "expected_below_threshold": 4,
+    "expected_not_deducted": 5,
+    "expected_late_deposits": 2,
+    "expected_missing_deposit_months": 2
+  },
+  "doc_parsing": {
+    "csv_rows": 20,
+    "xlsx_rows": 20,
+    "pdf_type": "text"
+  },
+  "ocr": {
+    "png_size": 100864,
+    "pdf_size": 167579,
+    "expected_png_records": 8,
+    "expected_image_pdf_records": 8,
+    "expected_text_pdf_parse": "parses normally",
+    "ocr": true
+  }
+}

@@ -1,0 +1,534 @@
+{
+  "timestamp": "2026-09-16T11:45:06.025037+00:00",
+  "api_base": "http://localhost:3001/api",
+  "modules": {
+    "gst": {
+      "tests": [
+        {
+          "name": "purchase_records_parsed",
+          "expected": 50,
+          "actual": 50,
+          "passed": true,
+          "details": {
+            "gstr2b_records": 45
+          }
+        },
+        {
+          "name": "run_completed",
+          "expected": "completed",
+          "actual": "completed",
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "has_metrics",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "metrics_keys": [
+              "total",
+              "byTier",
+              "totalA",
+              "totalB",
+              "matched",
+              "byStatus",
+              "unmatched",
+              "duplicates",
+              "tolerances",
+              "unmatchedA",
+              "unmatchedB",
+              "matchedCount",
+              "unmatchedCount"
+            ]
+          }
+        },
+        {
+          "name": "matched_pairs",
+          "expected": 40,
+          "actual": 40,
+          "passed": true,
+          "details": {
+            "only_a": 10,
+            "only_b": 5,
+            "statusCounts": {
+              "exact_invoice": 40,
+              "unmatched": 15
+            }
+          }
+        },
+        {
+          "name": "export_gate_aissonly",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "finding": "GST run export is NOT implemented \u2014 endpoint only serves 26AS/AIS",
+            "response": "{'_error': 400, '_body': '{\"error\":{\"code\":\"BAD_REQUEST\",\"message\":\"Export is only available for 26AS/AIS reconciliation runs\"}}'}"
+          }
+        }
+      ],
+      "timing": {
+        "run_create_ms": 293.2,
+        "run_duration_s": 3.52,
+        "total_s": 11.04,
+        "export_ms": 312.14
+      }
+    },
+    "bank": {
+      "tests": [
+        {
+          "name": "statement_records_parsed",
+          "expected": 40,
+          "actual": 40,
+          "passed": true,
+          "details": {
+            "book_records": 40
+          }
+        },
+        {
+          "name": "run_completed",
+          "expected": "completed",
+          "actual": "completed",
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "has_metrics",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "matched_pairs",
+          "expected": 35,
+          "actual": 35,
+          "passed": true,
+          "details": {
+            "only_a": 5,
+            "only_b": 5,
+            "statusCounts": {
+              "exact_invoice": 35,
+              "unmatched": 10
+            }
+          }
+        },
+        {
+          "name": "export_gate_aissonly",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "finding": "Bank run export is NOT implemented \u2014 endpoint only serves 26AS/AIS",
+            "response": "{'_error': 400, '_body': '{\"error\":{\"code\":\"BAD_REQUEST\",\"message\":\"Export is only available for 26AS/AIS reconciliation runs\"}}'}"
+          }
+        }
+      ],
+      "timing": {
+        "run_create_ms": 303.17,
+        "run_duration_s": 2.89,
+        "total_s": 7.25,
+        "export_ms": 171.77
+      }
+    },
+    "ais": {
+      "tests": [
+        {
+          "name": "portal_records_parsed",
+          "expected": 21,
+          "actual": 21,
+          "passed": true,
+          "details": {
+            "books_records": 19
+          }
+        },
+        {
+          "name": "run_completed",
+          "expected": "completed",
+          "actual": "completed",
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "has_tax_metrics",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "tax_keys": [
+              "pairs",
+              "tds26",
+              "matched",
+              "netDiff",
+              "highRisk",
+              "tdsBooks",
+              "matchRate",
+              "amountDiff",
+              "duplicates",
+              "thresholds",
+              "missingIn26AS",
+              "taxCreditLoss",
+              "incomeMismatch",
+              "missingInBooks",
+              "sectionMismatch"
+            ]
+          }
+        },
+        {
+          "name": "matched",
+          "expected": 16,
+          "actual": 16,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "missing_in_books",
+          "expected": 2,
+          "actual": 2,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "missing_in_26as",
+          "expected": 1,
+          "actual": 1,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "amount_diff",
+          "expected": 1,
+          "actual": 1,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "duplicates",
+          "expected": 1,
+          "actual": 1,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "section_mismatch",
+          "expected": 1,
+          "actual": 1,
+          "passed": true,
+          "details": {
+            "finding": "Planted genuine section-label change (books 194J vs portal 194C) correctly flagged as section_mismatch \u2014 the engine's PAN/TAN-anchored scoring still matches the pair and reports the label difference. Confidence in the section-diff path is restored."
+          }
+        },
+        {
+          "name": "view_filters_work",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "only_a_26as": 3,
+            "only_b_books": 1
+          }
+        },
+        {
+          "name": "export_8sheet_xlsx",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {}
+        }
+      ],
+      "timing": {
+        "run_create_ms": 189.27,
+        "run_duration_s": 2.91,
+        "total_s": 7.04,
+        "export_ms": 663.25
+      }
+    },
+    "variance": {
+      "tests": [
+        {
+          "name": "prior_records_parsed",
+          "expected": 34,
+          "actual": 34,
+          "passed": true,
+          "details": {
+            "current_records": 34
+          }
+        },
+        {
+          "name": "run_completed",
+          "expected": "completed",
+          "actual": "completed",
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "has_metrics",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "metrics_keys": [
+              "dropped",
+              "newLedgers",
+              "noMovement",
+              "totalPrior",
+              "quickReview",
+              "obMismatches",
+              "totalCurrent",
+              "detailedReview",
+              "withinThreshold",
+              "totalVarianceAbs"
+            ]
+          }
+        },
+        {
+          "name": "has_categories",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "categories": {
+              "detailed_review": 11,
+              "new_ledger": 2,
+              "quick_review": 1
+            },
+            "total_items": 14
+          }
+        },
+        {
+          "name": "export_7sheet_xlsx",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {}
+        }
+      ],
+      "timing": {
+        "run_create_ms": 345.55,
+        "run_duration_s": 2.59,
+        "total_s": 6.7,
+        "export_ms": 684.67
+      }
+    },
+    "tds": {
+      "tests": [
+        {
+          "name": "expense_records_parsed",
+          "expected": 40,
+          "actual": 40,
+          "passed": true,
+          "details": {
+            "payable_records": 10
+          }
+        },
+        {
+          "name": "run_completed",
+          "expected": "completed",
+          "actual": "completed",
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "has_metrics",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "summary_keys": [
+              "fy",
+              "totals",
+              "totalDed",
+              "totalReq",
+              "compliant",
+              "totalGross",
+              "hasDeposits",
+              "notDeducted",
+              "shortAmount",
+              "lateDeposits",
+              "notDeposited",
+              "belowThreshold",
+              "openingBalance",
+              "shortDeductions",
+              "excessDeductions",
+              "transactionCount",
+              "interestLiability"
+            ],
+            "section_count": 1,
+            "monthly_count": 14
+          }
+        },
+        {
+          "name": "has_deduction_statuses",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "dedStatus": {
+              "NOT DEDUCTED": 4,
+              "BELOW THRESHOLD": 4,
+              "EXCESS DEDUCTION": 32
+            },
+            "depStatus": {
+              "NO DEPOSIT DATA": 8,
+              "NOT DEPOSITED": 21,
+              "DEPOSITED ON TIME": 9,
+              "PARTIALLY DEPOSITED": 2
+            },
+            "late_deposits": 0,
+            "total_items": 40
+          }
+        },
+        {
+          "name": "deposits_recognised",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "depStatus": {
+              "NO DEPOSIT DATA": 8,
+              "NOT DEPOSITED": 21,
+              "DEPOSITED ON TIME": 9,
+              "PARTIALLY DEPOSITED": 2
+            },
+            "late_count": 0,
+            "finding": "TDS Payable ledger uses a single-sided Debit/Balance (running-balance) layout with no Credit column. parse_payable_ledger now treats the Debit column alone as the deposit side (debit-first, with a plain amount fallback for Amount-only registers), so challan deposits are recognised and deposit-due / late-interest logic runs on these registers."
+          }
+        },
+        {
+          "name": "export_2sheet_xlsx",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {}
+        }
+      ],
+      "timing": {
+        "run_create_ms": 435.67,
+        "run_duration_s": 2.85,
+        "total_s": 7.0,
+        "export_ms": 579.53
+      }
+    },
+    "doc_parsing": {
+      "tests": [
+        {
+          "name": "csv_parsed",
+          "expected": 20,
+          "actual": 20,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "xlsx_parsed",
+          "expected": 20,
+          "actual": 20,
+          "passed": true,
+          "details": {}
+        },
+        {
+          "name": "text_pdf_parsed",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "records": 4
+          }
+        }
+      ],
+      "timing": {
+        "total_s": 9.01
+      }
+    },
+    "ocr": {
+      "tests": [
+        {
+          "name": "scanned_png_records",
+          "expected": 8,
+          "actual": 8,
+          "passed": true,
+          "details": {
+            "error": null,
+            "stage": null,
+            "ocr": true,
+            "finding": "RapidOCR wired into parse.py \u2014 scanned PNG now OCR'd into records"
+          }
+        },
+        {
+          "name": "image_pdf_records",
+          "expected": 8,
+          "actual": 8,
+          "passed": true,
+          "details": {
+            "error": null,
+            "ocr": true,
+            "finding": "Image-only PDF now OCR'd via page rasterisation + RapidOCR"
+          }
+        }
+      ],
+      "timing": {
+        "total_s": 22.65
+      }
+    },
+    "exceptions": {
+      "tests": [
+        {
+          "name": "exceptions_generated",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "total": 50,
+            "kinds": {
+              "missing_invoice": 15,
+              "tax_credit_not_in_26as": 1,
+              "tax_credit_missing_in_books": 2,
+              "tax_section_mismatch": 1,
+              "tax_tds_amount_diff": 1,
+              "tds_deposit_short": 2,
+              "tax_duplicate": 1,
+              "tds_excess_deduction": 27
+            },
+            "severities": {
+              "medium": 22,
+              "low": 28
+            }
+          }
+        }
+      ],
+      "timing": {}
+    },
+    "security": {
+      "tests": [
+        {
+          "name": "cross_firm_denied",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "status": 404,
+            "response": "{'_error': 404, '_body': '{\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"Reconciliation not found\"}}'}"
+          }
+        },
+        {
+          "name": "cross_firm_engagement_denied",
+          "expected": true,
+          "actual": true,
+          "passed": true,
+          "details": {
+            "status": 404
+          }
+        }
+      ],
+      "timing": {}
+    }
+  },
+  "summary": {
+    "total_tests": 40,
+    "passed": 40,
+    "failed": 0,
+    "pass_rate": "100.0%",
+    "total_duration_s": 82.5,
+    "modules_tested": 9
+  }
+}
