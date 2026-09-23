@@ -20,6 +20,21 @@ export const loginSchema = z
   })
   .strict();
 
+export const individualSignupSchema = z
+  .object({
+    name: z.string().min(2).max(120),
+    email: z.string().email().max(255),
+    password: z.string().min(10).max(128),
+  })
+  .strict();
+
+export const individualLoginSchema = z
+  .object({
+    email: z.string().email().max(255),
+    password: z.string().min(1).max(128),
+  })
+  .strict();
+
 export const inviteSchema = z
   .object({
     email: z.string().email().max(255),
@@ -50,3 +65,5 @@ export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type InviteInput = z.infer<typeof inviteSchema>;
 export type FirmUpdateInput = z.infer<typeof firmUpdateSchema>;
+export type IndividualSignupInput = z.infer<typeof individualSignupSchema>;
+export type IndividualLoginInput = z.infer<typeof individualLoginSchema>;

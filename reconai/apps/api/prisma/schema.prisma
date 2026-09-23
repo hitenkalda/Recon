@@ -47,7 +47,7 @@ model Firm {
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
-  passwordHash String
+  passwordHash String?
   name         String
   phone        String?
   isActive     Boolean   @default(true)
@@ -57,6 +57,8 @@ model User {
 
   memberships FirmMember[]
   engagements EngagementMember[]
+  profiles    IndividualProfile[]
+  googleAccounts GoogleAccount[]
 }
 
 model FirmMember {
@@ -718,4 +720,288 @@ model Notification {
   @@index([userId])
   @@index([firmId])
   @@index([read])
+}
+
+// ── Individual User Product ──────────────────────────────────────
+// Independent workspace for solo practitioners — no firm/engagement hierarchy.
+// Fully isolated from Enterprise data; each table scoped to individualId.
+
+model IndividualProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique // one profile per user
+  plan      String   @default("free") // free | basic | pro
+  credits   Int      @default(5) // daily reconciliation jobs remaining
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  records        IndividualRecord[]
+  documents      IndividualDocument[]
+  runs           IndividualReconRun[]
+  reports        IndividualReport[]
+  usageLogs      IndividualUsageLog[]
+  planChanges    IndividualPlanChange[]
+  exceptions     IndividualException[]
+
+  @@index([userId])
+}
+
+model IndividualPlanChange {
+  id          String   @id @default(cuid())
+  profileId   String
+  fromPlan    String
+  toPlan      String
+  reason      String?
+  createdById String
+  createdAt   DateTime @default(now())
+
+  profile IndividualProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([createdAt])
+}
+
+model IndividualRecord {
+  id          String   @id @default(cuid())
+  profileId   String
+  title       String
+  type        String // gst | bank | tds | variance | ais_26as | other
+  status      String   @default("draft") // draft | in_progress | completed | failed
+  periodFrom  DateTime?
+  periodTo    DateTime?
+  metadata    Json?
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  profile         IndividualProfile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  documents       IndividualDocument[]
+  runs            IndividualReconRun[]
+  exceptions      IndividualException[]
+  reports         IndividualReport[]
+
+  @@index([profileId])
+  @@index([profileId, status])
+  @@index([profileId, type])
+  @@index([isDeleted])
+}
+
+model IndividualDocument {
+  id              String   @id @default(cuid())
+  profileId       String
+  recordId        String
+  fileName        String
+  originalName    String
+  storagePath     String
+  mime            String
+  size            BigInt
+  sha256          String?
+  category        String?
+  uploadedById    String
+  status          String   @default("uploaded") // ProcessingStage
+  failureReason   String?
+  columns         Json?
+  mapping         Json?
+  pageCount       Int?
+  recordCount     Int      @default(0)
+  virusScanResult String?
+  isDuplicateOf   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile   IndividualProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  record    IndividualRecord  @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  records   IndividualSourceRecord[]
+  jobs      IndividualProcessingJob[]
+  sourceARuns   IndividualReconRun[] @relation("indRunSourceA")
+  sourceBRuns   IndividualReconRun[] @relation("indRunSourceB")
+  aisSourceRuns IndividualReconRun[] @relation("indRunAisSource")
+
+  @@index([profileId])
+  @@index([recordId])
+  @@index([status])
+  @@index([sha256])
+}
+
+model IndividualSourceRecord {
+  id          String   @id @default(cuid())
+  documentId  String
+  rowIndex    Int?
+  page        Int?
+  data        Json
+  confidence  Float    @default(0)
+  validationStatus String @default("valid")
+  warnings    Json?
+  raw         Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  document IndividualDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  itemsA   IndividualReconItem[] @relation("individualItemRecordA")
+  itemsB   IndividualReconItem[] @relation("individualItemRecordB")
+
+  @@index([documentId])
+  @@index([documentId, validationStatus])
+}
+
+model IndividualProcessingJob {
+  id          String    @id @default(cuid())
+  profileId   String
+  documentId  String
+  jobType     String // process | reprocess | virus_scan
+  state       String    @default("queued")
+  progress    Int       @default(0)
+  stage       String?
+  error       String?
+  output      Json?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  document IndividualDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([documentId])
+  @@index([state])
+}
+
+model IndividualReconRun {
+  id           String    @id @default(cuid())
+  profileId    String
+  recordId     String
+  type         String // ReconType
+  status       String    @default("queued")
+  config       Json?
+  sourceAId    String?
+  sourceBId    String?
+  aisSourceId  String?
+  periodFrom   DateTime?
+  periodTo     DateTime?
+  progress     Int       @default(0)
+  metrics      Json?
+  error        String?
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  profile   IndividualProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  record    IndividualRecord   @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  sourceA   IndividualDocument? @relation("indRunSourceA", fields: [sourceAId], references: [id])
+  sourceB   IndividualDocument? @relation("indRunSourceB", fields: [sourceBId], references: [id])
+  aisSource IndividualDocument? @relation("indRunAisSource", fields: [aisSourceId], references: [id])
+  items     IndividualReconItem[]
+  exceptions IndividualException[]
+  reports   IndividualReport[]
+
+  @@index([profileId])
+  @@index([recordId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model IndividualReconItem {
+  id            String        @id @default(cuid())
+  runId         String
+  profileId     String
+  recordAId     String?
+  recordBId     String?
+  matchStatus   String
+  score         Float         @default(0)
+  reasons       Json?
+  amountPaiseA  BigInt?
+  amountPaiseB  BigInt?
+  variancePaise BigInt?
+  dateA         DateTime?
+  dateB         DateTime?
+  deleted       Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  run  IndividualReconRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  recordA IndividualSourceRecord? @relation("individualItemRecordA", fields: [recordAId], references: [id])
+  recordB IndividualSourceRecord? @relation("individualItemRecordB", fields: [recordBId], references: [id])
+
+  @@index([runId])
+  @@index([profileId])
+  @@index([runId, matchStatus])
+}
+
+model IndividualException {
+  id           String    @id @default(cuid())
+  profileId    String
+  runId        String?
+  recordId     String
+  kind         String
+  severity     String
+  status       String    @default("open")
+  title        String
+  description  String?
+  resolution   String?
+  createdById  String?
+  resolvedById String?
+  resolvedAt   DateTime?
+  references   Json?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime @updatedAt
+
+  profile  IndividualProfile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  run      IndividualReconRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+  record   IndividualRecord    @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([recordId])
+  @@index([status])
+  @@index([severity])
+}
+
+model IndividualReport {
+  id             String        @id @default(cuid())
+  profileId      String
+  recordId       String?
+  runId          String?
+  format         String
+  storagePath    String
+  size           BigInt?
+  generatedById  String?
+  createdAt      DateTime      @default(now())
+
+  profile  IndividualProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  record   IndividualRecord?  @relation(fields: [recordId], references: [id], onDelete: SetNull)
+  run      IndividualReconRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  @@index([profileId])
+  @@index([recordId])
+  @@index([runId])
+}
+
+model IndividualUsageLog {
+  id          String   @id @default(cuid())
+  profileId   String
+  userId      String
+  runId       String?
+  creditsUsed Int      @default(1)
+  status      String   @default("consumed") // consumed | refunded
+  createdAt   DateTime @default(now())
+
+  profile IndividualProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ── Google OAuth ───────────────────────────────────────────────
+
+model GoogleAccount {
+  id         String   @id @default(cuid())
+  userId     String
+  googleId   String   @unique
+  email      String
+  name       String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([googleId])
+  @@index([userId])
 }

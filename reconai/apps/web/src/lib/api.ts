@@ -71,3 +71,34 @@ export interface MeResponse {
   user: MeUser;
   firm: MeFirm | null;
 }
+
+/** Individual user session shape (GET /api/individual/auth/me) */
+export interface MeIndividual {
+  user: { id: string; email: string; name: string };
+  profile: {
+    id: string;
+    plan: string; // 'free' | 'basic' | 'pro'
+    quota: {
+      dailyLimit: number;
+      dailyConsumed: number;
+      dailyRemaining: number;
+      totalRuns: number;
+      totalDocuments: number;
+      totalReports: number;
+    };
+  };
+}
+
+export interface IndividualPlan {
+  id: string;
+  name: string;
+  price: number;
+  currency: string;
+  monthly: boolean;
+  dailyJobs: number;
+  features: string[];
+}
+
+export interface IndividualPlansResponse {
+  plans: IndividualPlan[];
+}

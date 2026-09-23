@@ -24,6 +24,13 @@ import dashboardRoutes from './routes/dashboard.js';
 import riskRoutes from './routes/risk.js';
 import aiRoutes from './routes/ai.js';
 import miscRoutes from './routes/misc.js';
+import individualAuthRoutes from './routes/individual-auth.js';
+import individualRecordRoutes from './routes/individual-records.js';
+import individualDocRoutes from './routes/individual-documents.js';
+import individualReconRoutes from './routes/individual-reconciliations.js';
+import individualDashRoutes from './routes/individual-dashboard.js';
+import individualReportRoutes from './routes/individual-reports.js';
+import individualEntitlementRoutes from './routes/individual-entitlement.js';
 
 export function createApp() {
   const app = express();
@@ -76,7 +83,16 @@ export function createApp() {
   app.use('/api/risk', riskRoutes);
   app.use('/api/ai', aiRoutes);
   app.use('/api/dashboard', dashboardRoutes);
-  app.use('/api', miscRoutes); // /notifications + /audit-log + auth/can lives under auth
+  // Individual user routes (fully isolated from Enterprise) — must come before the /api catch-all
+  app.use('/api/individual/auth', individualAuthRoutes);
+  app.use('/api/individual/records', individualRecordRoutes);
+  app.use('/api/individual/documents', individualDocRoutes);
+  app.use('/api/individual/reconciliations', individualReconRoutes);
+  app.use('/api/individual/dashboard', individualDashRoutes);
+  app.use('/api/individual/reports', individualReportRoutes);
+  app.use('/api/individual/entitlement', individualEntitlementRoutes);
+
+  app.use('/api', miscRoutes); // /notifications + /audit-log
 
   // 404 + error contract
   app.use((_req, res) => res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found' } }));

@@ -49,7 +49,9 @@ type IconName =
   | 'delete'
   | 'inbox'
   | 'radio_checked'
-  | 'radio_unchecked';
+  | 'radio_unchecked'
+  | 'menu'
+  | 'add';
 
 const PATHS: Record<IconName, React.ReactNode> = {
   grid_view: (
@@ -292,6 +294,16 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <path d="M3.5 13h4l2 3h5l2-3h4" />
       <path d="M3.5 13V7a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v6" />
       <path d="M3.5 15v3a1 1 0 0 0 1 1h15a1 1 0 0 0 1-1v-3" />
+    </>
+  ),
+  menu: (
+    <>
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </>
+  ),
+  add: (
+    <>
+      <path d="M12 5v14M5 12h14" />
     </>
   ),
   radio_checked: (

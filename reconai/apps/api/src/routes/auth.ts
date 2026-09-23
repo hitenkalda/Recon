@@ -94,7 +94,7 @@ router.post('/login', asyncHandler(async (req, res) => {
   const input = parseBody(loginSchema, req.body);
 
   const user = await prisma.user.findUnique({ where: { email: input.email.toLowerCase() } });
-  if (!user || !(await bcrypt.compare(input.password, user.passwordHash))) {
+  if (!user || !user.passwordHash || !(await bcrypt.compare(input.password, user.passwordHash))) {
     throw BadRequest('Invalid email or password');
   }
   if (!user.isActive) throw Forbidden('This account has been deactivated');

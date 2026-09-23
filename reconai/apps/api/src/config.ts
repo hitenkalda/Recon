@@ -48,4 +48,18 @@ export const config = {
     maxSizeMb: Number(process.env.MAX_FILE_SIZE_MB ?? 50),
     maxFilesPerUpload: Number(process.env.MAX_FILES_PER_UPLOAD ?? 10),
   },
+
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackUrl: process.env.GOOGLE_CALLBACK_URL ?? 'http://localhost:3001/api/auth/google/callback',
+    authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenUrl: 'https://oauth2.googleapis.com/token',
+    userInfoUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
+  },
+
+  individual: {
+    dailyJobLimit: Number(process.env.INDIVIDUAL_DAILY_JOB_LIMIT ?? 5),
+    dailyResetHours: Number(process.env.INDIVIDUAL_DAILY_RESET_HOUR ?? 0),
+  },
 } as const;

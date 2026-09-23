@@ -61,11 +61,13 @@ export const tdsQueue = new Queue(QUEUE_NAMES.tds, {
 export interface DocumentJob {
   documentId: string;
   firmId: string;
+  profileId?: string;
 }
 
 export interface ReconJob {
   runId: string;
   firmId: string;
+  profileId?: string;
 }
 
 export interface VarianceJob {
