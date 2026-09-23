@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-lowest": "#0e0e0e", "on-secondary-fixed-variant": "#454747", "on-surface": "#e2e2e2", "background": "#131313", "surface-container-highest": "#353535", "on-secondary-container": "#b4b5b5", "text-secondary": "#9ca3af", "state-warning": "#fbbf24", "inverse-on-surface": "#303030", "error": "#ffb4ab", "on-primary-fixed": "#001f23", "border-subtle": "rgba(255, 255, 255, 0.06)", "inverse-surface": "#e2e2e2", "surface-card": "#0d0d0e", "surface-bright": "#393939", "surface-tint": "#54d8e8", "surface": "#131313", "surface-base": "#000000", "text-primary": "#ffffff", "surface-raised": "#080808", "error-container": "#93000a", "primary-container": "#67e8f9", "state-error": "#f87171", "on-surface-variant": "#bcc9cb", "on-primary": "#00363c", "on-secondary-fixed": "#1a1c1c", "surface-container-high": "#2a2a2a", "border-prominent": "rgba(255, 255, 255, 0.12)", "border-highlight": "rgba(255, 255, 255, 0.22)", "tertiary-fixed": "#e3e1ec", "on-background": "#e2e2e2", "on-secondary": "#2f3131", "on-primary-fixed-variant": "#004f57", "secondary-container": "#454747", "on-tertiary": "#2f3038", "state-success": "#34d399", "primary": "#d5f9ff", "surface-dim": "#131313", "tertiary-container": "#d6d5df", "primary-fixed": "#91f1ff", "secondary-fixed-dim": "#c6c6c7", "accent-cyan-glow": "rgba(103, 232, 249, 0.12)", "inverse-primary": "#006973", "surface-container": "#1f1f1f", "surface-variant": "#353535", "outline": "#869395", "on-tertiary-fixed": "#1a1b22", "on-error": "#690005", "outline-variant": "#3c494b", "text-dim": "#71717a", "secondary-fixed": "#e2e2e2", "on-error-container": "#ffdad6", "surface-overlay": "#141416", "tertiary": "#f3f1fc", "secondary": "#c6c6c7", "on-tertiary-container": "#5c5c65", "on-primary-container": "#006771", "primary-fixed-dim": "#54d8e8", "text-ghost": "#3f3f46", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#c6c5cf", "on-tertiary-fixed-variant": "#46464e" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-tablet": "2rem", "margin": "1rem", "space-xl": "2.5rem", "gutter-desktop": "1.5rem", "gutter": "1rem", "margin-desktop": "3rem", "space-lg": "1.5rem" }, "fontFamily": { "data-metric": [ "JetBrains Mono" ], "display": [ "Geist" ], "headline-md": [ "Geist" ], "body-md": [ "JetBrains Mono" ], "headline-sm": [ "Geist" ], "body-lg": [ "JetBrains Mono" ], "headline-lg": [ "Geist" ], "headline-lg-mobile": [ "Geist" ], "body-sm": [ "JetBrains Mono" ], "data-metric-sm": [ "JetBrains Mono" ], "display-mobile": [ "Geist" ], "label-caps": [ "JetBrains Mono" ], "label-regular": [ "JetBrains Mono" ] }, "fontSize": { "data-metric": [ "28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "500" } ], "display": [ "56px", { "lineHeight": "60px", "letterSpacing": "-0.04em", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "26px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-md": [ "13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" } ], "headline-sm": [ "16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "body-lg": [ "15px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "headline-lg": [ "32px", { "lineHeight": "38px", "letterSpacing": "-0.03em", "fontWeight": "500" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-sm": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" } ], "data-metric-sm": [ "18px", { "lineHeight": "22px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "display-mobile": [ "36px", { "lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "label-caps": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "label-regular": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface-base font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-raised z-50 flex flex-col justify-between py-space-md"><div class="flex flex-col gap-space-md"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="Clean vector logo of ReconAI featuring the neural blossom network icon and RECONAI wordmark in vibrant cyan and electric blue, without the 'SINCE 2026' text, matching user specification." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WHKT5pE-2TtymchT4F2z1RjFuFcMxylI_rHhJ1_IuPUY74ajwFn1gdbD3FirLT9gVQR5H1FpialQAGEJAEuYJOeqYSRBhVH987tY5PnPKXeAbvrTRPC4j92iSjUgozRl7tPcomalBrPtfWP5didgTjlO10iFAnA79jH-pFcl31nxALxz0aZ1M5bNRr5DUVQWn2Iu46EpKo18CKLUXO4XuDqEhkK8aMOg_4qfBWd2ebqUfBE3_Iucj4evI"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-text-primary uppercase tracking-wider font-semibold">ReconAI</span><span class="font-label-caps text-label-caps text-text-dim">Institutional v4.8</span></div></div><div class="px-space-md"><div class="bg-surface-card p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs overflow-hidden"><span class="material-symbols-outlined text-primary-container text-[18px]">corporate_fare</span><div class="flex flex-col truncate"><span class="font-label-caps text-label-caps text-text-dim truncate">Practice Entity</span><span class="font-label-regular text-label-regular text-text-primary truncate font-medium">Rajesh &amp; Co. CA</span></div></div><span class="material-symbols-outlined text-text-dim text-[16px]">unfold_more</span></div></div><nav class="flex flex-col gap-space-xs px-space-sm" data-active-classes="bg-surface-card text-primary-container font-medium"><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="clients" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span>Clients</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-colors bg-surface-card text-primary-container font-medium" data-path="engagements" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span>Engagements</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="team" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span>Team</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span>Settings</span></a></nav></div><div class="px-space-md flex flex-col gap-space-sm"><div class="bg-surface-card p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 bg-state-success rounded-full"></span><span class="font-label-caps text-label-caps text-text-dim">Engine Sync</span></div><span class="font-label-caps text-label-caps text-primary-container">99.98%</span></div><div class="flex items-center justify-between pt-space-xs text-text-dim font-label-caps text-label-caps"><span>Dual-Ledger V3.2</span><span class="text-primary-container font-mono">SECURE</span></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-raised/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-text-dim font-label-caps text-label-caps"><span class="material-symbols-outlined text-[16px]">assured_workload</span><span>Rajesh &amp; Co. CA</span><span class="text-text-ghost">/</span><span class="text-on-surface">Fiscal Audit 2025-26</span></div><div class="hidden lg:flex items-center bg-surface-card px-space-sm py-space-xs gap-space-xs"><span class="material-symbols-outlined text-text-dim text-[16px]">terminal</span><input class="bg-transparent text-text-primary placeholder-text-dim text-body-sm font-body-sm focus:outline-none w-80" placeholder="Press ⌘K to query ledgers, client IDs, audit codes..." type="text"/><kbd class="bg-surface-base px-1 text-[10px] text-text-dim font-mono">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><button class="relative p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary-container"></span></button><button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">history_edu</span></button></div><div class="h-6 w-px bg-surface-container-high"></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-regular text-label-regular text-text-primary font-medium leading-none">Rajesh Sharma, FCA</span><span class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider mt-0.5">Managing Partner</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida/AEtjO1XPD5kKBmqJQzFtMvJPE-XmZemu3QdJAl8Xt0piF3HobkInXLwxM0-d4hgrudb2yoQOyaCcdSk6JV9AQlJBmSZMbGK90w0pcR4uOsKR6rcDsoC1UtgYJEbdSMT6K-jwEh4iGluHRmvXmwUgRTfbGJPiZgKlAafdRJo6PfMMWs5KjQMXPaK3lH5jenAjCRAFXrIe35WKxPgwL9jL4X1R1vJFrIqbULJpKEYz89mRSh0otiUgoeE3eIVG7wY"/></div></div></header><main class="w-full pt-16 bg-surface-base flex-1"><div class="flex flex-col w-full">
+<!-- Dynamic Atmospheric Glow Overlay (Local) -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-32 right-12 w-96 h-96 rounded-full bg-primary-container/5 blur-3xl pointer-events-none"></div>
+<div class="absolute top-48 left-1/3 w-64 h-64 rounded-full bg-surface-tint/5 blur-2xl pointer-events-none"></div>
+<!-- Main Workspace Container with High Density Architecture -->
+<div class="w-full px-space-lg py-space-md flex flex-col gap-space-lg max-w-[1720px] mx-auto">
+<!-- Context Command Bar / Page Header -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-text-dim font-label-caps text-label-caps tracking-widest uppercase">
+<span class="inline-block w-1.5 h-1.5 bg-primary-container"></span>
+<span>Chartered Audit Orchestrator</span>
+<span class="text-text-ghost">/</span>
+<span class="text-on-surface-variant font-mono">REG-2025-V4.8</span>
+</div>
+<div class="flex items-baseline gap-space-md">
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-medium">Audit Engagements</h1>
+<span class="font-body-sm text-body-sm text-text-dim font-mono hidden md:inline-block">[ FISCAL LEDGER MASTER ]</span>
+</div>
+</div>
+<!-- Action Matrix & Fast Metric Pills -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="flex items-center bg-surface-raised p-1 gap-1">
+<div class="flex items-center gap-2 px-space-sm py-1 bg-surface-card text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-text-dim">ACTIVE</span>
+<span class="font-data-metric-sm text-data-metric-sm text-text-primary font-mono ml-1">18</span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 bg-surface-card text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-tint"></span>
+<span class="font-label-caps text-label-caps text-text-dim">RECONCILING</span>
+<span class="font-data-metric-sm text-data-metric-sm text-primary-container font-mono ml-1">07</span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 bg-surface-card text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-state-error"></span>
+<span class="font-label-caps text-label-caps text-state-error">EXCEPTIONS</span>
+<span class="font-data-metric-sm text-data-metric-sm text-state-error font-mono ml-1">04</span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 bg-surface-card text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-text-dim"></span>
+<span class="font-label-caps text-label-caps text-text-dim">CLOSED FY24</span>
+<span class="font-data-metric-sm text-data-metric-sm text-text-dim font-mono ml-1">32</span>
+</div>
+</div>
+<button class="flex items-center gap-space-xs bg-text-primary text-surface-base px-space-md py-space-xs font-label-regular text-label-regular font-medium hover:bg-neutral-200 transition-colors" id="btn-new-engagement">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>NEW ENGAGEMENT</span>
+</button>
+</div>
+</div>
+<!-- Live Fiscal Strip (Institutional High Contrast) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-sm">
+<div class="bg-surface-raised p-space-md flex flex-col justify-between relative overflow-hidden shadow-sm group">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider">TOTAL ITC AUDITED (M-T-D)</span>
+<span class="material-symbols-outlined text-text-dim text-[16px]">account_balance_wallet</span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-2">
+<span class="font-data-metric text-data-metric text-text-primary font-mono">₹48,62,40,910</span>
+<span class="font-body-sm text-body-sm text-primary-container font-mono">+12.4%</span>
+</div>
+<div class="w-full bg-surface-card h-0.5 mt-space-sm overflow-hidden">
+<div class="bg-primary-container h-full w-[84%]"></div>
+</div>
+</div>
+<div class="bg-surface-raised p-space-md flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-state-error tracking-wider">DISCREPANCIES DETECTED &amp; SAVED</span>
+<span class="material-symbols-outlined text-state-error text-[16px]">shield_with_heart</span>
+</div>
+<div class="mt-space-sm flex items-baseline gap-2">
+<span class="font-data-metric text-data-metric text-state-error font-mono">₹1,42,18,300</span>
+<span class="font-label-caps text-label-caps text-text-dim">44 CRITICAL</span>
+</div>
+<div class="w-full bg-surface-card h-0.5 mt-space-sm overflow-hidden">
+<div class="bg-state-error h-full w-[62%]"></div>
+</div>
+</div>
+<div class="bg-surface-raised p-space-md flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider">AI RESOLUTION EFFICIENCY</span>
+<span class="material-symbols-outlined text-primary-container text-[16px]">bolt</span>
+</div>
+<div class="mt-space-sm flex items-baseline justify-between">
+<span class="font-data-metric text-data-metric text-text-primary font-mono">98.4<span class="text-primary-container">%</span></span>
+<span class="font-body-sm text-body-sm text-state-success font-mono">~3.2s / VO</span>
+</div>
+<div class="w-full bg-surface-card h-0.5 mt-space-sm overflow-hidden">
+<div class="bg-state-success h-full w-[98.4%]"></div>
+</div>
+</div>
+<div class="bg-surface-raised p-space-md flex flex-col justify-between relative overflow-hidden shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider">GSTN &amp; TRACES SYNC VELOCITY</span>
+<span class="font-label-caps text-label-caps text-primary-container font-mono">[ REAL-TIME ]</span>
+</div>
+<div class="mt-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary font-mono">PORTAL APIS: STABLE</span>
+<span class="font-body-sm text-body-sm text-text-dim font-mono">Latency: 142ms</span>
+</div>
+<!-- Live visual sparkline SVG -->
+<svg class="w-24 h-8 text-primary-container" fill="none" viewbox="0 0 96 32">
+<path d="M0 24 L16 20 L32 26 L48 12 L64 16 L80 4 L96 8" stroke="currentColor" stroke-linecap="square" stroke-width="1.5"></path>
+<path d="M0 24 L16 20 L32 26 L48 12 L64 16 L80 4 L96 8 L96 32 L0 32 Z" fill="currentColor" fill-opacity="0.08"></path>
+</svg>
+</div>
+<div class="w-full bg-surface-card h-0.5 mt-space-sm overflow-hidden">
+<div class="bg-primary-container h-full w-full"></div>
+</div>
+</div>
+</div>
+<!-- Controls & Filter Toolbar -->
+<div class="bg-surface-card p-space-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-sm shadow-md">
+<!-- Scope and Status Matrix -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- FY Select -->
+<div class="flex items-center bg-surface-base px-space-sm py-1.5 text-text-primary">
+<span class="font-label-caps text-label-caps text-text-dim mr-2 font-mono">PERIOD:</span>
+<select class="bg-transparent text-text-primary font-label-regular text-label-regular focus:outline-none cursor-pointer pr-2" id="fy-filter">
+<option class="bg-surface-card text-text-primary" value="all">All Fiscal Years</option>
+<option class="bg-surface-card text-text-primary" selected="" value="24-25">FY 2024-25 (Current)</option>
+<option class="bg-surface-card text-text-primary" value="23-24">FY 2023-24 (Tax Audit)</option>
+<option class="bg-surface-card text-text-primary" value="22-23">FY 2022-23 (Archived)</option>
+</select>
+</div>
+<!-- Scope Selector -->
+<div class="flex items-center bg-surface-base px-space-sm py-1.5 text-text-primary">
+<span class="font-label-caps text-label-caps text-text-dim mr-2 font-mono">SCOPE:</span>
+<select class="bg-transparent text-text-primary font-label-regular text-label-regular focus:outline-none cursor-pointer pr-2" id="scope-filter">
+<option class="bg-surface-card text-text-primary" value="all">All Audit Modules</option>
+<option class="bg-surface-card text-text-primary" value="gstr">GSTR-2B vs Books</option>
+<option class="bg-surface-card text-text-primary" value="3way">3-Way AIS / 26AS / Ledger</option>
+<option class="bg-surface-card text-text-primary" value="bank">Bank Feed OCR &amp; Dual GL</option>
+<option class="bg-surface-card text-text-primary" value="44ab">Statutory Sec 44AB Tax Audit</option>
+</select>
+</div>
+<!-- Status Segmented Control -->
+<div class="flex items-center bg-surface-base p-0.5" id="status-filter-pills">
+<button class="filter-btn px-space-sm py-1 font-label-caps text-label-caps bg-surface-card text-primary-container transition-colors" data-status="all">ALL (18)</button>
+<button class="filter-btn px-space-sm py-1 font-label-caps text-label-caps text-text-dim hover:text-text-primary transition-colors" data-status="in-progress">IN PROGRESS (7)</button>
+<button class="filter-btn px-space-sm py-1 font-label-caps text-label-caps text-text-dim hover:text-text-primary transition-colors" data-status="review">EXCEPTIONS (4)</button>
+<button class="filter-btn px-space-sm py-1 font-label-caps text-label-caps text-text-dim hover:text-text-primary transition-colors" data-status="cleared">CLEARED (7)</button>
+</div>
+</div>
+<!-- Right Quick Query & Batch Controls -->
+<div class="flex items-center gap-space-sm">
+<div class="relative flex-1 sm:w-64">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-text-dim text-[16px]">filter_alt</span>
+<input class="w-full bg-surface-base pl-8 pr-3 py-1.5 font-body-sm text-body-sm text-text-primary placeholder-text-dim focus:outline-none" id="table-search" placeholder="Filter by client, GSTIN, PAN..." type="text"/>
+</div>
+<button class="flex items-center justify-center p-2 bg-surface-base text-text-dim hover:text-primary-container transition-colors" title="Export Ledger Reconciliations">
+<span class="material-symbols-outlined text-[18px]">sim_card_download</span>
+</button>
+<button class="flex items-center justify-center p-2 bg-surface-base text-text-dim hover:text-primary-container transition-colors" title="Table View Options">
+<span class="material-symbols-outlined text-[18px]">density_medium</span>
+</button>
+</div>
+</div>
+<!-- High-Density Interactive Ledger Table -->
+<div class="bg-surface-raised overflow-x-auto shadow-xl">
+<table class="w-full text-left border-collapse" id="engagements-table">
+<thead>
+<tr class="bg-surface-base text-text-dim font-label-caps text-label-caps tracking-wider">
+<th class="py-space-sm px-space-md w-10">
+<input aria-label="Select all engagements" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</th>
+<th class="py-space-sm px-space-md">CLIENT &amp; AUDIT CYCLE</th>
+<th class="py-space-sm px-space-md">AUDIT MANDATE / SCOPE</th>
+<th class="py-space-sm px-space-md">RECONCILIATION VECTOR</th>
+<th class="py-space-sm px-space-md">AUDIT STATUS</th>
+<th class="py-space-sm px-space-md">MANAGING LEAD (CA)</th>
+<th class="py-space-sm px-space-md text-right">DOSSIER ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-body-md font-body-md">
+<!-- Engagement 1 -->
+<tr class="engagement-row bg-surface-raised hover:bg-surface-card transition-colors" data-fy="24-25" data-scope="gstr bank" data-status="in-progress">
+<td class="py-space-sm px-space-md">
+<input aria-label="Select Apex Global Logistics" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 bg-surface-card flex items-center justify-center text-primary-container font-mono text-sm font-semibold">
+                    AG
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary font-medium tracking-wide">Apex Global Logistics Pvt Ltd</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-text-dim font-mono">27AAACA9281M1ZR</span>
+<span class="text-text-ghost">·</span>
+<span class="font-label-caps text-label-caps text-primary-container">FY 24-25 Q2</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="bg-surface-base px-2 py-0.5 text-text-primary font-label-caps text-label-caps">GST 2B vs GL</span>
+<span class="bg-surface-base px-2 py-0.5 text-text-secondary font-label-caps text-label-caps">Bank OCR Dual</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-body-sm font-body-sm font-mono">
+<span class="text-text-primary">96.8% MATCH</span>
+<span class="text-state-warning">₹3.8L Delta</span>
+</div>
+<div class="w-full bg-surface-base h-1 overflow-hidden">
+<div class="bg-primary-container h-full w-[96.8%]"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-base text-primary-container font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+<span>SYNCING BOOKS</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high flex items-center justify-center font-mono text-[10px] text-text-primary">
+                    RK
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary">Rajesh Kumar, FCA</span>
+<span class="font-label-caps text-label-caps text-text-dim">Audit Partner</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<a class="inline-flex items-center gap-1.5 bg-surface-card px-3 py-1.5 text-primary font-label-regular text-label-regular hover:bg-surface-container transition-colors" href="#">
+<span>Open Dossier</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Engagement 2 -->
+<tr class="engagement-row bg-surface-base hover:bg-surface-card transition-colors" data-fy="24-25" data-scope="3way" data-status="review">
+<td class="py-space-sm px-space-md">
+<input aria-label="Select Horizon Fintech Solutions" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 bg-surface-card flex items-center justify-center text-state-error font-mono text-sm font-semibold">
+                    HF
+                  </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-regular text-label-regular text-text-primary font-medium tracking-wide">Horizon Fintech Solutions Ltd</span>
+<span class="bg-state-error/20 text-state-error px-1.5 py-0.2 font-label-caps text-label-caps">HIGH RISK</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-text-dim font-mono">07AAFCH9104P1Z3</span>
+<span class="text-text-ghost">·</span>
+<span class="font-label-caps text-label-caps text-primary-container">FY 24-25 Q2</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="bg-surface-card px-2 py-0.5 text-text-primary font-label-caps text-label-caps">3-Way Tax Recon</span>
+<span class="bg-surface-card px-2 py-0.5 text-text-dim font-label-caps text-label-caps">AIS / 26AS Map</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-body-sm font-body-sm font-mono">
+<span class="text-state-error">4 EXCEPTIONS</span>
+<span class="text-state-error">₹68.4L Unreconciled</span>
+</div>
+<div class="w-full bg-surface-card h-1 overflow-hidden">
+<div class="bg-state-error h-full w-[45%]"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-state-error/10 text-state-error font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-state-error"></span>
+<span>REVIEW REQUIRED</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high flex items-center justify-center font-mono text-[10px] text-text-primary">
+                    PS
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary">Priya Sharma, ACA</span>
+<span class="font-label-caps text-label-caps text-text-dim">Senior Manager</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<a class="inline-flex items-center gap-1.5 bg-state-error/15 px-3 py-1.5 text-state-error font-label-regular text-label-regular hover:bg-state-error/25 transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">flag</span>
+<span>Review Exceptions</span>
+</a>
+</td>
+</tr>
+<!-- Engagement 3 -->
+<tr class="engagement-row bg-surface-raised hover:bg-surface-card transition-colors" data-fy="23-24" data-scope="44ab gstr" data-status="in-progress">
+<td class="py-space-sm px-space-md">
+<input aria-label="Select BlueWave Healthcare" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 bg-surface-card flex items-center justify-center text-text-primary font-mono text-sm font-semibold">
+                    BW
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary font-medium tracking-wide">BlueWave Healthcare Systems</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-text-dim font-mono">33AAGCB8123Q1ZD</span>
+<span class="text-text-ghost">·</span>
+<span class="font-label-caps text-label-caps text-state-warning">FY 23-24 Annual</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="bg-surface-base px-2 py-0.5 text-text-primary font-label-caps text-label-caps">Statutory Sec 44AB</span>
+<span class="bg-surface-base px-2 py-0.5 text-text-secondary font-label-caps text-label-caps">Form 3CD Ledger</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-body-sm font-body-sm font-mono">
+<span class="text-text-dim">EXTRACTING GSTN</span>
+<span class="text-primary-container font-mono">72%</span>
+</div>
+<div class="w-full bg-surface-base h-1 overflow-hidden">
+<div class="bg-primary-container/60 h-full w-[72%]"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-base text-text-secondary font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-state-warning animate-pulse"></span>
+<span>INGESTION IN PROGRESS</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high flex items-center justify-center font-mono text-[10px] text-text-primary">
+                    AV
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary">Anand Verma, FCA</span>
+<span class="font-label-caps text-label-caps text-text-dim">Tax Senior</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<a class="inline-flex items-center gap-1.5 bg-surface-card px-3 py-1.5 text-text-primary font-label-regular text-label-regular hover:bg-surface-container transition-colors" href="#">
+<span>Open Dossier</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Engagement 4 -->
+<tr class="engagement-row bg-surface-base hover:bg-surface-card transition-colors" data-fy="24-25" data-scope="gstr" data-status="cleared">
+<td class="py-space-sm px-space-md">
+<input aria-label="Select Zenith Retailers" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 bg-surface-card flex items-center justify-center text-state-success font-mono text-sm font-semibold">
+                    ZR
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary font-medium tracking-wide">Zenith Retailers &amp; Franchise Ltd</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-text-dim font-mono">29AAACZ4421K1ZW</span>
+<span class="text-text-ghost">·</span>
+<span class="font-label-caps text-label-caps text-primary-container">FY 24-25 Q1</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="bg-surface-card px-2 py-0.5 text-text-primary font-label-caps text-label-caps">GST Reconciliation</span>
+<span class="bg-surface-card px-2 py-0.5 text-state-success font-label-caps text-label-caps">GSTR-9 Ready</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-body-sm font-body-sm font-mono">
+<span class="text-state-success font-semibold">100.0% RECONCILED</span>
+<span class="text-text-dim">₹0.00 Var</span>
+</div>
+<div class="w-full bg-surface-card h-1 overflow-hidden">
+<div class="bg-state-success h-full w-full"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-card text-state-success font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>SHA-256 VERIFIED</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high flex items-center justify-center font-mono text-[10px] text-text-primary">
+                    RS
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary">Rajesh Sharma, FCA</span>
+<span class="font-label-caps text-label-caps text-text-dim">Lead Partner</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<a class="inline-flex items-center gap-1.5 bg-surface-card px-3 py-1.5 text-state-success font-label-regular text-label-regular hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">download_done</span>
+<span>Audit Sign-off</span>
+</a>
+</td>
+</tr>
+<!-- Engagement 5 (Additional High Value Entity) -->
+<tr class="engagement-row bg-surface-raised hover:bg-surface-card transition-colors" data-fy="24-25" data-scope="bank 3way" data-status="cleared">
+<td class="py-space-sm px-space-md">
+<input aria-label="Select Sterling Industrial Conglomerate" class="accent-primary-container cursor-pointer w-3.5 h-3.5 bg-surface-card" type="checkbox"/>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 bg-surface-card flex items-center justify-center text-primary-container font-mono text-sm font-semibold">
+                    SI
+                  </div>
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary font-medium tracking-wide">Sterling Industrial Conglomerate</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-text-dim font-mono">06AASCS2209L1Z2</span>
+<span class="text-text-ghost">·</span>
+<span class="font-label-caps text-label-caps text-primary-container">FY 24-25 Q2</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="bg-surface-base px-2 py-0.5 text-text-primary font-label-caps text-label-caps">Bank OCR + 3-Way</span>
+<span class="bg-surface-base px-2 py-0.5 text-text-secondary font-label-caps text-label-caps">Multi-Currency</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-body-sm font-body-sm font-mono">
+<span class="text-state-success">99.4% MATCH</span>
+<span class="text-text-dim">₹12.2k Delta</span>
+</div>
+<div class="w-full bg-surface-base h-1 overflow-hidden">
+<div class="bg-state-success h-full w-[99.4%]"></div>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-base text-state-success font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>CLEARED</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high flex items-center justify-center font-mono text-[10px] text-text-primary">
+                    KM
+                  </div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-text-primary">Kavita Menon, FCA</span>
+<span class="font-label-caps text-label-caps text-text-dim">Associate Lead</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<a class="inline-flex items-center gap-1.5 bg-surface-card px-3 py-1.5 text-primary font-label-regular text-label-regular hover:bg-surface-container transition-colors" href="#">
+<span>Open Dossier</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Institutional Footer Bar / Execution Telemetry -->
+<div class="bg-surface-card p-space-sm flex flex-col md:flex-row items-center justify-between gap-space-sm shadow-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-text-dim font-mono">RECON PARALLEL INSTANCES:</span>
+<span class="font-label-caps text-label-caps text-primary-container font-mono">08 WORKERS ONLINE</span>
+</div>
+<span class="text-text-ghost">|</span>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-text-dim font-mono">GSTN API RATE:</span>
+<span class="font-label-caps text-label-caps text-state-success font-mono">41 REQ/SEC</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm font-label-caps text-label-caps text-text-dim">
+<span>PAGE 1 OF 3 (18 AUDIT FILES)</span>
+<div class="flex items-center bg-surface-base">
+<button class="p-1.5 hover:text-text-primary disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="p-1.5 hover:text-text-primary">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Deep Audit Intelligence Insights Grid (Bento Matrix) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-sm mt-space-xs">
+<!-- Live Variance Pipeline Analysis -->
+<div class="bg-surface-raised p-space-md flex flex-col justify-between shadow-md">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider uppercase">Statutory Variance Archetypes</span>
+<span class="font-label-caps text-label-caps text-primary-container font-mono">CURRENT CYCLE</span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between font-label-regular text-label-regular text-text-primary mb-1">
+<span class="font-body-sm text-body-sm">Section 16(4) Ineligible ITC Claims</span>
+<span class="font-mono text-state-error">₹78.20 L (55%)</span>
+</div>
+<div class="w-full bg-surface-card h-1.5">
+<div class="bg-state-error h-full" style="width: 55%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-regular text-label-regular text-text-primary mb-1">
+<span class="font-body-sm text-body-sm">GSTR-1 vs 3B Liability Misalignments</span>
+<span class="font-mono text-state-warning">₹42.14 L (30%)</span>
+</div>
+<div class="w-full bg-surface-card h-1.5">
+<div class="bg-state-warning h-full" style="width: 30%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-regular text-label-regular text-text-primary mb-1">
+<span class="font-body-sm text-body-sm">Vendor Non-Filing / Suspended GSTIN</span>
+<span class="font-mono text-primary-container">₹21.84 L (15%)</span>
+</div>
+<div class="w-full bg-surface-card h-1.5">
+<div class="bg-primary-container h-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm bg-surface-card p-space-xs flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-text-dim">Automated Demand Notices Prepared</span>
+<span class="font-label-caps text-label-caps text-text-primary font-mono">14 DRAFTS</span>
+</div>
+</div>
+<!-- Ledger Pipeline Architectural Stream -->
+<div class="bg-surface-raised p-space-md flex flex-col justify-between shadow-md">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider uppercase">Engine Synchronization Vector</span>
+<span class="font-label-caps text-label-caps text-state-success font-mono">ACTIVE FEED</span>
+</div>
+<div class="flex flex-col gap-space-xs font-mono text-body-sm">
+<div class="bg-surface-card p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary-container">sync_alt</span>
+<span class="text-text-primary">Horizon: 26AS Ledger vs Part-A</span>
+</div>
+<span class="text-text-dim font-label-caps text-label-caps">14s ago</span>
+</div>
+<div class="bg-surface-card p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-state-success">check</span>
+<span class="text-text-primary">Apex: GSTR-2B Hash Verification</span>
+</div>
+<span class="text-text-dim font-label-caps text-label-caps">1m ago</span>
+</div>
+<div class="bg-surface-card p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-state-warning">cached</span>
+<span class="text-text-primary">BlueWave: HDFC OCR Bank Parser</span>
+</div>
+<span class="text-text-dim font-label-caps text-label-caps">2m ago</span>
+</div>
+</div>
+<button class="mt-space-sm w-full py-1.5 bg-surface-card text-text-dim hover:text-text-primary font-label-caps text-label-caps transition-colors text-center">
+            VIEW CONCURRENT TASK LOG (14 ACTIVE)
+          </button>
+</div>
+<!-- Chartered Sign-off Security Dossier -->
+<div class="bg-surface-raised p-space-md flex flex-col justify-between shadow-md">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-text-dim tracking-wider uppercase">Cryptographic Audit Ledger</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">verified_user</span>
+</div>
+<div class="bg-surface-card p-space-sm flex flex-col gap-space-xs">
+<div class="flex justify-between items-center text-body-sm font-mono">
+<span class="text-text-dim">ICAI UDIN Hash State</span>
+<span class="text-state-success">INTEGRITY LOCK</span>
+</div>
+<div class="p-2 bg-surface-base font-mono text-[10px] text-primary-container break-all leading-tight">
+              0x9b7f14e4c297893a7d18b5e28a30141f23c9233dc2720e18987b1c3182a033f2
+            </div>
+<span class="font-label-caps text-label-caps text-text-dim">
+              Timestamp: 2025-02-28 14:22:09 IST · Digital Token: RAJESH-FCA-4491
+            </span>
+</div>
+<div class="mt-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-regular text-label-regular text-text-primary">Compliance Grade</span>
+<span class="font-label-caps text-label-caps text-primary-container">ICAI SQC-1 STANDARDS</span>
+</div>
+<button class="px-3 py-1.5 bg-primary-container text-on-primary font-label-regular text-label-regular font-medium hover:bg-surface-tint transition-colors">
+              AUDIT CERTIFICATE
+            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dynamic Filter & Engagement Micro-Interactions Script -->
+<script>
+  (function() {
+    const fyFilter = document.getElementById('fy-filter');
+    const scopeFilter = document.getElementById('scope-filter');
+    const searchInput = document.getElementById('table-search');
+    const statusBtns = document.querySelectorAll('#status-filter-pills .filter-btn');
+    const rows = document.querySelectorAll('.engagement-row');
+    let currentStatus = 'all';
+
+    function filterTable() {
+      const selectedFY = fyFilter ? fyFilter.value : 'all';
+      const selectedScope = scopeFilter ? scopeFilter.value : 'all';
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      rows.forEach(row => {
+        const rowFY = row.getAttribute('data-fy');
+        const rowScope = row.getAttribute('data-scope') || '';
+        const rowStatus = row.getAttribute('data-status');
+        const textContent = row.textContent.toLowerCase();
+
+        const matchFY = (selectedFY === 'all' || rowFY === selectedFY);
+        const matchScope = (selectedScope === 'all' || rowScope.includes(selectedScope));
+        const matchStatus = (currentStatus === 'all' || rowStatus === currentStatus);
+        const matchQuery = (!query || textContent.includes(query));
+
+        if (matchFY && matchScope && matchStatus && matchQuery) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    if (fyFilter) fyFilter.addEventListener('change', filterTable);
+    if (scopeFilter) scopeFilter.addEventListener('change', filterTable);
+    if (searchInput) searchInput.addEventListener('input', filterTable);
+
+    statusBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        statusBtns.forEach(b => {
+          b.classList.remove('bg-surface-card', 'text-primary-container');
+          b.classList.add('text-text-dim');
+        });
+        btn.classList.remove('text-text-dim');
+        btn.classList.add('bg-surface-card', 'text-primary-container');
+        currentStatus = btn.getAttribute('data-status');
+        filterTable();
+      });
+    });
+
+    const newEngagementBtn = document.getElementById('btn-new-engagement');
+    if (newEngagementBtn) {
+      newEngagementBtn.addEventListener('click', () => {
+        const currentActive = document.querySelector('[data-status="in-progress"]');
+        if (currentActive) {
+          currentActive.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          currentActive.classList.add('bg-surface-container-high');
+          setTimeout(() => {
+            currentActive.classList.remove('bg-surface-container-high');
+          }, 1200);
+        }
+      });
+    }
+  })();
+</script></main></div></body></html>

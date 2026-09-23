@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDS Compliance Checklist</title>
+<!-- No external fonts — 100% offline -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --bg: #f5f3ee; --surface: #fff; --surface2: #f0ede6;
+  --border: #ddd8cc; --ink: #1a1814; --ink2: #4a4640; --ink3: #8a8580;
+  --accent: #c84b2f; --accent2: #2f6cc8;
+  --ok: #1a7a4a; --warn: #c87a1a; --danger: #c82f2f;
+  --mono: 'Courier New', 'Consolas', 'Menlo', monospace;
+  --sans: -apple-system, 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; min-height: 100vh; }
+
+.header { background: var(--ink); color: var(--bg); padding: 18px 40px; display: flex; align-items: center; gap: 16px; }
+.header-badge { background: var(--accent); color: #fff; font-family: var(--mono); font-size: 10px; padding: 4px 10px; letter-spacing: 2px; }
+.header h1 { font-family: var(--mono); font-size: 17px; font-weight: 500; }
+.header-right { margin-left: auto; font-family: var(--mono); font-size: 11px; color: #777; }
+
+.main { max-width: 1400px; margin: 0 auto; padding: 28px 36px; }
+
+.steps { display: flex; margin-bottom: 28px; border: 1px solid var(--border); }
+.step-tab { flex: 1; padding: 13px 20px; background: var(--surface); border: none; cursor: pointer; color: var(--ink3); font-family: var(--mono); font-size: 11px; border-right: 1px solid var(--border); display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+.step-tab:last-child { border-right: none; }
+.step-tab.active { background: var(--ink); color: #fff; }
+.step-tab.done { color: var(--ok); }
+.step-num { width: 20px; height: 20px; border: 1px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+.step-tab.active .step-num { background: var(--accent); border-color: var(--accent); }
+.step-tab.done .step-num { background: var(--ok); border-color: var(--ok); color: #fff; }
+
+.panel { display: none; } .panel.active { display: block; }
+
+.card { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+.card-title { font-family: var(--mono); font-size: 11px; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.card-title .num { background: var(--accent); color: #fff; padding: 2px 7px; font-size: 10px; }
+
+.fg { display: grid; gap: 14px; margin-bottom: 14px; }
+.fg3 { grid-template-columns: repeat(3,1fr); }
+.fg4 { grid-template-columns: repeat(4,1fr); }
+.fg2 { grid-template-columns: 1fr 1fr; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-family: var(--mono); font-size: 10px; color: var(--ink3); letter-spacing: 0.5px; text-transform: uppercase; }
+.field input, .field select { background: var(--bg); border: 1px solid var(--border); color: var(--ink); padding: 9px 11px; font-family: var(--mono); font-size: 12px; outline: none; transition: border-color 0.2s; }
+.field input:focus, .field select:focus { border-color: var(--accent); }
+
+.file-drop { border: 2px dashed var(--border); padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
+.file-drop:hover { border-color: var(--accent); background: #fdfcfa; }
+.file-drop .icon { font-size: 22px; margin-bottom: 6px; }
+.file-drop p { font-family: var(--mono); font-size: 11px; color: var(--ink3); }
+.file-drop .hl { color: var(--accent); font-weight: 500; }
+.fname { font-family: var(--mono); font-size: 10px; color: var(--ok); margin-top: 4px; }
+
+.btn { padding: 10px 22px; border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.2s; }
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover { background: var(--accent); }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-accent:hover { background: #a83a1f; }
+.btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--ink); }
+
+.hint { font-family: var(--mono); font-size: 10px; color: var(--ink3); padding: 8px 12px; background: var(--surface2); border-left: 3px solid var(--accent); margin-top: 8px; }
+
+.ledger-list-wrap { background: var(--surface); border: 1px solid var(--border); margin-bottom: 20px; }
+.llw-header { padding: 12px 18px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; }
+.ledger-item { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11px; }
+.ledger-item:last-child { border-bottom: none; }
+.li-name { flex: 1; font-weight: 500; color: var(--ink); }
+.li-badge { padding: 2px 8px; font-size: 10px; font-family: var(--mono); }
+.lb-exp { background: #e8effe; color: var(--accent2); }
+.lb-tds { background: #fef3e2; color: var(--warn); }
+.li-meta { color: var(--ink3); }
+.li-rm { color: var(--danger); background: none; border: none; font-family: var(--mono); font-size: 11px; cursor: pointer; }
+
+.run-bar { background: var(--surface); border: 1px solid var(--border); padding: 18px 24px; display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.run-bar .info { font-family: var(--mono); font-size: 11px; color: var(--ink3); flex: 1; }
+.run-bar .info strong { color: var(--ink); }
+
+.sgrid { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 28px; }
+.sc { background: var(--surface); padding: 18px; }
+.sc .label { font-family: var(--mono); font-size: 9px; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.sc .value { font-family: var(--mono); font-size: 20px; font-weight: 500; margin-bottom: 3px; }
+.sc .sub { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+.sc-ok .value { color: var(--ok); } .sc-warn .value { color: var(--warn); }
+.sc-danger .value { color: var(--danger); } .sc-info .value { color: var(--accent2); }
+.sc-grey .value { color: var(--ink3); } .sc-red .value { color: var(--accent); }
+
+.tag { display: inline-block; padding: 2px 7px; font-size: 10px; font-family: var(--mono); font-weight: 500; }
+.tag-ok { background: #e6f4ed; color: var(--ok); }
+.tag-warn { background: #fef3e2; color: var(--warn); }
+.tag-danger { background: #fde8e8; color: var(--danger); }
+.tag-info { background: #e8effe; color: var(--accent2); }
+.tag-grey { background: var(--surface2); color: var(--ink3); }
+.tag-red { background: #fdecea; color: var(--accent); }
+
+.sec-tbl { background: var(--surface); border: 1px solid var(--border); margin-bottom: 24px; }
+.sec-tbl-hdr { padding: 12px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; background: var(--ink); color: #fff; }
+
+.rb { margin-bottom: 24px; }
+.rt-hdr { padding: 12px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-left: 4px solid; display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-bottom: 1px solid var(--border); }
+.rt-danger { color: var(--danger); border-color: var(--danger); }
+.rt-warn { color: var(--warn); border-color: var(--warn); }
+.rt-ok { color: var(--ok); border-color: var(--ok); }
+.rt-grey { color: var(--ink3); border-color: var(--border); }
+.rt-red { color: var(--accent); border-color: var(--accent); }
+
+.tw { overflow-x: auto; }
+.rt { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; background: var(--surface); border: 1px solid var(--border); border-top: none; }
+.rt th { background: var(--surface2); color: var(--ink3); padding: 8px 11px; text-align: left; border-bottom: 1px solid var(--border); font-weight: 500; white-space: nowrap; }
+.rt td { padding: 8px 11px; border-bottom: 1px solid rgba(221,216,204,0.5); color: var(--ink2); vertical-align: top; }
+.rt tr:last-child td { border-bottom: none; }
+.rt tr:hover td { background: var(--bg); }
+
+.amt { color: var(--ink); font-weight: 500; }
+.amt-ok { color: var(--ok); font-weight: 500; }
+.amt-warn { color: var(--warn); font-weight: 500; }
+.amt-danger { color: var(--danger); font-weight: 500; }
+.amt-red { color: var(--accent); font-weight: 500; }
+
+.pt-ind { color: #7c3aed; font-size: 9px; }
+.pt-co  { color: var(--accent2); font-size: 9px; }
+
+.exp-bar { background: var(--surface); border: 1px solid var(--border); padding: 14px 18px; display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.exp-bar span { font-family: var(--mono); font-size: 11px; color: var(--ink3); flex: 1; }
+
+@media(max-width:900px){ .fg3,.fg4{grid-template-columns:1fr 1fr;} .sgrid{grid-template-columns:1fr 1fr 1fr;} .main{padding:16px;} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">TDS</div>
+  <h1>Compliance Checklist</h1>
+  <div class="header-right">Tally Columnar Export Analyser · FY 2024-25</div>
+</div>
+
+<div class="main">
+
+  <div class="steps">
+    <button class="step-tab active" onclick="goStep(1)" id="tab1"><div class="step-num">1</div> Expense Ledgers</button>
+    <button class="step-tab" onclick="goStep(2)" id="tab2"><div class="step-num">2</div> TDS Payable Ledger</button>
+    <button class="step-tab" onclick="goStep(3)" id="tab3"><div class="step-num">3</div> Run Checklist</button>
+  </div>
+
+  <!-- PANEL 1 -->
+  <div class="panel active" id="panel1">
+    <div class="card">
+      <div class="card-title"><span class="num">STEP 1</span> Upload Expense Ledgers</div>
+
+      <div class="fg fg4">
+        <div class="field"><label>Ledger Name *</label><input id="ledgerName" placeholder="e.g. Professional Fees"></div>
+        <div class="field">
+          <label>TDS Section *</label>
+          <select id="tdsSection" onchange="secChanged()">
+            <option value="">Select</option>
+            <option value="194I_land">194I(a) — Rent Land/Building (10%)</option>
+            <option value="194I_plant">194I(b) — Rent Plant/Machinery (2%)</option>
+            <option value="194J_prof">194J — Professional Fees (10%)</option>
+            <option value="194J_tech">194J — Technical Services (2%)</option>
+            <option value="194C">194C — Contractor ⚡ Auto-rate (1% Ind / 2% Co)</option>
+            <option value="194H">194H — Commission/Brokerage (5%)</option>
+            <option value="194A">194A — Interest (10%)</option>
+            <option value="194D">194D — Insurance Commission (5%)</option>
+            <option value="194Q">194Q — Purchase of Goods (0.1%)</option>
+          </select>
+        </div>
+        <div class="field"><label>TDS Column in Excel</label><input id="tdsColName" placeholder="e.g. TDS ON RENT"></div>
+        <div class="field"><label>Expense Column in Excel</label><input id="expColName" placeholder="e.g. Office Rent (optional)"></div>
+      </div>
+
+      <div id="hint194C" style="display:none">
+        <div class="hint">⚡ <strong>194C Auto-detection:</strong> Party names with Ltd / Pvt / LLP / Industries / Associates / Corp → <strong>2% (Company)</strong>. All others → <strong>1% (Individual/HUF)</strong>.</div>
+      </div>
+
+      <div class="file-drop" onclick="document.getElementById('expFile').click()">
+        <div class="icon">📊</div>
+        <p>Upload <span class="hl">Tally Columnar Export (.xlsx)</span> — Keep Particulars column for party names</p>
+        <div class="fname" id="expFName"></div>
+      </div>
+      <input type="file" id="expFile" accept=".xlsx,.xls,.csv" onchange="onExpFile(event)" style="display:none">
+      <div class="hint">💡 Tally: Gateway → Display → Account Books → Ledger → Alt+F5 (Columnar) → Add TDS column → Alt+E → Excel</div>
+
+      <div style="display:flex;gap:12px;margin-top:16px;">
+        <button class="btn btn-accent" onclick="addExpLedger()">+ Add Ledger</button>
+        <button class="btn btn-outline" onclick="clearExp()">Clear</button>
+      </div>
+    </div>
+
+    <div id="expListWrap" style="display:none">
+      <div class="ledger-list-wrap">
+        <div class="llw-header"><span>EXPENSE LEDGERS</span><span id="expStats" style="color:var(--accent)"></span></div>
+        <div id="expList"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="goStep(2)">Next: TDS Payable →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2 -->
+  <div class="panel" id="panel2">
+    <div class="card">
+      <div class="card-title"><span class="num">STEP 2</span> TDS Payable Ledger — Deposit Tracking</div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--ink3);margin-bottom:16px;">Upload TDS Payable ledger from Tally. <strong>Dr entries</strong> = TDS deposited to government. Used to check due date compliance and calculate interest.</p>
+
+      <div class="fg fg2" style="margin-bottom:14px;">
+        <div class="field"><label>Amount Column (optional)</label><input id="tdsPayAmtCol" placeholder="Leave blank — auto detect"></div>
+        <div class="field"><label>Ledger Name (for reference)</label><input id="tdsPayName" placeholder="e.g. TDS Payable"></div>
+      </div>
+
+      <div class="file-drop" onclick="document.getElementById('tdsPayFile').click()">
+        <div class="icon">🏦</div>
+        <p>Upload <span class="hl">TDS Payable Ledger (.xlsx)</span> — Dr entries = deposits made to govt</p>
+        <div class="fname" id="tdsPayFName"></div>
+      </div>
+      <input type="file" id="tdsPayFile" accept=".xlsx,.xls,.csv" onchange="onTdsPayFile(event)" style="display:none">
+      <div class="hint">💡 Tally: Gateway → Display → Account Books → Ledger → Select TDS Payable → Export as Excel. Dr side entries = actual TDS deposited.</div>
+
+      <div style="display:flex;gap:12px;margin-top:16px;">
+        <button class="btn btn-accent" onclick="addTdsPay()">+ Load Deposit Data</button>
+      </div>
+      <div id="tdsPayInfo" style="display:none;margin-top:12px;"></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;">
+      <button class="btn btn-outline" onclick="goStep(1)">← Back</button>
+      <div style="display:flex;gap:12px;">
+        <button class="btn btn-outline" onclick="goStep(3)">Skip (Deductions Only) →</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Next: Run →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3 -->
+  <div class="panel" id="panel3">
+    <div class="run-bar">
+      <div class="info"><strong id="runSum">Ready</strong><br><span id="runDet"></span></div>
+      <button class="btn btn-primary" onclick="run()" style="padding:12px 32px;font-size:13px;">⚡ Run TDS Checklist</button>
+      <button class="btn btn-outline" onclick="goStep(1)">← Edit</button>
+    </div>
+    <div id="results"></div>
+  </div>
+
+</div>
+
+<script>
+// ── Master Data ────────────────────────────────────────────────────────
+const M = {
+  '194I_land':  {label:'194I(a)',name:'Rent-Land/Bldg',     rI:10,  rC:10,  thr:240000},
+  '194I_plant': {label:'194I(b)',name:'Rent-Plant/Mach',    rI:2,   rC:2,   thr:240000},
+  '194J_prof':  {label:'194J',  name:'Professional Fees',  rI:10,  rC:10,  thr:30000},
+  '194J_tech':  {label:'194J',  name:'Technical Services', rI:2,   rC:2,   thr:30000},
+  '194C':       {label:'194C',  name:'Contractor',         rI:1,   rC:2,   thr:30000, aThr:100000},
+  '194H':       {label:'194H',  name:'Commission/Brokerage',rI:5,  rC:5,   thr:15000},
+  '194A':       {label:'194A',  name:'Interest',           rI:10,  rC:10,  thr:40000},
+  '194D':       {label:'194D',  name:'Insurance Comm.',    rI:5,   rC:5,   thr:15000},
+  '194Q':       {label:'194Q',  name:'Purchase of Goods',  rI:0.1, rC:0.1, thr:5000000},
+};
+
+const CO_KW = ['ltd','limited','pvt','private','llp','llc','inc','corp','corporation',
+  'industries','enterprise','enterprises','associates','solutions','services',
+  'technologies','trading','consultancy','consultants','& co','co.'];
+
+const isCo = n => CO_KW.some(k => (n||'').toLowerCase().includes(k));
+const getRate = (sec, party) => { const m=M[sec]; if(!m) return 0; return sec==='194C'?(isCo(party)?m.rC:m.rI):m.rI; };
+
+// ── State ──────────────────────────────────────────────────────────────
+const expLedgers=[], deposits=[];
+let pExpRows=[], pTdsRows=[];
+
+// ── Nav ────────────────────────────────────────────────────────────────
+function goStep(n){
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i+1===n));
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{
+    t.classList.remove('active','done');
+    if(i+1<n) t.classList.add('done');
+    if(i+1===n) t.classList.add('active');
+  });
+  if(n===3) updRunSum();
+}
+
+function secChanged(){
+  document.getElementById('hint194C').style.display = document.getElementById('tdsSection').value==='194C'?'block':'none';
+}
+
+// ── Parsers ────────────────────────────────────────────────────────────
+function pAmt(raw){
+  const s=String(raw||'').trim();
+  const isDr=/\bDr\b/i.test(s), isCr=/\bCr\b/i.test(s);
+  const val=parseFloat(s.replace(/\s*(Dr|Cr)\s*$/i,'').replace(/,/g,'').trim())||0;
+  return {val,isDr,isCr};
+}
+
+function pDate(raw){
+  if(!raw && raw!==0) return null;
+  const s=String(raw).trim();
+  if(!s||s==='0') return null;
+  // Excel serial
+  if(!isNaN(s)&&Number(s)>1000){ const d=new Date((Number(s)-25569)*86400000); return isNaN(d.getTime())?null:d; }
+  const mo={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  // DD-Mon-YY
+  const m1=s.match(/(\d{1,2})[-\/]([A-Za-z]{3,})[-\/](\d{2,4})/);
+  if(m1){ const mon=mo[m1[2].toLowerCase().substring(0,3)]; if(mon!==undefined){ let y=parseInt(m1[3]); if(y<100) y+=(y<50?2000:1900); return new Date(y,mon,parseInt(m1[1])); } }
+  // DD-MM-YYYY
+  const m2=s.match(/(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})/);
+  if(m2){ let y=parseInt(m2[3]); if(y<100) y+=(y<50?2000:1900); return new Date(y,parseInt(m2[2])-1,parseInt(m2[1])); }
+  return null;
+}
+
+function fDate(d){ return d?d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+function mKey(d){ return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:'?'; }
+function qtr(d){ if(!d) return '—'; const m=d.getMonth()+1; return m>=4&&m<=6?'Q1':m>=7&&m<=9?'Q2':m>=10&&m<=12?'Q3':'Q4'; }
+function fmt(n){ return '₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function dueDate(d){
+  if(!d) return null;
+  const m=d.getMonth(), y=d.getFullYear();
+  if(m===2) return new Date(y,3,30); // March -> 30 April
+  const nm=(m+1)%12, ny=m===11?y+1:y;
+  return new Date(ny,nm,7);
+}
+
+function calcInt(amt,due,dep){
+  if(!due||!dep||dep<=due) return 0;
+  const months=Math.ceil((dep-due)/(30.44*86400000));
+  return Math.round(amt*0.015*months);
+}
+
+// ── Excel Parser ───────────────────────────────────────────────────────
+function parseRows(rows, opts){
+  if(!rows||!rows.length) return [];
+  let hi=-1, hr=[];
+  for(let i=0;i<Math.min(rows.length,20);i++){
+    const j=rows[i].map(c=>String(c)).join(' ').toLowerCase();
+    if(j.includes('voucher')||j.includes('narration')||j.includes('particulars')||j.includes('date')){
+      hi=i; hr=rows[i].map(c=>String(c).replace(/\t/g,'').trim()); break;
+    }
+  }
+  if(hi<0){hi=0;hr=rows[0].map(c=>String(c).trim());}
+
+  const hf=kws=>hr.findIndex(h=>kws.some(k=>h.toLowerCase().includes(k.toLowerCase())));
+
+  const dIdx=hf(['date']);
+  const pIdx=hf(['particulars','party name','party']);
+  const nIdx=hf(['narration','description','remarks']);
+  const vIdx=hf(['voucher no','voucher number','vch no','voucher']);
+
+  let tIdx=-1;
+  if(opts.tdsCol) tIdx=hr.findIndex(h=>h.toLowerCase().includes(opts.tdsCol.toLowerCase()));
+  if(tIdx<0) tIdx=hf(['tds on','tds deducted','tax deducted','tds amount','tds']);
+
+  // Detect separate Debit / Credit columns (Tally payment ledger format)
+  const debitIdx  = hf(['debit']);
+  const creditIdx = hf(['credit']);
+  const hasDrCrCols = debitIdx>=0 && creditIdx>=0;
+
+  let aIdx=-1;
+  if(!hasDrCrCols){
+    if(opts.amtCol) aIdx=hr.findIndex(h=>h.toLowerCase().includes(opts.amtCol.toLowerCase()));
+    if(aIdx<0&&opts.ledgerName){
+      const ws=opts.ledgerName.toLowerCase().split(' ').filter(w=>w.length>2);
+      aIdx=hr.findIndex(h=>ws.some(w=>h.toLowerCase().includes(w)));
+    }
+    if(aIdx<0){
+      const sk=['gross total','gross','value','cgst','sgst','igst','cess','tds','tax','credit','debit','net','balance','narration','date','voucher','particulars'];
+      aIdx=hr.findIndex((h,i)=>{ if(i===tIdx) return false; const hl=h.toLowerCase(); return !sk.some(k=>hl.includes(k))&&h.trim()!==''; });
+    }
+    if(aIdx<0) aIdx=hf(['gross total','gross amount','gross','amount','value']);
+  }
+
+  const res=[];
+  let lastParty='';
+
+  for(let i=hi+1;i<rows.length;i++){
+    const row=rows[i];
+    if(!row||row.every(c=>!String(c).trim())) continue;
+
+    const rawD=dIdx>=0?row[dIdx]:'';
+    const rawP=pIdx>=0?String(row[pIdx]||'').trim():'';
+    const rawN=nIdx>=0?String(row[nIdx]||'').trim():'';
+    const rawV=vIdx>=0?String(row[vIdx]||'').trim():'';
+
+    let grossVal=0, isDr=false, tdsVal=0;
+
+    if(hasDrCrCols){
+      // Separate Debit/Credit columns
+      const drVal = parseFloat(String(row[debitIdx]||'').replace(/,/g,'').trim()) || 0;
+      const crVal = parseFloat(String(row[creditIdx]||'').replace(/,/g,'').trim()) || 0;
+      grossVal = drVal > 0 ? drVal : crVal;
+      isDr     = drVal > 0;
+      tdsVal   = 0; // TDS payable ledger doesn't have separate TDS col
+    } else {
+      const rawA=aIdx>=0?row[aIdx]:'';
+      const rawT=tIdx>=0?row[tIdx]:'';
+      const aP=pAmt(rawA), tP=pAmt(rawT);
+      grossVal=aP.val; isDr=aP.isDr; tdsVal=tP.val;
+    }
+
+    // drOnly mode — only keep Debit entries (govt deposits)
+    if(opts.drOnly && !isDr) continue;
+    if(grossVal===0 && tdsVal===0) continue;
+
+    // Party fill-down
+    const isDateLike=rawP.match(/^\d{1,2}[-\/][\w]{2,}[-\/]\d{2,4}$/);
+    const narL=(rawN||rawP).toLowerCase();
+    if(rawP&&!isDateLike&&!narL.includes('total')&&!narL.includes('balance')) lastParty=rawP;
+
+    if(narL.includes('grand total')||narL.includes('closing balance')||narL.includes('opening balance')) continue;
+
+    // Date
+    let date=pDate(rawD);
+    if(!date&&isDateLike) date=pDate(rawP);
+    if(!date){ const mm=rawN.match(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z]*[\s\-]*(\d{4})/i); if(mm) date=new Date(`01 ${mm[1].substring(0,3)} ${mm[2]}`); }
+
+    res.push({date, party:lastParty||opts.ledgerName||'Unknown', narration:rawN, voucher:rawV, gross:grossVal, tds:tdsVal, isDr});
+  }
+  return res;
+}
+
+// ── File Handlers ──────────────────────────────────────────────────────
+function readXlsx(file,cb){
+  const r=new FileReader();
+  r.onload=e=>{try{const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'}); cb(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''}));}catch(err){alert('Error: '+err.message);}};
+  r.readAsArrayBuffer(file);
+}
+
+function onExpFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  document.getElementById('expFName').textContent='✓ '+f.name;
+  if(!document.getElementById('ledgerName').value) document.getElementById('ledgerName').value=f.name.replace(/\.(xlsx|xls|csv)$/i,'').replace(/[_\-]/g,' ');
+  readXlsx(f,rows=>{
+    pExpRows=rows;
+    const hdr=rows.find(r=>r.some(c=>String(c).toLowerCase().includes('tds')));
+    if(hdr&&!document.getElementById('tdsColName').value){
+      const tc=hdr.find(c=>String(c).toLowerCase().includes('tds'));
+      if(tc) document.getElementById('tdsColName').value=String(tc).trim();
+    }
+  });
+  e.target.value='';
+}
+
+function onTdsPayFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  document.getElementById('tdsPayFName').textContent='✓ '+f.name;
+  readXlsx(f,rows=>{pTdsRows=rows;});
+  e.target.value='';
+}
+
+function addExpLedger(){
+  const name=document.getElementById('ledgerName').value.trim();
+  const sec=document.getElementById('tdsSection').value;
+  const tdsCol=document.getElementById('tdsColName').value.trim();
+  const expCol=document.getElementById('expColName').value.trim();
+  if(!name){alert('Please enter ledger name');return;}
+  if(!sec){alert('Please select TDS section');return;}
+  if(!pExpRows.length){alert('Please upload a file');return;}
+  const txns=parseRows(pExpRows,{tdsCol,amtCol:expCol,ledgerName:name});
+  if(!txns.length){alert('No transactions found. Check the file format.');return;}
+  expLedgers.push({id:Date.now(),name,sec,master:M[sec],txns});
+  renderExpList(); clearExp();
+  alert(`✓ "${name}" added — ${txns.length} transactions`);
+}
+
+function addTdsPay(){
+  if(!pTdsRows.length){alert('Please upload TDS Payable ledger file');return;}
+  const amtCol=document.getElementById('tdsPayAmtCol').value.trim();
+
+  // ── Opening balance: Credit column of "Opening Balance" row ───────────
+  // In Tally TDS Payable ledger:
+  //   Credit = liability (TDS deducted from expenses)
+  //   Debit  = TDS paid to government
+  // The "Opening Balance" row has value in the Credit column = prior FY liability
+  let openingBal = 0;
+  for(let i=0; i<Math.min(pTdsRows.length,20); i++){
+    const row = pTdsRows[i];
+    const rowText = row.map(c=>String(c||'')).join(' ').toLowerCase();
+    if(rowText.includes('opening balance') || rowText.includes('opening bal')) {
+      // Credit is the LAST numeric column (col index 6 in your format)
+      // Scan right-to-left for the first positive number — that's the Credit value
+      for(let j=row.length-1; j>=0; j--){
+        const v = parseFloat(String(row[j]||'').replace(/,/g,'').trim());
+        if(v > 0 && v > 100) { // >100 to avoid picking up voucher numbers
+          openingBal = v;
+          break;
+        }
+      }
+      break;
+    }
+  }
+  window._tdsOpeningBal = openingBal;
+
+  // ── Debit entries = TDS paid to government ────────────────────────────
+  const rows = parseRows(pTdsRows, {drOnly:true, amtCol});
+  const deps = rows.filter(r => r.gross > 0);
+  if(!deps.length){
+    alert('No payment (Debit) entries found.\n\nCheck that your TDS Payable ledger has a Debit column with payment amounts.');
+    return;
+  }
+
+  deposits.length = 0;
+  deps.forEach(d => deposits.push(d));
+  const total = deps.reduce((s,d) => s+d.gross, 0);
+
+  document.getElementById('tdsPayInfo').style.display = 'block';
+  document.getElementById('tdsPayInfo').innerHTML = `
+    <div class="hint" style="border-color:var(--ok);color:var(--ok)">
+      ✓ ${deps.length} payment entries loaded &nbsp;·&nbsp; Total paid to govt: ${fmt(total)}
+      <br>${openingBal>0 ? `Opening balance (prior FY liability): ${fmt(openingBal)}` : 'No opening balance detected — starting from ₹0'}
+    </div>`;
+  pTdsRows = [];
+  alert(`✓ ${deps.length} TDS payment entries loaded.\nTotal paid: ${fmt(total)}${openingBal>0?`\nOpening balance: ${fmt(openingBal)}`:'\nNo opening balance'}`);
+}
+
+function removeExp(id){const i=expLedgers.findIndex(l=>l.id===id);if(i>-1)expLedgers.splice(i,1);renderExpList();}
+
+function renderExpList(){
+  const w=document.getElementById('expListWrap'),l=document.getElementById('expList');
+  if(!expLedgers.length){w.style.display='none';return;}
+  w.style.display='block';
+  const tot=expLedgers.reduce((s,l)=>s+l.txns.length,0);
+  document.getElementById('expStats').textContent=`${expLedgers.length} ledgers · ${tot} transactions`;
+  l.innerHTML=expLedgers.map(e=>`
+    <div class="ledger-item">
+      <div class="li-name">${e.name}</div>
+      <span class="li-badge lb-exp">${e.master?.label||e.sec}</span>
+      <div class="li-meta">${e.txns.length} txns · Thr: ${fmt(e.master?.thr||0)}</div>
+      <div class="li-meta">${e.sec==='194C'?'⚡ Auto rate (1%/2%)':e.master?.rI+'%'}</div>
+      <button class="li-rm" onclick="removeExp(${e.id})">✕</button>
+    </div>`).join('');
+}
+
+function clearExp(){
+  ['ledgerName','tdsColName','expColName'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tdsSection').value='';
+  document.getElementById('hint194C').style.display='none';
+  document.getElementById('expFName').textContent='';
+  pExpRows=[];
+}
+
+function updRunSum(){
+  const tot=expLedgers.reduce((s,l)=>s+l.txns.length,0);
+  document.getElementById('runSum').textContent=`${expLedgers.length} ledger(s) · ${tot} transactions`;
+  document.getElementById('runDet').textContent=deposits.length?`Deposit data loaded (${deposits.length} entries) — full compliance check`:'No deposit data — deduction analysis only';
+}
+
+// ── Main Engine ────────────────────────────────────────────────────────
+function run(){
+  if(!expLedgers.length){alert('Please add at least one expense ledger');return;}
+
+  const res=[];
+  let tGross=0,tReq=0,tDed=0,cOk=0,cMiss=0,cShort=0,cBelow=0,cExcess=0;
+
+  // Month-wise deposit map
+  const depMap={};
+  deposits.forEach(d=>{
+    const k=mKey(d.date);
+    if(!depMap[k]) depMap[k]=[];
+    depMap[k].push({date:d.date,amount:d.gross,used:0});
+  });
+
+  expLedgers.forEach(ledger=>{
+    const sec=ledger.sec, master=ledger.master;
+    const thr=master?.thr||30000;
+    const partyCumul={};
+
+    ledger.txns.forEach(txn=>{
+      const pk=(txn.party||'unknown').toLowerCase().trim();
+      if(!partyCumul[pk]) partyCumul[pk]=0;
+      const prev=partyCumul[pk];
+      const cumul=prev+txn.gross;
+      partyCumul[pk]=cumul;
+
+      const co=isCo(txn.party);
+      const rate=getRate(sec,txn.party)/100;
+      const partyType=sec==='194C'?(co?'Company':'Individual/HUF'):'';
+
+      // Threshold
+      let tdsReq=0, applicable=false, remark='';
+      if(cumul<=thr){
+        applicable=false; tdsReq=0;
+        remark=`Below threshold (${fmt(cumul)} / ${fmt(thr)})`;
+      } else if(prev<thr&&cumul>thr){
+        applicable=true; tdsReq=Math.round(cumul*rate);
+        remark=`⚡ Threshold crossed! TDS on full ${fmt(cumul)}`;
+      } else {
+        applicable=true; tdsReq=Math.round(txn.gross*rate);
+        remark=`Cumulative: ${fmt(cumul)}`;
+      }
+
+      const tdsDed=txn.tds;
+      const diff=tdsDed-tdsReq;
+      let dStat='',dTag='';
+      if(!applicable){dStat='BELOW THRESHOLD';dTag='tag-grey';cBelow++;}
+      else if(tdsDed===0&&tdsReq>0){dStat='NOT DEDUCTED';dTag='tag-danger';cMiss++;}
+      else if(diff<-1){dStat='SHORT DEDUCTION';dTag='tag-warn';cShort++;}
+      else if(diff>1){dStat='EXCESS DEDUCTION';dTag='tag-info';cExcess++;}
+      else{dStat='COMPLIANT';dTag='tag-ok';cOk++;}
+
+      // Deposit tracking
+      let depDate=null,depAmt=0,depStat='NO DEPOSIT DATA',due=null,interest=0,daysLate=0;
+      if(deposits.length&&applicable&&tdsDed>0){
+        due=dueDate(txn.date);
+        const mk=mKey(txn.date);
+        const monthDeps=depMap[mk]||[];
+        let rem=tdsDed;
+        monthDeps.forEach(dep=>{
+          if(rem<=0) return;
+          const use=Math.min(dep.amount-dep.used,rem);
+          if(use>0){dep.used+=use;rem-=use;depAmt+=use;if(!depDate||dep.date>depDate)depDate=dep.date;}
+        });
+        if(depAmt===0){depStat='NOT DEPOSITED';}
+        else if(depAmt<tdsDed-1){
+          depStat='PARTIALLY DEPOSITED';
+          interest=calcInt(depAmt,due,depDate);
+          if(depDate&&due&&depDate>due) daysLate=Math.ceil((depDate-due)/86400000);
+        } else if(depDate&&due&&depDate>due){
+          depStat='LATE DEPOSIT';
+          interest=calcInt(tdsDed,due,depDate);
+          daysLate=Math.ceil((depDate-due)/86400000);
+        } else {depStat='DEPOSITED ON TIME';}
+      }
+
+      tGross+=txn.gross; tReq+=tdsReq; tDed+=tdsDed;
+
+      res.push({
+        ledger:ledger.name, sec:master?.label||sec, secName:master?.name||'',
+        party:txn.party||'—', partyType, co,
+        date:txn.date, narration:txn.narration, voucher:txn.voucher,
+        gross:txn.gross, cumul, rate:(rate*100).toFixed(1),
+        tdsReq, tdsDed, diff, dStat, dTag, remark,
+        quarter:qtr(txn.date),
+        due, depDate, depAmt, depStat, interest, daysLate
+      });
+    });
+  });
+
+  // ── Render ──────────────────────────────────────────────────────────
+  const hasDep=deposits.length>0;
+  const totInt=res.reduce((s,r)=>s+r.interest,0);
+  const lateCnt=res.filter(r=>['LATE DEPOSIT','PARTIALLY DEPOSITED'].includes(r.depStat)).length;
+  const notDepCnt=res.filter(r=>r.depStat==='NOT DEPOSITED').length;
+
+  let html=`<div class="sgrid">
+    <div class="sc sc-grey"><div class="label">Total Gross</div><div class="value">${fmt(tGross)}</div><div class="sub">${res.length} transactions</div></div>
+    <div class="sc sc-info"><div class="label">TDS Required</div><div class="value">${fmt(tReq)}</div><div class="sub">Applicable rates</div></div>
+    <div class="sc ${tDed>=tReq?'sc-ok':'sc-warn'}"><div class="label">TDS Deducted</div><div class="value">${fmt(tDed)}</div><div class="sub">${tDed>=tReq?'✓ Sufficient':'Short: '+fmt(tReq-tDed)}</div></div>
+    <div class="sc sc-danger"><div class="label">Deduction Issues</div><div class="value">${cMiss+cShort}</div><div class="sub">${cMiss} missed · ${cShort} short</div></div>
+    ${hasDep?`
+    <div class="sc sc-red"><div class="label">Not Deposited</div><div class="value">${notDepCnt}</div><div class="sub">${lateCnt} late</div></div>
+    <div class="sc sc-warn"><div class="label">Interest Liability</div><div class="value">${fmt(totInt)}</div><div class="sub">@ 1.5% per month</div></div>
+    `:`
+    <div class="sc sc-ok"><div class="label">Compliant</div><div class="value">${cOk}</div><div class="sub">${cBelow} below threshold</div></div>
+    <div class="sc sc-grey"><div class="label">Deposit Data</div><div class="value">—</div><div class="sub">Upload in Step 2</div></div>
+    `}
+  </div>`;
+
+  // Section summary
+  const bySec={};
+  res.forEach(r=>{
+    const k=r.sec+' — '+r.secName;
+    if(!bySec[k]) bySec[k]={gross:0,req:0,ded:0,issues:0,cnt:0,int:0};
+    bySec[k].gross+=r.gross; bySec[k].req+=r.tdsReq; bySec[k].ded+=r.tdsDed;
+    bySec[k].int+=r.interest; bySec[k].cnt++;
+    if(['NOT DEDUCTED','SHORT DEDUCTION','LATE DEPOSIT','NOT DEPOSITED'].includes(r.dStat)||['NOT DEPOSITED','LATE DEPOSIT'].includes(r.depStat)) bySec[k].issues++;
+  });
+
+  html+=`<div class="sec-tbl"><div class="sec-tbl-hdr">SECTION-WISE SUMMARY</div>
+    <table class="rt"><thead><tr><th>Section</th><th>Txns</th><th>Gross</th><th>TDS Required</th><th>TDS Deducted</th><th>Short</th>${hasDep?'<th>Interest</th>':''}<th>Status</th></tr></thead>
+    <tbody>${Object.entries(bySec).map(([k,v])=>`<tr>
+      <td>${k}</td><td>${v.cnt}</td>
+      <td class="amt">${fmt(v.gross)}</td>
+      <td class="amt">${fmt(v.req)}</td>
+      <td class="${v.ded>=v.req?'amt-ok':'amt-warn'}">${fmt(v.ded)}</td>
+      <td class="${v.req>v.ded?'amt-danger':'amt-ok'}">${v.req>v.ded?fmt(v.req-v.ded):'—'}</td>
+      ${hasDep?`<td class="${v.int>0?'amt-warn':'amt-ok'}">${v.int>0?fmt(v.int):'—'}</td>`:''}
+      <td>${v.issues>0?`<span class="tag tag-danger">${v.issues} ISSUES</span>`:'<span class="tag tag-ok">CLEAR</span>'}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+
+  html+=`<div class="exp-bar"><span>${res.length} entries analysed · ${expLedgers.length} ledger(s)${hasDep?' · Deposit tracking active':''}</span><button class="btn btn-outline" onclick="doExport()">⬇ Export Excel</button></div>`;
+
+  // Detail tables
+  const dGrps=[
+    {k:'NOT DEDUCTED',    l:'❌ TDS NOT DEDUCTED',    c:'rt-danger'},
+    {k:'SHORT DEDUCTION', l:'⚠ SHORT DEDUCTION',      c:'rt-warn'},
+    {k:'EXCESS DEDUCTION',l:'↑ EXCESS DEDUCTION',     c:'rt-warn'},
+    {k:'COMPLIANT',       l:'✓ COMPLIANT',             c:'rt-ok'},
+    {k:'BELOW THRESHOLD', l:'— BELOW THRESHOLD',       c:'rt-grey'},
+  ];
+  dGrps.forEach(g=>{
+    const rows=res.filter(r=>r.dStat===g.k);
+    if(!rows.length) return;
+    html+=buildTable(g,rows,hasDep);
+  });
+
+  if(hasDep){
+    const depGrps=[
+      {k:'NOT DEPOSITED',       l:'🔴 TDS NOT DEPOSITED TO GOVT',         c:'rt-danger'},
+      {k:'LATE DEPOSIT',        l:'⏰ LATE DEPOSIT — Interest Applicable', c:'rt-red'},
+      {k:'PARTIALLY DEPOSITED', l:'⚠ PARTIALLY DEPOSITED',               c:'rt-warn'},
+      {k:'DEPOSITED ON TIME',   l:'✓ DEPOSITED ON TIME',                  c:'rt-ok'},
+    ];
+    depGrps.forEach(g=>{
+      const rows=res.filter(r=>r.depStat===g.k);
+      if(!rows.length) return;
+      html+=buildTable(g,rows,hasDep);
+    });
+  }
+
+  document.getElementById('results').innerHTML=html;
+  window._res=res;
+
+  // ── Month-wise Payment Reconciliation ─────────────────────────────────
+  if(hasDep) renderMonthRecon(res);
+
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── Month-wise Reconciliation ──────────────────────────────────────────
+function renderMonthRecon(res) {
+
+  const ML = k => { if(!k) return '—'; const [y,m]=k.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1]+' '+y; };
+
+  // ── Step 1: TDS deducted per month — from expense ledgers only ─────────
+  // Use tdsDed (actual TDS column value from expense rows), grouped by transaction month
+  const deducted = {};   // { 'YYYY-MM': totalTdsDeducted }
+  res.forEach(r => {
+    if(!r.date) return;
+    const k = mKey(r.date);
+    if(!deducted[k]) deducted[k] = 0;
+    deducted[k] += (r.tdsDed || 0);
+  });
+
+  // ── Step 2: TDS paid per month — from payment ledger Debit entries ─────
+  // Use actual payment date month — no shifting
+  const paid = {};       // { 'YYYY-MM': totalPaid }
+  const payByMonth = {}; // { 'YYYY-MM': [{date, amount}] }
+  deposits.forEach(d => {
+    const k = mKey(d.date);
+    paid[k] = (paid[k]||0) + d.gross;
+    if(!payByMonth[k]) payByMonth[k] = [];
+    payByMonth[k].push({ date: d.date, amount: d.gross });
+  });
+
+  // ── Step 3: Opening balance — from Credit opening row in TDS Payable ───
+  // Stored in window._tdsOpeningBal when ledger was loaded
+  const openingBal = window._tdsOpeningBal || 0;
+
+  // ── Step 4: Build running statement ────────────────────────────────────
+  // All months = union of deduction months + payment months, sorted
+  const allMonthsSet = new Set([...Object.keys(deducted), ...Object.keys(paid)]);
+  const allMonths = [...allMonthsSet].sort();
+
+  const rows = [];
+  let runningBalance = openingBal; // starts with opening liability
+
+  allMonths.forEach(mk => {
+    const [y, m] = mk.split('-').map(Number);
+    const ded    = deducted[mk] || 0;
+    const payAmt = paid[mk]     || 0;
+
+    // Opening balance for this month = closing of previous month
+    const openingThisMonth = runningBalance;
+
+    // Total liability = opening + deducted this month
+    const totalLiability = openingThisMonth + ded;
+
+    // Closing = total liability - paid this month
+    const closingBalance = Math.max(0, totalLiability - payAmt);
+
+    // Due date for THIS month's deductions (not opening balance)
+    // April deductions due 7th May, March due 30th April
+    const dueD = (m === 3)
+      ? new Date(y, 3, 30)
+      : new Date(y, m % 12, 7);  // 7th of next month
+
+    // All payment dates in this month (sorted earliest first)
+    const monthPays = (payByMonth[mk] || []).sort((a,b) => a.date - b.date);
+    const firstPayDate  = monthPays.length ? monthPays[0].date : null;
+    const lastPayDate   = monthPays.length ? monthPays[monthPays.length-1].date : null;
+
+    // Status: compare payment dates in THIS month against due date of PREVIOUS month's deductions
+    // Because April deductions → due 7th May → check if May payments were before 7th May
+    // So for each month, we check: was the PREVIOUS month's due date met by payments in THIS month?
+    const prevMk = m === 1 ? `${y-1}-12` : `${y}-${String(m-1).padStart(2,'0')}`;
+    const prevDue = deducted[prevMk] !== undefined
+      ? (() => {
+          const [py, pm] = prevMk.split('-').map(Number);
+          return (pm === 3) ? new Date(py, 3, 30) : new Date(py, pm % 12, 7);
+        })()
+      : null;
+
+    let status, statusTag, interest = 0, daysLate = 0;
+
+    if(ded === 0 && openingThisMonth === 0) {
+      // Pure payment month — no deduction, just paying down old liability
+      status = payAmt > 0 ? 'PAYMENT ONLY' : 'NIL';
+      statusTag = payAmt > 0 ? 'tag-info' : 'tag-grey';
+    } else if(ded > 0 && payAmt === 0 && closingBalance > 0) {
+      // Deducted but nothing paid this month (may be paid next month)
+      status = 'PENDING PAYMENT'; statusTag = 'tag-warn';
+    } else if(payAmt > 0 && firstPayDate && prevDue && firstPayDate > prevDue && deducted[prevMk] > 0) {
+      // Paid this month but after due date of previous month's deductions
+      daysLate = Math.ceil((firstPayDate - prevDue) / 86400000);
+      const months = Math.ceil(daysLate / 30.44);
+      interest = Math.round((deducted[prevMk]||0) * 0.015 * months);
+      status = `LATE — ${daysLate}d`; statusTag = 'tag-warn';
+    } else if(closingBalance > 0 && payAmt > 0) {
+      status = 'PARTIALLY PAID'; statusTag = 'tag-warn';
+      interest = Math.round(closingBalance * 0.015);
+    } else if(payAmt > 0) {
+      status = 'PAID'; statusTag = 'tag-ok';
+    } else {
+      status = 'PENDING'; statusTag = 'tag-warn';
+    }
+
+    rows.push({
+      mk, ded, openingThisMonth, totalLiability,
+      payAmt, firstPayDate, lastPayDate, dueD,
+      closingBalance, status, statusTag, interest, daysLate
+    });
+
+    // Carry forward closing balance
+    runningBalance = closingBalance;
+  });
+
+  // ── Summary ────────────────────────────────────────────────────────────
+  const totalDed   = Object.values(deducted).reduce((s,v)=>s+v, 0);
+  const totalPaid  = Object.values(paid).reduce((s,v)=>s+v, 0);
+  const totalInt   = rows.reduce((s,r)=>s+r.interest, 0);
+  const finalBal   = runningBalance;
+  const lateCount  = rows.filter(r=>r.status.startsWith('LATE')).length;
+  const paidCount  = rows.filter(r=>r.status==='PAID').length;
+  const pendCount  = rows.filter(r=>['PENDING','PENDING PAYMENT'].includes(r.status)).length;
+
+  const html = `
+  <div style="border-top:3px solid var(--accent2);margin:32px 0 20px;padding-top:24px;">
+    <div style="font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent2);letter-spacing:1px;margin-bottom:6px;">
+      ══ MONTH-WISE TDS PAYMENT RECONCILIATION ══
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:18px;">
+      Opening Balance: ${openingBal>0?fmt(openingBal):'₹0.00 (nil)'} &nbsp;·&nbsp;
+      TDS Deducted (from expense ledgers): ${fmt(totalDed)} &nbsp;·&nbsp;
+      Total Paid (from payment ledger): ${fmt(totalPaid)}
+    </div>
+
+    <div class="sgrid" style="margin-bottom:20px;">
+      <div class="sc sc-grey"><div class="label">Opening Balance</div><div class="value">${fmt(openingBal)}</div><div class="sub">Brought forward</div></div>
+      <div class="sc sc-info"><div class="label">Total Deducted</div><div class="value">${fmt(totalDed)}</div><div class="sub">Expense ledgers</div></div>
+      <div class="sc sc-ok"><div class="label">Total Paid</div><div class="value">${fmt(totalPaid)}</div><div class="sub">Payment ledger</div></div>
+      <div class="sc ${finalBal>0?'sc-danger':'sc-ok'}"><div class="label">Closing Balance</div><div class="value">${fmt(finalBal)}</div><div class="sub">${finalBal>0?'⚠ Outstanding':'✓ Fully paid'}</div></div>
+      <div class="sc sc-warn"><div class="label">Late Payments</div><div class="value">${lateCount}</div><div class="sub">${paidCount} on time</div></div>
+      <div class="sc sc-warn"><div class="label">Interest Liability</div><div class="value">${fmt(totalInt)}</div><div class="sub">@ 1.5% / month</div></div>
+    </div>
+
+    <div class="sec-tbl">
+      <div class="sec-tbl-hdr" style="background:var(--accent2)">MONTH-WISE DEDUCTION vs PAYMENT STATEMENT</div>
+      <div class="tw">
+        <table class="rt">
+          <thead><tr>
+            <th>Month</th>
+            <th>Opening Balance</th>
+            <th>TDS Deducted</th>
+            <th>Total Liability</th>
+            <th>Due Date</th>
+            <th>First Payment</th>
+            <th>Last Payment</th>
+            <th>Total Paid</th>
+            <th>Closing Balance</th>
+            <th>Days Late</th>
+            <th>Interest</th>
+            <th>Status</th>
+          </tr></thead>
+          <tbody>
+            ${rows.map(r=>`<tr>
+              <td style="font-weight:600;white-space:nowrap">${ML(r.mk)}</td>
+              <td class="${r.openingThisMonth>0?'amt-warn':'amt-ok'}">${r.openingThisMonth>0?fmt(r.openingThisMonth):'—'}</td>
+              <td class="amt">${r.ded>0?fmt(r.ded):'—'}</td>
+              <td class="amt" style="font-weight:600">${r.totalLiability>0?fmt(r.totalLiability):'—'}</td>
+              <td style="white-space:nowrap;color:var(--ink3);font-size:11px">${r.ded>0?r.dueD.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+              <td style="white-space:nowrap;font-size:11px" class="${r.firstPayDate?'amt-ok':'amt-danger'}">${r.firstPayDate?r.firstPayDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+              <td style="white-space:nowrap;font-size:11px;color:var(--ink3)">${r.lastPayDate&&r.lastPayDate!==r.firstPayDate?r.lastPayDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+              <td class="${r.payAmt>0?'amt-ok':'amt-danger'}">${r.payAmt>0?fmt(r.payAmt):'—'}</td>
+              <td class="${r.closingBalance>0?'amt-danger':'amt-ok'}">${r.closingBalance>0?fmt(r.closingBalance):'—'}</td>
+              <td class="${r.daysLate>0?'amt-danger':'amt-ok'}">${r.daysLate>0?r.daysLate+' days':'—'}</td>
+              <td class="${r.interest>0?'amt-warn':'amt-ok'}">${r.interest>0?fmt(r.interest):'—'}</td>
+              <td><span class="tag ${r.statusTag}">${r.status}</span></td>
+            </tr>`).join('')}
+            <tr style="background:var(--surface2);font-weight:600;font-family:var(--mono);font-size:11px">
+              <td>TOTAL</td>
+              <td class="amt">${fmt(openingBal)}</td>
+              <td class="amt">${fmt(totalDed)}</td>
+              <td class="amt">${fmt(openingBal+totalDed)}</td>
+              <td colspan="3"></td>
+              <td class="amt">${fmt(totalPaid)}</td>
+              <td class="${finalBal>0?'amt-danger':'amt-ok'}">${finalBal>0?fmt(finalBal):'—'}</td>
+              <td></td>
+              <td class="${totalInt>0?'amt-warn':'amt-ok'}">${totalInt>0?fmt(totalInt):'—'}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('results').innerHTML += html;
+  window._monthRecon = rows;
+  window._monthReconMeta = { openingBal, totalDed, totalPaid, finalBal, totalInt };
+}
+
+function buildTable(g,rows,hasDep){
+  return `<div class="rb">
+    <div class="rt-hdr ${g.c}">${g.l}<span style="font-size:10px;opacity:0.7">${rows.length} entries · ${fmt(rows.reduce((s,r)=>s+r.gross,0))}</span></div>
+    <div class="tw"><table class="rt"><thead><tr>
+      <th>Ledger</th><th>Party</th><th>Section</th><th>Date</th><th>Voucher</th>
+      <th>Gross</th><th>Cumulative</th><th>Rate</th><th>TDS Reqd</th><th>TDS Deducted</th><th>Diff</th>
+      ${hasDep?'<th>Due Date</th><th>Deposit Date</th><th>Dep. Amt</th><th>Days Late</th><th>Interest</th>':''}
+      <th>Qtr</th><th>Status</th><th>Remark</th>
+    </tr></thead><tbody>
+    ${rows.map(r=>`<tr>
+      <td>${r.ledger}</td>
+      <td><div style="font-weight:500;color:var(--ink)">${r.party}</div>${r.partyType?`<div class="${r.co?'pt-co':'pt-ind'}">${r.partyType}</div>`:''}</td>
+      <td><span class="tag tag-info">${r.sec}</span></td>
+      <td style="white-space:nowrap">${fDate(r.date)}</td>
+      <td style="color:var(--ink3)">${r.voucher||'—'}</td>
+      <td class="amt">${fmt(r.gross)}</td>
+      <td style="color:var(--ink3)">${fmt(r.cumul)}</td>
+      <td style="color:var(--ink3)">${r.rate}%</td>
+      <td class="amt">${r.tdsReq>0?fmt(r.tdsReq):'—'}</td>
+      <td class="${r.tdsDed>0?'amt-ok':r.tdsReq>0?'amt-danger':'amt-ok'}">${r.tdsDed>0?fmt(r.tdsDed):'—'}</td>
+      <td class="${r.diff<-1?'amt-danger':r.diff>1?'amt-warn':'amt-ok'}">${r.tdsReq>0&&r.diff!==0?(r.diff>0?'+':'')+fmt(r.diff):'—'}</td>
+      ${hasDep?`
+      <td style="white-space:nowrap;color:var(--ink3)">${fDate(r.due)}</td>
+      <td style="white-space:nowrap" class="${r.depStat==='DEPOSITED ON TIME'?'amt-ok':r.depStat==='NOT DEPOSITED'?'amt-danger':'amt-warn'}">${fDate(r.depDate)}</td>
+      <td class="${r.depAmt>0?'amt-ok':'amt-danger'}">${r.depAmt>0?fmt(r.depAmt):'—'}</td>
+      <td class="${r.daysLate>0?'amt-danger':'amt-ok'}">${r.daysLate>0?r.daysLate+' days':'—'}</td>
+      <td class="${r.interest>0?'amt-warn':'amt-ok'}">${r.interest>0?fmt(r.interest):'—'}</td>
+      `:''}
+      <td>${r.quarter}</td>
+      <td><span class="tag ${r.dTag}">${r.dStat}</span></td>
+      <td style="color:var(--accent);font-size:10px;max-width:150px">${r.remark}</td>
+    </tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+
+function doExport(){
+  if(!window._res) return;
+  const wb=XLSX.utils.book_new();
+
+  // Sheet 1 — TDS Checklist detail
+  const hdr=['Ledger','Party','Party Type','Section','Date','Voucher','Narration','Gross','Cumulative','Rate%','TDS Required','TDS Deducted','Difference','Deduction Status','Due Date','Deposit Date','Deposit Amount','Days Late','Interest','Quarter','Remark'];
+  const rows=[hdr];
+  window._res.forEach(r=>rows.push([
+    r.ledger,r.party,r.partyType,r.sec,
+    r.date?r.date.toLocaleDateString('en-IN'):'',
+    r.voucher,r.narration,r.gross,r.cumul,r.rate,
+    r.tdsReq,r.tdsDed,r.diff,r.dStat,
+    r.due?r.due.toLocaleDateString('en-IN'):'',
+    r.depDate?r.depDate.toLocaleDateString('en-IN'):'',
+    r.depAmt,r.daysLate,r.interest,r.quarter,r.remark
+  ]));
+  const ws1=XLSX.utils.aoa_to_sheet(rows);
+  ws1['!cols']=[{wch:20},{wch:28},{wch:14},{wch:8},{wch:12},{wch:10},{wch:30},{wch:12},{wch:12},{wch:6},{wch:12},{wch:12},{wch:10},{wch:18},{wch:12},{wch:12},{wch:12},{wch:10},{wch:10},{wch:6},{wch:30}];
+  XLSX.utils.book_append_sheet(wb,ws1,'TDS Checklist');
+
+  // Sheet 2 — Month-wise Payment Reconciliation
+  if(window._monthRecon && window._monthRecon.length) {
+    const ML = k => { if(!k) return '—'; const [y,m]=k.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1]+' '+y; };
+    const meta = window._monthReconMeta || {};
+    const mhdr = ['Month','Opening Balance (₹)','TDS Deducted (₹)','Total Liability (₹)','Due Date','First Payment Date','Last Payment Date','Total Paid (₹)','Closing Balance (₹)','Days Late','Interest (₹)','Status'];
+    const mrows = [mhdr];
+    window._monthRecon.forEach(r => mrows.push([
+      ML(r.mk),
+      r.openingThisMonth || 0,
+      r.ded || 0,
+      r.totalLiability || 0,
+      r.ded>0 ? r.dueD.toLocaleDateString('en-IN') : '',
+      r.firstPayDate ? r.firstPayDate.toLocaleDateString('en-IN') : '',
+      r.lastPayDate && r.lastPayDate !== r.firstPayDate ? r.lastPayDate.toLocaleDateString('en-IN') : '',
+      r.payAmt || 0,
+      r.closingBalance || 0,
+      r.daysLate || 0,
+      r.interest || 0,
+      r.status
+    ]));
+    // Totals row
+    mrows.push([
+      'TOTAL',
+      meta.openingBal||0, meta.totalDed||0, (meta.openingBal||0)+(meta.totalDed||0),
+      '','','',
+      meta.totalPaid||0, meta.finalBal||0, '',
+      meta.totalInt||0, ''
+    ]);
+    const ws2 = XLSX.utils.aoa_to_sheet(mrows);
+    ws2['!cols'] = [{wch:14},{wch:18},{wch:16},{wch:16},{wch:14},{wch:18},{wch:18},{wch:14},{wch:16},{wch:10},{wch:12},{wch:18}];
+    XLSX.utils.book_append_sheet(wb, ws2, 'Payment Reconciliation');
+  }
+
+  XLSX.writeFile(wb,'TDS_Compliance_Checklist.xlsx');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>26AS Reconciliation Tool</title>
+<!-- No external fonts — 100% offline -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface2: #f1f5f9;
+    --border: #e2e8f0;
+    --border2: #cbd5e1;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --accent2: #0ea5e9;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --warn: #d97706;
+    --warn-light: #fffbeb;
+    --ok: #16a34a;
+    --ok-light: #f0fdf4;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+    --text: #0f172a;
+    --text2: #475569;
+    --text3: #94a3b8;
+    --mono: 'Courier New', 'Consolas', 'Menlo', monospace;
+    --sans: -apple-system, 'Segoe UI', Arial, sans-serif;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .logo-badge {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 11px;
+    padding: 4px 10px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+  }
+  .header h1 {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .header-sub {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+    margin-left: auto;
+  }
+
+  /* Main Layout */
+  .main { max-width: 1400px; margin: 0 auto; padding: 28px 32px; }
+
+  /* Step Tabs */
+  .steps {
+    display: flex;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .step-tab {
+    flex: 1;
+    padding: 12px 20px;
+    background: var(--surface);
+    border: none;
+    cursor: pointer;
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 12px;
+    border-right: 1px solid var(--border);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-tab:last-child { border-right: none; }
+  .step-tab:hover { background: var(--surface2); color: var(--text2); }
+  .step-tab.active {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    font-weight: 600;
+  }
+  .step-tab .step-num {
+    width: 20px; height: 20px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0;
+  }
+  .step-tab.done { color: var(--ok); }
+  .step-tab.done .step-num { background: var(--ok); color: #fff; border-color: var(--ok); }
+
+  /* Panels */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Input Grid */
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .input-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 22px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+  }
+  .input-section h3 {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .input-section h3::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .field-row.full { grid-template-columns: 1fr; }
+  .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 11px; color: var(--text2); font-weight: 500; }
+  .field input, .field select {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    padding: 8px 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    outline: none;
+    border-radius: 4px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  .btn {
+    padding: 9px 18px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-secondary { background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent); }
+  .btn-secondary:hover { background: var(--accent-light); }
+  .btn-danger { background: var(--surface); color: var(--danger); border: 1px solid var(--danger); padding: 6px 12px; font-size: 11px; }
+  .btn-danger:hover { background: var(--danger-light); }
+
+  .add-row-btn {
+    width: 100%; padding: 9px;
+    background: transparent;
+    border: 1.5px dashed var(--border2);
+    color: var(--text3);
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 8px;
+    transition: all 0.2s;
+  }
+  .add-row-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  /* Entry Table */
+  .entry-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-family: var(--mono); font-size: 11px; }
+  .entry-table th { background: var(--surface2); color: var(--text2); padding: 8px 10px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--border); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .entry-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text2); }
+  .entry-table tr:hover td { background: var(--surface2); }
+  .entry-table .amount { color: var(--text); font-weight: 600; }
+
+  /* File Upload */
+  .csv-upload {
+    border: 2px dashed var(--border2);
+    padding: 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background: var(--surface2);
+  }
+  .csv-upload:hover { border-color: var(--accent); background: var(--accent-light); }
+  .csv-upload p { color: var(--text3); font-size: 12px; font-family: var(--mono); margin-top: 8px; }
+  .csv-upload .icon { font-size: 26px; }
+  #fileInput26as, #fileInputBooks { display: none; }
+
+  /* OR divider */
+  .or-div { text-align: center; color: var(--text3); font-size: 11px; margin: 12px 0; position: relative; }
+  .or-div::before, .or-div::after { content: ''; position: absolute; top: 50%; width: 43%; height: 1px; background: var(--border); }
+  .or-div::before { left: 0; }
+  .or-div::after { right: 0; }
+
+  /* Reconcile Bar */
+  .reconcile-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+  .reconcile-bar .counts { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+  .reconcile-bar .counts span { color: var(--accent); font-weight: 700; }
+
+  /* Summary Cards */
+  .summary-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 28px; }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .summary-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+  .summary-card.matched::after { background: var(--ok); }
+  .summary-card.partial::after { background: var(--purple); }
+  .summary-card.unmatched26::after { background: var(--danger); }
+  .summary-card.unmatchedbooks::after { background: var(--warn); }
+  .summary-card .label { font-size: 11px; color: var(--text3); font-weight: 500; letter-spacing: 0.3px; margin-bottom: 8px; text-transform: uppercase; }
+  .summary-card .value { font-family: var(--mono); font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .summary-card.matched .value { color: var(--ok); }
+  .summary-card.partial .value { color: var(--purple); }
+  .summary-card.unmatched26 .value { color: var(--danger); }
+  .summary-card.unmatchedbooks .value { color: var(--warn); }
+  .summary-card .sub { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+
+  /* Results */
+  .results-section { margin-bottom: 20px; border-radius: 6px; overflow: hidden; box-shadow: var(--shadow); }
+  .results-section h3 {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 11px 16px;
+    border-left: 3px solid;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .results-section.matched h3 { color: var(--ok); border-color: var(--ok); background: var(--ok-light); }
+  .results-section.unmatched26 h3 { color: var(--danger); border-color: var(--danger); background: var(--danger-light); }
+  .results-section.unmatchedbooks h3 { color: var(--warn); border-color: var(--warn); background: var(--warn-light); }
+  .results-section.partial h3 { color: var(--purple); border-color: var(--purple); background: var(--purple-light); }
+
+  .results-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; }
+  .results-table th { background: var(--surface2); color: var(--text2); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .results-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table tr:hover td { background: var(--surface2); }
+
+  .tag { display: inline-block; padding: 2px 8px; font-size: 10px; font-weight: 600; border-radius: 3px; letter-spacing: 0.3px; }
+  .tag-ok { background: var(--ok-light); color: var(--ok); border: 1px solid #bbf7d0; }
+  .tag-danger { background: var(--danger-light); color: var(--danger); border: 1px solid #fecaca; }
+  .tag-warn { background: var(--warn-light); color: var(--warn); border: 1px solid #fde68a; }
+  .tag-purple { background: var(--purple-light); color: var(--purple); border: 1px solid #ddd6fe; }
+  .tag-blue { background: var(--accent-light); color: var(--accent); border: 1px solid #bfdbfe; }
+
+  .diff-val { color: var(--purple); font-weight: 700; }
+  .amount-ok { color: var(--ok); font-weight: 600; }
+  .amount-danger { color: var(--danger); font-weight: 600; }
+
+  /* Export bar */
+  .export-bar { display: flex; gap: 12px; margin-bottom: 20px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); align-items: center; border-radius: 6px; box-shadow: var(--shadow); }
+  .export-bar span { font-size: 12px; color: var(--text3); margin-right: auto; font-family: var(--mono); }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 60px 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+  .empty-state .icon { font-size: 40px; margin-bottom: 16px; }
+  .empty-state h3 { color: var(--text2); margin-bottom: 8px; }
+  .empty-state p { color: var(--text3); font-size: 12px; font-family: var(--mono); }
+
+  /* Hint */
+  .hint { font-size: 11px; color: var(--text2); margin-top: 4px; padding: 8px 12px; background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; }
+
+  .table-wrap { overflow-x: auto; }
+
+  @media (max-width: 900px) {
+    .input-grid { grid-template-columns: 1fr; }
+    .summary-cards { grid-template-columns: 1fr 1fr; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-badge">26AS</div>
+  <h1>Reconciliation Tool</h1>
+  <div class="header-sub">FY 2024-25 // TDS & Tax Reconciliation</div>
+</div>
+
+<div class="main">
+
+  <!-- Steps -->
+  <div class="steps">
+    <button class="step-tab active" onclick="goStep(1)" id="tab1">
+      <div class="step-num">1</div> Enter 26AS Data
+    </button>
+    <button class="step-tab" onclick="goStep(2)" id="tab2">
+      <div class="step-num">2</div> Enter Books Data
+    </button>
+    <button class="step-tab" onclick="goStep(3)" id="tab3">
+      <div class="step-num">3</div> Reconcile
+    </button>
+  </div>
+
+  <!-- PANEL 1: 26AS Data -->
+  <div class="panel active" id="panel1">
+    <div class="input-section">
+      <h3>Form 26AS — TDS / Tax Credit Entries</h3>
+
+      <div class="csv-upload" onclick="document.getElementById('fileInput26as').click()">
+        <div class="icon">📂</div>
+        <p>Upload <strong style="color:var(--accent)">TRACES .txt file</strong> directly — or Excel (.xlsx) / CSV</p>
+        <p style="color:var(--accent);margin-top:6px;font-size:10px;">CLICK TO UPLOAD TXT / EXCEL / CSV</p>
+      </div>
+      <input type="file" id="fileInput26as" accept=".csv,.xlsx,.xls,.txt" onchange="loadFile(event,'as26')">
+      <div class="hint">💡 TRACES workflow: Download ZIP from TRACES → Unzip with PAN password → Upload the .txt file here directly. No conversion needed!</div>
+
+      <div class="or-div">OR ENTER MANUALLY</div>
+
+      <!-- Manual Entry Form -->
+      <div id="form26as">
+        <div class="field-row">
+          <div class="field">
+            <label>Deductor Name *</label>
+            <input type="text" id="a_name" placeholder="ABC Pvt Ltd">
+          </div>
+          <div class="field">
+            <label>Deductor PAN</label>
+            <input type="text" id="a_pan" placeholder="AAAPL1234C" maxlength="10" style="text-transform:uppercase">
+          </div>
+        </div>
+        <div class="field-row three">
+          <div class="field">
+            <label>Section *</label>
+            <select id="a_section">
+              <option value="">Select</option>
+              <option>194C</option><option>194J</option><option>194I</option>
+              <option>194H</option><option>194B</option><option>194D</option>
+              <option>194A</option><option>192</option><option>206C</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Quarter</label>
+            <select id="a_quarter">
+              <option>Q1</option><option>Q2</option><option>Q3</option><option selected>Q4</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Nature of Payment</label>
+            <input type="text" id="a_nature" placeholder="Professional Fees">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Gross Amount (₹) *</label>
+            <input type="number" id="a_gross" placeholder="100000">
+          </div>
+          <div class="field">
+            <label>TDS Amount (₹) *</label>
+            <input type="number" id="a_tds" placeholder="10000">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="addEntry('as26')">+ Add to 26AS</button>
+          <button class="btn btn-secondary" onclick="clearForm('as26')">Clear</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table class="entry-table" id="table26as">
+          <thead>
+            <tr>
+              <th>#</th><th>Deductor</th><th>PAN</th><th>Section</th><th>Qtr</th><th>Gross Amt</th><th>TDS Amt</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tbody26as"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px;">No entries yet</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+      <button class="btn btn-primary" onclick="goStep(2)">Next: Enter Books Data →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: Books Data -->
+  <div class="panel" id="panel2">
+    <div class="input-section">
+      <h3>Books of Accounts — TDS Receivable Entries</h3>
+
+      <div class="csv-upload" onclick="document.getElementById('fileInputBooks').click()">
+        <div class="icon">📂</div>
+        <p>Upload Excel (.xlsx) or CSV — Columns: Party Name, TAN No, TDS Amount</p>
+        <p style="color:var(--accent);margin-top:6px;font-size:10px;">CLICK TO UPLOAD EXCEL / CSV</p>
+      </div>
+      <input type="file" id="fileInputBooks" accept=".csv,.xlsx,.xls" onchange="loadFile(event,'books')">
+      <div class="hint">💡 Excel format: <strong>Party Name | TAN No | TDS Amount</strong> — Gross amount not required</div>
+
+      <div class="or-div">OR ENTER MANUALLY</div>
+
+      <div id="formBooks">
+        <div class="field-row">
+          <div class="field">
+            <label>Party Name *</label>
+            <input type="text" id="b_name" placeholder="ABC Pvt Ltd">
+          </div>
+          <div class="field">
+            <label>Party PAN</label>
+            <input type="text" id="b_pan" placeholder="AAAPL1234C" maxlength="10" style="text-transform:uppercase">
+          </div>
+        </div>
+        <div class="field-row three">
+          <div class="field">
+            <label>Section *</label>
+            <select id="b_section">
+              <option value="">Select</option>
+              <option>194C</option><option>194J</option><option>194I</option>
+              <option>194H</option><option>194B</option><option>194D</option>
+              <option>194A</option><option>192</option><option>206C</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Quarter</label>
+            <select id="b_quarter">
+              <option>Q1</option><option>Q2</option><option>Q3</option><option selected>Q4</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Nature of Payment</label>
+            <input type="text" id="b_nature" placeholder="Professional Fees">
+          </div>
+        </div>
+        <div class="field-row full">
+          <div class="field">
+            <label>TDS Amount (₹) *</label>
+            <input type="number" id="b_tds" placeholder="10000">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="addEntry('books')">+ Add to Books</button>
+          <button class="btn btn-secondary" onclick="clearForm('books')">Clear</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table class="entry-table" id="tableBooks">
+          <thead>
+            <tr>
+              <th>#</th><th>Party</th><th>TAN</th><th>Section</th><th>Qtr</th><th>TDS Amt</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyBooks"><tr><td colspan="7" style="text-align:center;color:var(--text3);padding:20px;">No entries yet</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;margin-top:16px;">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Next: Reconcile →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: Results -->
+  <div class="panel" id="panel3">
+    <div class="reconcile-bar">
+      <div class="counts">
+        26AS: <span id="cnt26">0</span> entries &nbsp;|&nbsp;
+        Books: <span id="cntBooks">0</span> entries
+      </div>
+
+      <!-- Matching Mode -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.5px;">MATCHING MODE</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="radio" name="matchMode" value="normal" checked onchange="modeChanged()"> Normal
+          </label>
+          <label style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--accent2);">
+            <input type="radio" name="matchMode" value="dividend" onchange="modeChanged()"> Dividend TDS
+          </label>
+          <label style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="radio" name="matchMode" value="amount" onchange="modeChanged()"> Amount Only
+          </label>
+        </div>
+        <div id="modeHint" style="font-family:var(--mono);font-size:10px;color:var(--text3);display:none;max-width:300px;padding:6px 8px;background:rgba(47,108,200,0.08);border-left:2px solid var(--accent2)"></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="reconcile()" style="padding:12px 32px;font-size:14px;">⚡ RUN RECONCILIATION</button>
+      <button class="btn btn-secondary" onclick="goStep(1)">← Edit Data</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+</div>
+
+<script>
+  const data26 = [];
+  const dataBooks = [];
+  let entryId = 0;
+
+  function fmt(n) {
+    return '₹' + Number(n).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+
+  function goStep(n) {
+    document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i+1===n));
+    document.querySelectorAll('.step-tab').forEach((t,i) => {
+      t.classList.remove('active','done');
+      if(i+1 < n) t.classList.add('done');
+      if(i+1 === n) t.classList.add('active');
+    });
+    if(n===3) { document.getElementById('cnt26').textContent = data26.length; document.getElementById('cntBooks').textContent = dataBooks.length; }
+  }
+
+  function addEntry(type) {
+    const isA = type === 'as26';
+    const prefix = isA ? 'a_' : 'b_';
+    const name = document.getElementById(prefix+'name').value.trim();
+    const tds = parseFloat(document.getElementById(prefix+'tds').value);
+    const gross = isA ? parseFloat(document.getElementById('a_gross').value) : 0;
+    const section = document.getElementById(prefix+'section').value;
+
+    if(!name) { alert('Party/Deductor Name is required'); return; }
+    if(!tds) { alert('TDS amount is required'); return; }
+    if(isA && !gross) { alert('Gross amount is required for 26AS entries'); return; }
+
+    const entry = {
+      id: ++entryId,
+      name, section,
+      pan: document.getElementById(prefix+'pan').value.toUpperCase(),
+      quarter: document.getElementById(prefix+'quarter').value,
+      nature: document.getElementById(prefix+'nature').value,
+      gross, tds
+    };
+
+    if(isA) data26.push(entry);
+    else dataBooks.push(entry);
+
+    renderTable(type);
+    clearForm(type);
+  }
+
+  function removeEntry(type, id) {
+    const arr = type === 'as26' ? data26 : dataBooks;
+    const idx = arr.findIndex(e => e.id === id);
+    if(idx > -1) arr.splice(idx, 1);
+    renderTable(type);
+  }
+
+  function renderTable(type) {
+    const isA = type === 'as26';
+    const arr = isA ? data26 : dataBooks;
+    const tbody = document.getElementById(isA ? 'tbody26as' : 'tbodyBooks');
+    if(!arr.length) {
+      tbody.innerHTML = `<tr><td colspan="${isA?8:7}" style="text-align:center;color:var(--text3);padding:20px;">No entries yet</td></tr>`;
+      return;
+    }
+    if(isA) {
+      tbody.innerHTML = arr.map((e,i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td>${e.name}</td>
+          <td style="color:var(--accent)">${e.pan || '—'}</td>
+          <td>${e.section || '—'}</td>
+          <td>${e.quarter}</td>
+          <td class="amount">${fmt(e.gross)}</td>
+          <td class="amount">${fmt(e.tds)}</td>
+          <td><button class="btn btn-danger" onclick="removeEntry('${type}',${e.id})">✕</button></td>
+        </tr>`).join('');
+    } else {
+      tbody.innerHTML = arr.map((e,i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td>${e.name}</td>
+          <td style="color:var(--accent)">${e.tan || e.pan || '—'}</td>
+          <td>${e.section || '—'}</td>
+          <td>${e.quarter}</td>
+          <td class="amount">${fmt(e.tds)}</td>
+          <td><button class="btn btn-danger" onclick="removeEntry('${type}',${e.id})">✕</button></td>
+        </tr>`).join('');
+    }
+  }
+
+  function clearForm(type) {
+    const prefix = type === 'as26' ? 'a_' : 'b_';
+    const fields = type === 'as26' ? ['name','pan','section','nature','gross','tds'] : ['name','pan','section','nature','tds'];
+    fields.forEach(f => {
+      const el = document.getElementById(prefix+f);
+      if(!el) return;
+      if(el.tagName === 'SELECT') el.selectedIndex = 0;
+      else el.value = '';
+    });
+  }
+
+  function loadFile(event, type) {
+    const file = event.target.files[0];
+    if(!file) return;
+    const isExcel = file.name.match(/\.(xlsx|xls)$/i);
+    const isTxt   = file.name.match(/\.txt$/i);
+    const arr = type === 'as26' ? data26 : dataBooks;
+
+    if(isExcel) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+          let added = 0;
+
+          if(rows.length < 2) { alert('Excel file appears empty.'); return; }
+
+          // Try to detect headers from first row
+          const headerRow = rows[0].map(c => String(c).toLowerCase().replace(/\s+/g,' ').trim());
+
+          const fi = (kws) => headerRow.findIndex(h => kws.some(k => h.includes(k)));
+
+          let nameIdx  = fi(['name','party','deductor','assessee']);
+          let panIdx   = fi(['pan']);
+          let tanIdx   = fi(['tan no','tan']);
+          let secIdx   = fi(['section','nature']);
+          let grossIdx = fi(['gross','amount paid','total amount','amount credited','paid']);
+          let tdsIdx   = fi(['tds','tax deducted','tax ded','tds amount','tds deducted']);
+          let qtrIdx   = fi(['quarter','qtr']);
+
+          const headersDetected = nameIdx >= 0 || tdsIdx >= 0;
+
+          rows.forEach((cols, idx) => {
+            if(idx === 0) return;
+
+            let name, pan, tan, section, gross, tds, quarter, nature;
+
+            if(headersDetected) {
+              name    = nameIdx >= 0  ? String(cols[nameIdx]  || '').trim() : '';
+              pan     = panIdx >= 0   ? String(cols[panIdx]   || '').trim().toUpperCase() : '';
+              tan     = tanIdx >= 0   ? String(cols[tanIdx]   || '').trim().toUpperCase() : '';
+              section = secIdx >= 0   ? String(cols[secIdx]   || '').trim() : '';
+              gross   = grossIdx >= 0 ? parseFloat(String(cols[grossIdx] || '0').replace(/,/g,'')) || 0 : 0;
+              tds     = tdsIdx >= 0   ? parseFloat(String(cols[tdsIdx]   || '0').replace(/,/g,'')) || 0 : 0;
+              quarter = qtrIdx >= 0   ? String(cols[qtrIdx]   || 'Q4').trim() : 'Q4';
+              nature  = '';
+
+              if(!name && nameIdx < 0 && cols.length >= 1) name = String(cols[0] || '').trim();
+              if(!tds  && tdsIdx < 0  && cols.length >= 2) tds  = parseFloat(String(cols[1] || '0').replace(/,/g,'')) || 0;
+
+            } else {
+              // Positional: Name | TAN | Gross | TDS  (your format)
+              // Also handles legacy: Name | PAN | Section | Gross | TDS | Quarter
+              name = String(cols[0] || '').trim();
+              if(cols.length === 2) {
+                tds = parseFloat(String(cols[1] || '0').replace(/,/g,'')) || 0;
+                pan=''; tan=''; section=''; gross=tds; quarter='Q4'; nature='';
+              } else if(cols.length === 4) {
+                // Name | TAN | Gross | TDS  ← your exact format
+                tan     = String(cols[1] || '').trim().toUpperCase();
+                gross   = parseFloat(String(cols[2] || '0').replace(/,/g,'')) || 0;
+                tds     = parseFloat(String(cols[3] || '0').replace(/,/g,'')) || 0;
+                pan=''; section=''; quarter='Q4'; nature='';
+              } else {
+                pan     = String(cols[1] || '').trim().toUpperCase();
+                section = String(cols[2] || '').trim();
+                gross   = parseFloat(String(cols[3] || '0').replace(/,/g,'')) || 0;
+                tds     = parseFloat(String(cols[4] || '0').replace(/,/g,'')) || 0;
+                quarter = String(cols[5] || 'Q4').trim() || 'Q4';
+                nature  = String(cols[6] || '').trim();
+                tan = '';
+              }
+            }
+
+            if(!name) return;
+            if(name.toLowerCase().includes('total') || name.toLowerCase().includes('grand')) return;
+
+            // If TAN found in books, also use it as pan field for matching (26AS uses TAN as identifier)
+            const effectivePan = pan || tan || '';
+            arr.push({ id: ++entryId, name, pan: effectivePan, tan: tan||'', section: section||'', gross: gross||tds, tds, quarter: quarter||'Q4', nature: nature||'' });
+            added++;
+          });
+
+          renderTable(type);
+          alert(`✓ Loaded ${added} entries from Excel.\n\nColumns detected: ${headersDetected ? 'Auto (by header names)' : 'Positional (no headers found)'}\n\nPlease review the table to confirm TDS amounts are correct.`);
+        } catch(err) {
+          alert('Error reading Excel file.\n\n' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+
+    } else if(isTxt) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const text = e.target.result;
+        const lines = text.split('\n');
+        let added = 0;
+        let currentQuarter = 'Q4';
+        let currentPart = '';
+        let headerCols = [];
+        let nameIdx=-1, tanIdx=-1, grossIdx=-1, tdsIdx=-1, srIdx=-1;
+
+        // Extract quarter from file info lines at top
+        lines.slice(0,10).forEach(l => {
+          const qm = l.match(/Q([1-4])/i);
+          if(qm) currentQuarter = 'Q' + qm[1];
+          // Also try from FY lines
+          const fy = l.match(/2024-2025|2023-2024|2022-2023/);
+        });
+
+        lines.forEach((rawLine, lineNo) => {
+          const line = rawLine.trim();
+          if(!line) return;
+
+          // Detect Part headers e.g. ^PART-I^  ^PART-II^
+          if(line.match(/\^?PART[\s\-]*(I|II|III|IV|A|B|C)\^?/i)) {
+            currentPart = line;
+            headerCols = []; // reset headers for each part
+            return;
+          }
+
+          // Split by ^
+          const cols = line.split('^').map(c => c.replace(/\t/g,'').trim());
+
+          // Skip lines with too few columns
+          if(cols.length < 4) return;
+
+          const joined = cols.join(' ').toLowerCase();
+
+          // Detect header row — must contain "name" and ("amount" or "tds" or "tan")
+          if((joined.includes('name of deductor') || joined.includes('name of deductee')) &&
+             (joined.includes('amount') || joined.includes('tds') || joined.includes('tan'))) {
+            headerCols = cols.map(c => c.toLowerCase().replace(/\s+/g,' ').trim());
+
+            // Find column indices
+            const fi = (kws) => headerCols.findIndex(h => kws.some(k => h.includes(k)));
+            srIdx    = fi(['sr. no','sr no','s.no','sno']);
+            nameIdx  = fi(['name of deductor','name of deductee','name']);
+            tanIdx   = fi(['tan of deductor','tan','pan of deductor']);
+            grossIdx = fi(['total amount paid','amount paid','amount credited','gross']);
+            tdsIdx   = fi(['total tax deducted','tax deducted','tds deducted','total tds']);
+            return;
+          }
+
+          // Need header before processing data rows
+          if(!headerCols.length) return;
+
+          // Skip if Sr No is not numeric (sub-headers, blank separator rows)
+          if(srIdx >= 0) {
+            const srVal = (cols[srIdx] || '').trim();
+            if(!srVal || isNaN(Number(srVal))) return;
+          } else {
+            // If no sr column, skip rows where first non-empty col is not a number
+            const first = cols.find(c => c.trim());
+            if(first && isNaN(Number(first)) && !first.match(/^\d/)) return;
+          }
+
+          const name  = nameIdx >= 0 ? cols[nameIdx]  || '' : '';
+          const pan   = tanIdx >= 0  ? cols[tanIdx]   || '' : '';
+          const grossRaw = grossIdx >= 0 ? cols[grossIdx] || '0' : '0';
+          const tdsRaw   = tdsIdx >= 0   ? cols[tdsIdx]   || '0' : '0';
+
+          const gross = parseFloat(grossRaw.replace(/,/g,'')) || 0;
+          const tds   = parseFloat(tdsRaw.replace(/,/g,''))   || 0;
+
+          if(!name && !pan) return;
+          if(name.toLowerCase().includes('total')) return;
+
+          // Determine section from part context
+          let section = '';
+          if(currentPart.match(/PART[\s\-]*I\b/i) && !currentPart.match(/II|III/i)) section = 'TDS (Part-I)';
+          else if(currentPart.match(/PART[\s\-]*II/i)) section = 'TCS (Part-II)';
+          else if(currentPart.match(/PART[\s\-]*III/i)) section = 'Advance Tax (Part-III)';
+
+          arr.push({
+            id: ++entryId,
+            name: name || pan,
+            pan: pan.toUpperCase(),
+            section,
+            gross,
+            tds,
+            quarter: currentQuarter,
+            nature: ''
+          });
+          added++;
+        });
+
+        renderTable(type);
+        if(added === 0) {
+          alert(`⚠ Still could not parse entries.\n\nPlease paste the first 5 lines of your TXT file in the chat so the format can be fixed precisely.`);
+        } else {
+          alert(`✓ Loaded ${added} entries from TRACES 26AS TXT file.\n\nPlease review the table to confirm Name, Gross Amount and TDS columns are correct.`);
+        }
+      };
+      reader.readAsText(file);
+
+    } else {
+      // CSV
+      const reader = new FileReader();
+      reader.onload = e => {
+        const lines = e.target.result.split('\n').filter(l => l.trim());
+        let added = 0;
+        lines.forEach((line, idx) => {
+          if(idx === 0) return;
+          const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g,''));
+          if(cols.length < 2) return;
+          const entry = {
+            id: ++entryId,
+            name: cols[0] || '',
+            pan: (cols[1] || '').toUpperCase(),
+            section: cols[2] || '',
+            gross: parseFloat(cols[3]) || 0,
+            tds: parseFloat(cols[4]) || 0,
+            quarter: cols[5] || 'Q4',
+            nature: cols[6] || ''
+          };
+          if(entry.name) { arr.push(entry); added++; }
+        });
+        renderTable(type);
+        alert(`✓ Loaded ${added} entries from CSV`);
+      };
+      reader.readAsText(file);
+    }
+    event.target.value = '';
+  }
+
+  // Common suffixes to strip for better name matching
+  const STRIP_WORDS = ['private','pvt','limited','ltd','llp','llc','inc','co','company',
+    'corporation','corp','enterprises','enterprise','and','&','the','of','india','indian'];
+
+  function normalize(str) {
+    return (str || '').toLowerCase().replace(/[^a-z0-9]/g,' ').trim();
+  }
+
+  function normalizeName(str) {
+    let s = (str || '').toLowerCase();
+    // Remove punctuation
+    s = s.replace(/[^a-z0-9\s]/g, ' ');
+    // Remove common suffixes
+    STRIP_WORDS.forEach(w => {
+      s = s.replace(new RegExp(`\\b${w}\\b`, 'g'), ' ');
+    });
+    // Collapse spaces and sort words for order-independent matching
+    return s.replace(/\s+/g,' ').trim().split(' ').filter(Boolean).sort().join(' ');
+  }
+
+  function nameSimilarity(a, b) {
+    const na = normalizeName(a);
+    const nb = normalizeName(b);
+    if(!na || !nb) return 0;
+    if(na === nb) return 1.0;
+
+    // Token overlap score
+    const ta = new Set(na.split(' ').filter(w => w.length > 1));
+    const tb = new Set(nb.split(' ').filter(w => w.length > 1));
+    if(ta.size === 0 || tb.size === 0) return 0;
+    let overlap = 0;
+    ta.forEach(w => { if(tb.has(w)) overlap++; });
+    const score = overlap / Math.max(ta.size, tb.size);
+
+    // Also check if one contains the other (after stripping)
+    const ra = normalize(a).replace(/\s/g,'');
+    const rb = normalize(b).replace(/\s/g,'');
+    if(ra.includes(rb) || rb.includes(ra)) return Math.max(score, 0.7);
+
+    return score;
+  }
+
+  function modeChanged() {
+    const mode = document.querySelector('input[name="matchMode"]:checked').value;
+    const hint = document.getElementById('modeHint');
+    const msgs = {
+      normal:   null,
+      dividend: 'Dividend mode: Ignores party name completely. Matches 26AS company name (e.g. Reliance) to Books entry (e.g. TDS on Dividend) using TDS amount + quarter only. ⚠ If same TDS amount appears for multiple companies, those will be flagged for manual review.',
+      amount:   'Amount Only mode: Matches purely by TDS amount + quarter. Use when names are completely different across all entries.'
+    };
+    hint.style.display = mode === 'normal' ? 'none' : 'block';
+    if(msgs[mode]) hint.textContent = msgs[mode];
+  }
+
+  function reconcile() {
+    if(!data26.length && !dataBooks.length) {
+      alert('Please add entries in both 26AS and Books first.');
+      return;
+    }
+
+    const mode = document.querySelector('input[name="matchMode"]:checked').value;
+    const matched = [], unmatched26 = [], unmatchedBooks = [], partial = [];
+    const booksUsed = new Set();
+
+    // Pre-compute duplicate TDS amounts in Books for dividend/amount modes
+    // so we can warn user when same amount matches multiple 26AS entries
+    const booksTdsCount = {};
+    dataBooks.forEach(b => {
+      const k = String(Math.round(b.tds)) + '_' + (b.quarter||'');
+      booksTdsCount[k] = (booksTdsCount[k]||0) + 1;
+    });
+
+    data26.forEach(a => {
+      let bestMatch = null;
+      let bestScore = 0;
+
+      dataBooks.forEach((b, bi) => {
+        if(booksUsed.has(bi)) return;
+        let score = 0;
+        let sim = 0;
+
+        if(mode === 'normal') {
+          // ── NORMAL MODE ─────────────────────────────────────────────
+          // PAN/TAN exact match (50 pts) — TAN from 26AS matches TAN in books
+          const tanMatch = (a.tan && b.tan && a.tan === b.tan) ||
+                           (a.tan && b.pan && a.tan === b.pan) ||
+                           (a.pan && b.tan && a.pan === b.tan) ||
+                           (a.pan && b.pan && a.pan === b.pan);
+          if(tanMatch) score += 50;
+
+          // Smart name matching (up to 40 pts)
+          sim = nameSimilarity(a.name, b.name);
+          score += Math.round(sim * 40);
+
+          // Section match (15 pts)
+          if(a.section && b.section && a.section === b.section) score += 15;
+
+          // Quarter match (10 pts)
+          if(a.quarter === b.quarter) score += 10;
+
+          // TDS amount match (25 pts exact/within ₹10, 12 pts within 5%)
+          if(Math.abs(a.tds - b.tds) <= 10) score += 25;
+          else if(a.tds > 0 && b.tds > 0 && Math.abs(a.tds - b.tds) / Math.max(a.tds, b.tds) < 0.05) score += 12;
+
+          // Gross amount match (10 pts)
+          if(a.gross > 0 && b.gross > 0 && Math.abs(a.gross - b.gross) < 1) score += 10;
+
+          // Must have name similarity OR PAN match
+          const minOk = (a.pan && b.pan && a.pan === b.pan) || sim >= 0.4;
+          if(!minOk || score < 25) return;
+
+        } else {
+          // ── DIVIDEND / AMOUNT-ONLY MODE ──────────────────────────────
+          // Amount is the primary signal — name is irrelevant
+          // TDS amount exact (65 pts) — within ₹10 acceptable
+          if(Math.abs(a.tds - b.tds) <= 10) score += 65;
+          else if(a.tds > 0 && b.tds > 0 && Math.abs(a.tds - b.tds) / Math.max(a.tds, b.tds) < 0.02) score += 30;
+          else return; // In these modes, amount must roughly match
+
+          // Quarter match (25 pts)
+          if(a.quarter === b.quarter) score += 25;
+
+          // Bonus: narration contains company name that matches 26AS (10 pts)
+          const narr = (b.narration || b.name || '').toLowerCase();
+          const aWords = normalizeName(a.name).split(' ').filter(w => w.length > 3);
+          const narratMatch = aWords.some(w => narr.includes(w));
+          if(narratMatch) score += 10;
+
+          // Section match (5 pts bonus)
+          if(a.section && b.section && a.section === b.section) score += 5;
+
+          if(score < 60) return;
+        }
+
+        if(score > bestScore) {
+          bestScore = score;
+          bestMatch = { entry: b, idx: bi, score, nameSim: sim };
+        }
+      });
+
+      if(bestMatch) {
+        booksUsed.add(bestMatch.idx);
+        const b = bestMatch.entry;
+        const tdsDiff   = a.tds - b.tds;
+        const grossDiff = a.gross - b.gross;
+        const nameDiff  = bestMatch.nameSim < 0.9;
+
+        // Flag if this books entry's amount was shared by multiple 26AS entries
+        const dupKey = String(Math.round(b.tds)) + '_' + (b.quarter||'');
+        const isDuplicate = (mode !== 'normal') && booksTdsCount[dupKey] > 1;
+
+        const row = { as26: a, books: b, tdsDiff, grossDiff, nameDiff,
+                      nameSim: bestMatch.nameSim, mode, isDuplicate };
+
+        // Match decision based on TDS only — difference up to ₹10 is acceptable
+        if(Math.abs(tdsDiff) <= 10) matched.push(row);
+        else partial.push(row);
+      } else {
+        unmatched26.push(a);
+      }
+    });
+
+    dataBooks.forEach((b, bi) => {
+      if(!booksUsed.has(bi)) unmatchedBooks.push(b);
+    });
+
+    // Calculate totals
+    const totalTDS26 = data26.reduce((s,e)=>s+e.tds,0);
+    const totalTDSBooks = dataBooks.reduce((s,e)=>s+e.tds,0);
+    const totalDiff = totalTDS26 - totalTDSBooks;
+
+    let html = `
+    <div class="summary-cards">
+      <div class="summary-card matched">
+        <div class="label">Matched</div>
+        <div class="value">${matched.length}</div>
+        <div class="sub">${fmt(matched.reduce((s,e)=>s+e.as26.tds,0))} TDS</div>
+      </div>
+      <div class="summary-card partial">
+        <div class="label">Partial / Amount Diff</div>
+        <div class="value">${partial.length}</div>
+        <div class="sub">${fmt(partial.reduce((s,e)=>s+Math.abs(e.tdsDiff),0))} variance</div>
+      </div>
+      <div class="summary-card unmatched26">
+        <div class="label">Only in 26AS</div>
+        <div class="value">${unmatched26.length}</div>
+        <div class="sub">${fmt(unmatched26.reduce((s,e)=>s+e.tds,0))} TDS</div>
+      </div>
+      <div class="summary-card unmatchedbooks">
+        <div class="label">Only in Books</div>
+        <div class="value">${unmatchedBooks.length}</div>
+        <div class="sub">${fmt(unmatchedBooks.reduce((s,e)=>s+e.tds,0))} TDS</div>
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <span>Reconciliation complete — ${data26.length + dataBooks.length} total entries processed</span>
+      <button class="btn btn-secondary" onclick="exportXLSX()" style="background:var(--ok);color:#000;border:none;">⬇ Export to Excel</button>
+    </div>
+
+    <!-- Dashboard -->
+    <div style="background:var(--surface);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px;border-radius:6px;box-shadow:var(--shadow);">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:0.5px;margin-bottom:16px;font-weight:600;text-transform:uppercase;">RECONCILIATION DASHBOARD</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:16px;border-radius:4px;overflow:hidden;">
+        <div style="background:var(--surface);padding:16px;">
+          <div style="font-size:10px;color:var(--text3);letter-spacing:0.5px;margin-bottom:6px;font-weight:600;text-transform:uppercase;">TOTAL TDS — 26AS</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--accent)">${fmt(totalTDS26)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">${data26.length} entries</div>
+        </div>
+        <div style="background:var(--surface);padding:16px;">
+          <div style="font-size:10px;color:var(--text3);letter-spacing:0.5px;margin-bottom:6px;font-weight:600;text-transform:uppercase;">TOTAL TDS — BOOKS</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text)">${fmt(totalTDSBooks)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">${dataBooks.length} entries</div>
+        </div>
+        <div style="background:var(--surface);padding:16px;">
+          <div style="font-size:10px;color:var(--text3);letter-spacing:0.5px;margin-bottom:6px;font-weight:600;text-transform:uppercase;">NET DIFFERENCE</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:${Math.abs(totalDiff)<1?'var(--ok)':'var(--warn)'}">${totalDiff>=0?'+':''}${fmt(totalDiff)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">${Math.abs(totalDiff)<1?'✓ Balanced':totalDiff>0?'26AS higher':'Books higher'}</div>
+        </div>
+        <div style="background:var(--surface);padding:16px;">
+          <div style="font-size:10px;color:var(--text3);letter-spacing:0.5px;margin-bottom:6px;font-weight:600;text-transform:uppercase;">MATCH RATE</div>
+          <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:${matched.length/Math.max(data26.length,1)>0.8?'var(--ok)':'var(--warn)'}">${Math.round(matched.length/Math.max(data26.length,1)*100)}%</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">${matched.length} of ${data26.length} matched</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;">
+          <div style="width:10px;height:10px;background:var(--ok);border-radius:2px;flex-shrink:0"></div>
+          <div><div style="color:var(--text);font-weight:500">${matched.length} Matched</div><div style="color:var(--text3);font-size:11px;font-family:var(--mono)">${fmt(matched.reduce((s,e)=>s+e.as26.tds,0))}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;">
+          <div style="width:10px;height:10px;background:var(--purple);border-radius:2px;flex-shrink:0"></div>
+          <div><div style="color:var(--text);font-weight:500">${partial.length} Amt Diff</div><div style="color:var(--text3);font-size:11px;font-family:var(--mono)">${fmt(partial.reduce((s,e)=>s+Math.abs(e.tdsDiff),0))} variance</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;">
+          <div style="width:10px;height:10px;background:var(--danger);border-radius:2px;flex-shrink:0"></div>
+          <div><div style="color:var(--text);font-weight:500">${unmatched26.length} Only 26AS</div><div style="color:var(--text3);font-size:11px;font-family:var(--mono)">${fmt(unmatched26.reduce((s,e)=>s+e.tds,0))}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;">
+          <div style="width:10px;height:10px;background:var(--warn);border-radius:2px;flex-shrink:0"></div>
+          <div><div style="color:var(--text);font-weight:500">${unmatchedBooks.length} Only Books</div><div style="color:var(--text3);font-size:11px;font-family:var(--mono)">${fmt(unmatchedBooks.reduce((s,e)=>s+e.tds,0))}</div></div>
+        </div>
+      </div>
+    </div>
+    `;
+
+    // Matched Table
+    if(matched.length) {
+      html += `<div class="results-section matched">
+        <h3>✓ MATCHED ENTRIES <span style="font-size:10px;opacity:0.7">${matched.length} entries</span></h3>
+        <div class="table-wrap"><table class="results-table">
+          <thead><tr><th>26AS Name</th><th>Books Name</th><th>TAN</th><th>Section</th><th>Qtr</th><th>26AS Gross</th><th>Books Gross</th><th>26AS TDS</th><th>Books TDS</th><th>Status</th></tr></thead>
+          <tbody>${matched.map(r=>`
+            <tr>
+              <td>${r.as26.name}</td>
+              <td>
+                ${r.books.name}
+                ${r.mode !== 'normal' ? `<br><span style="font-size:9px;color:var(--accent2)">⚡ Matched by amount</span>` :
+                  r.nameDiff ? `<br><span style="font-size:9px;color:var(--warn)">⚠ ${Math.round(r.nameSim*100)}% name match</span>` : ''}
+                ${r.isDuplicate ? `<br><span style="font-size:9px;color:#ef4444;font-weight:600">⚠ VERIFY — same TDS amount in multiple books entries</span>` : ''}
+              </td>
+              <td style="color:var(--accent);font-family:var(--mono);font-size:11px">${r.as26.tan || r.books.tan || r.as26.pan || r.books.pan || '—'}</td>
+              <td>${r.as26.section || r.books.section || '—'}</td>
+              <td>${r.as26.quarter}</td>
+              <td class="amount-ok">${fmt(r.as26.gross)}</td>
+              <td class="amount-ok">${fmt(r.books.gross)}</td>
+              <td class="amount-ok">${fmt(r.as26.tds)}</td>
+              <td class="amount-ok">${fmt(r.books.tds)}</td>
+              <td>${r.isDuplicate ? '<span class="tag tag-purple">VERIFY</span>' : '<span class="tag tag-ok">MATCHED</span>'}</td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+      </div>`;
+    }
+
+    // Partial Table
+    if(partial.length) {
+      html += `<div class="results-section partial">
+        <h3>⚠ AMOUNT DIFFERENCES <span style="font-size:10px;opacity:0.7">${partial.length} entries</span></h3>
+        <div class="table-wrap"><table class="results-table">
+          <thead><tr><th>26AS Name</th><th>Books Name</th><th>TAN</th><th>Section</th><th>Qtr</th><th>26AS TDS</th><th>Books TDS</th><th>TDS Diff</th><th>Gross Diff</th><th>Remark</th></tr></thead>
+          <tbody>${partial.map(r=>`
+            <tr>
+              <td>${r.as26.name}</td>
+              <td>
+                ${r.books.name}
+                ${r.mode !== 'normal' ? `<br><span style="font-size:9px;color:var(--accent2)">⚡ Matched by amount</span>` :
+                  r.nameDiff ? `<br><span style="font-size:9px;color:var(--warn)">⚠ ${Math.round(r.nameSim*100)}% name match</span>` : ''}
+                ${r.isDuplicate ? `<br><span style="font-size:9px;color:#ef4444;font-weight:600">⚠ VERIFY — same TDS amount in multiple books entries</span>` : ''}
+              </td>
+              <td style="color:var(--accent);font-family:var(--mono);font-size:11px">${r.as26.tan || r.books.tan || r.as26.pan || r.books.pan || '—'}</td>
+              <td>${r.as26.section || r.books.section || '—'}</td>
+              <td>${r.as26.quarter}</td>
+              <td>${fmt(r.as26.tds)}</td>
+              <td>${fmt(r.books.tds)}</td>
+              <td class="diff-val">${r.tdsDiff >= 0 ? '+' : ''}${fmt(r.tdsDiff)}</td>
+              <td class="diff-val">${r.grossDiff >= 0 ? '+' : ''}${fmt(r.grossDiff)}</td>
+              <td>${r.isDuplicate ? '<span class="tag tag-purple">VERIFY</span>' : '<span class="tag tag-purple">REVIEW</span>'}</td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+      </div>`;
+    }
+
+    // Only in 26AS
+    if(unmatched26.length) {
+      html += `<div class="results-section unmatched26">
+        <h3>✗ ONLY IN 26AS — Not in Books <span style="font-size:10px;opacity:0.7">${unmatched26.length} entries</span></h3>
+        <div class="hint" style="margin-bottom:8px;">These entries appear in 26AS but have no matching entry in your books. TDS credit may be missed or not yet booked.</div>
+        <div class="table-wrap"><table class="results-table">
+          <thead><tr><th>Deductor</th><th>PAN</th><th>Section</th><th>Qtr</th><th>Gross Amount</th><th>TDS Amount</th><th>Nature</th></tr></thead>
+          <tbody>${unmatched26.map(e=>`
+            <tr>
+              <td>${e.name}</td>
+              <td style="color:var(--accent)">${e.pan || '—'}</td>
+              <td>${e.section || '—'}</td>
+              <td>${e.quarter}</td>
+              <td>${fmt(e.gross)}</td>
+              <td class="amount-danger">${fmt(e.tds)}</td>
+              <td>${e.nature || '—'}</td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+      </div>`;
+    }
+
+    // Only in Books
+    if(unmatchedBooks.length) {
+      html += `<div class="results-section unmatchedbooks">
+        <h3>! ONLY IN BOOKS — Not in 26AS <span style="font-size:10px;opacity:0.7">${unmatchedBooks.length} entries</span></h3>
+        <div class="hint" style="margin-bottom:8px;">These are booked in your accounts but not reflecting in 26AS. Deductor may not have deposited TDS or filed returns.</div>
+        <div class="table-wrap"><table class="results-table">
+          <thead><tr><th>Party</th><th>PAN</th><th>Section</th><th>Qtr</th><th>Gross Amount</th><th>TDS Amount</th><th>Nature</th></tr></thead>
+          <tbody>${unmatchedBooks.map(e=>`
+            <tr>
+              <td>${e.name}</td>
+              <td style="color:var(--accent)">${e.pan || '—'}</td>
+              <td>${e.section || '—'}</td>
+              <td>${e.quarter}</td>
+              <td>${fmt(e.gross)}</td>
+              <td style="color:var(--warn)">${fmt(e.tds)}</td>
+              <td>${e.nature || '—'}</td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+      </div>`;
+    }
+
+    if(!matched.length && !partial.length && !unmatched26.length && !unmatchedBooks.length) {
+      html = `<div class="empty-state"><div class="icon">📊</div><h3>No data to reconcile</h3><p>Please add entries in Step 1 and Step 2 first.</p></div>`;
+    }
+
+    document.getElementById('results').innerHTML = html;
+    window._reconResults = { matched, partial, unmatched26, unmatchedBooks };
+  }
+
+  function exportXLSX() {
+    const r = window._reconResults;
+    if(!r) return;
+
+    const wb = XLSX.utils.book_new();
+
+    // Sheet 1 — Matched
+    const matchedRows = [['Status','26AS Name','Books Name','TAN','Section','Quarter','26AS Gross','Books Gross','26AS TDS','Books TDS','TDS Diff','Gross Diff','Match Type','Note']];
+    r.matched.forEach(e => matchedRows.push([
+      'MATCHED', e.as26.name, e.books.name,
+      e.as26.tan || e.books.tan || e.as26.pan || e.books.pan || '',
+      e.as26.section || e.books.section, e.as26.quarter,
+      e.as26.gross, e.books.gross, e.as26.tds, e.books.tds, 0, 0,
+      e.mode !== 'normal' ? 'Amount Match' : e.nameDiff ? 'Fuzzy Name' : 'Exact',
+      e.isDuplicate ? 'VERIFY — duplicate amount' : ''
+    ]));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(matchedRows), 'Matched');
+
+    // Sheet 2 — Amount Differences
+    const partialRows = [['Status','26AS Name','Books Name','TAN','Section','Quarter','26AS TDS','Books TDS','TDS Diff','Gross Diff','Match Type','Note']];
+    r.partial.forEach(e => partialRows.push([
+      'AMOUNT_DIFF', e.as26.name, e.books.name,
+      e.as26.tan || e.books.tan || e.as26.pan || e.books.pan || '',
+      e.as26.section || e.books.section, e.as26.quarter,
+      e.as26.tds, e.books.tds, e.tdsDiff.toFixed(2), e.grossDiff.toFixed(2),
+      e.mode !== 'normal' ? 'Amount Match' : e.nameDiff ? 'Fuzzy Name' : 'Exact',
+      e.isDuplicate ? 'VERIFY — duplicate amount' : ''
+    ]));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(partialRows), 'Amount Differences');
+
+    // Sheet 3 — Only in 26AS
+    const only26Rows = [['Status','Deductor Name','TAN','Section','Quarter','Gross Amount','TDS Amount','Nature']];
+    r.unmatched26.forEach(e => only26Rows.push([
+      'ONLY_IN_26AS', e.name, e.tan || e.pan || '', e.section, e.quarter, e.gross, e.tds, e.nature || ''
+    ]));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(only26Rows), 'Only in 26AS');
+
+    // Sheet 4 — Only in Books
+    const onlyBooksRows = [['Status','Party Name','TAN','Section','Quarter','Gross Amount','TDS Amount']];
+    r.unmatchedBooks.forEach(e => onlyBooksRows.push([
+      'ONLY_IN_BOOKS', e.name, e.tan || e.pan || '', e.section, e.quarter, e.gross, e.tds
+    ]));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(onlyBooksRows), 'Only in Books');
+
+    // Sheet 5 — Summary
+    const totalTDS26    = [...r.matched, ...r.partial, ...r.unmatched26].reduce((s,e)=>s+(e.as26?.tds||e.tds||0),0);
+    const totalTDSBooks = [...r.matched, ...r.partial, ...r.unmatchedBooks].reduce((s,e)=>s+(e.books?.tds||e.tds||0),0);
+    const summaryRows = [
+      ['26AS TDS Reconciliation Summary'],[''],
+      ['Category','Count','TDS Amount'],
+      ['Matched', r.matched.length, r.matched.reduce((s,e)=>s+e.as26.tds,0)],
+      ['Amount Differences', r.partial.length, r.partial.reduce((s,e)=>s+e.as26.tds,0)],
+      ['Only in 26AS', r.unmatched26.length, r.unmatched26.reduce((s,e)=>s+e.tds,0)],
+      ['Only in Books', r.unmatchedBooks.length, r.unmatchedBooks.reduce((s,e)=>s+e.tds,0)],
+      [''],
+      ['Total TDS as per 26AS', '', totalTDS26],
+      ['Total TDS as per Books', '', totalTDSBooks],
+      ['Net Difference', '', totalTDS26 - totalTDSBooks],
+    ];
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summaryRows), 'Summary');
+
+    XLSX.writeFile(wb, '26AS_Reconciliation.xlsx');
+  }
+</script>
+</body>
+</html>

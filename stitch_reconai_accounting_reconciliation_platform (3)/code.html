@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ReconAI — Pricing &amp; Plans</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#07090e',
+            deepslate: '#0b0f17',
+            surface: 'rgba(15, 23, 42, 0.65)',
+            glowCyan: '#00f0ff',
+            glowMint: '#10b981',
+            brandBlue: '#0077ff',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 45px -10px rgba(0, 240, 255, 0.22)',
+            'glow-card': '0 0 35px -5px rgba(0, 229, 255, 0.12)',
+            'pill': '0 2px 10px rgba(0, 0, 0, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Global Atmospheric Styles -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+  </style>
+<!-- Ethereal Fog & Ambient Lighting Style -->
+<style data-purpose="ambient-lighting">
+    .ambient-glow-cyan {
+      background: radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.08) 0%, rgba(0, 119, 255, 0.03) 45%, transparent 70%);
+      pointer-events: none;
+    }
+    .ambient-glow-sage {
+      background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.06) 0%, rgba(6, 78, 59, 0.02) 50%, transparent 75%);
+      pointer-events: none;
+    }
+    .card-glass {
+      background: rgba(13, 19, 32, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .card-glass-active {
+      background: rgba(14, 22, 38, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+    }
+    .table-row-hover:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+  </style>
+</head>
+<body class="bg-[#07090e] text-slate-200 antialiased selection:bg-cyan-500/20 selection:text-cyan-300 min-h-screen relative">
+<!-- Ambient Backdrop Lights -->
+<div class="fixed inset-0 ambient-glow-cyan z-0"></div>
+<div class="fixed inset-0 ambient-glow-sage z-0"></div>
+<!-- Subtle Grid Lines overlay inspired by Asset Defense interface -->
+<div class="fixed inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.1),rgba(255,255,255,0))] pointer-events-none z-0"></div>
+<!-- BEGIN: SiteHeader -->
+<header class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#07090e]/80 backdrop-blur-xl transition-all">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<!-- Brand Logo using provided Vector Asset from IMAGE_9 -->
+<a class="flex items-center gap-3 group" href="#" title="ReconAI — Autonomous Financial Reconciliation">
+<div class="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-cyan-500/10 border border-cyan-500/20 group-hover:border-cyan-400/50 transition-all flex items-center justify-center bg-[#0b1120]">
+<!-- ReconAI Neural Blossom SVG Vector Mark -->
+<svg class="w-11 h-11 translate-y-[2px]" fill="none" viewbox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(160, 95) scale(0.95)">
+<g fill="none" opacity="0.9" stroke="#0077ff" stroke-width="2.5">
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(0)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(45)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(90)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(135)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(180)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(225)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(270)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(315)"></path>
+</g>
+<g fill="#00e5ff">
+<circle cx="0" cy="-62" r="3.5" transform="rotate(0)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(45)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(90)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(135)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(180)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(225)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(270)"></circle>
+<circle cx="0" cy="-62" r="3.5" transform="rotate(315)"></circle>
+</g>
+<g fill="none" stroke="#00e5ff" stroke-linecap="round" stroke-width="2.6">
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(0)"></path>
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(60)"></path>
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(120)"></path>
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(180)"></path>
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(240)"></path>
+<path d="M0,-12 A16,16 0 0,1 18,-6" transform="rotate(300)"></path>
+</g>
+<circle cx="0" cy="0" fill="#00f0ff" r="3.5"></circle>
+</g>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold tracking-[0.2em] text-white group-hover:text-cyan-400 transition-colors">RECON<span class="text-cyan-400">AI</span></span>
+<span class="text-[9px] uppercase tracking-wider text-slate-500 -mt-1 font-medium">Financial Defense</span>
+</div>
+</a>
+<!-- Central Nav Pill Bar (Harmonized with Asset Defense UI in IMAGE_10) -->
+<nav class="hidden md:flex items-center px-4 py-1.5 rounded-full bg-slate-900/70 border border-white/10 shadow-lg text-sm text-slate-400 space-x-1" data-purpose="primary-navigation">
+<a class="px-3 py-1 hover:text-white rounded-full transition-colors text-xs font-medium" href="#home">Home</a>
+<a class="px-3 py-1 hover:text-white rounded-full transition-colors text-xs font-medium" href="#gst-recon">GST Recon</a>
+<a class="px-3 py-1 hover:text-white rounded-full transition-colors text-xs font-medium" href="#tax-recon">Tax Recon</a>
+<a class="px-3 py-1 hover:text-white rounded-full transition-colors text-xs font-medium" href="#bank-recon">Bank Recon</a>
+<a class="px-3.5 py-1 text-white bg-slate-800 rounded-full border border-cyan-500/30 text-xs font-medium shadow-sm" href="#pricing">Pricing</a>
+<a class="px-3 py-1 hover:text-white rounded-full transition-colors text-xs font-medium" href="#faq">FAQ</a>
+<a class="inline-flex items-center gap-1 px-3 py-1 text-cyan-400 hover:text-cyan-300 rounded-full transition-colors text-xs font-medium" href="#protection">
+          Protection <span class="text-[10px]">↗</span>
+</a>
+</nav>
+<!-- Right Action CTA -->
+<div class="flex items-center gap-4">
+<a class="text-xs font-medium text-slate-300 hover:text-white transition-colors hidden sm:block" href="#signin">Sign In</a>
+<a class="px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-950 hover:bg-cyan-300 hover:shadow-glow-cyan transition-all duration-300 flex items-center gap-1.5 shadow-md" href="#trial">
+<span>Start Free Trial</span>
+</a>
+</div>
+</div>
+</header>
+<!-- END: SiteHeader -->
+<!-- BEGIN: MainContent -->
+<main class="relative z-10">
+<!-- Hero Header with Toggle (Modeled after x.ai/pricing) -->
+<section class="pt-16 pb-12 text-center max-w-4xl mx-auto px-4 sm:px-6">
+<!-- Tag Pill -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-cyan-950/20 text-cyan-300 text-xs font-medium mb-6 backdrop-blur-md">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+<span>Firm-Ready Audit Intelligence</span>
+</div>
+<!-- Main Title with Soft Atmosphere -->
+<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-4">
+        Pricing
+      </h1>
+<p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto mb-10 font-normal">
+        Start free. Scale your CA firm’s audit intelligence as you grow.
+      </p>
+<!-- Segmented Switcher Pill (matches x.ai "Individual | Team | API" style) -->
+<div class="inline-flex p-1 rounded-full bg-slate-900/90 border border-slate-800 shadow-inner max-w-xs sm:max-w-md mx-auto" data-purpose="plan-toggle" role="tablist">
+<button class="px-5 py-2 rounded-full text-xs font-medium text-white bg-slate-800 border border-white/10 shadow-sm transition-all">
+          CA Firms &amp; Teams
+        </button>
+<button class="px-4 py-2 rounded-full text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors">
+          Solo Practitioners
+        </button>
+<button class="px-4 py-2 rounded-full text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors">
+          Enterprise API
+        </button>
+</div>
+</section>
+<!-- BEGIN: PricingCardsSection -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+<!-- CARD 1: Starter / Free Tier -->
+<div class="card-glass rounded-3xl p-7 lg:p-8 flex flex-col justify-between hover:border-slate-700 transition-all duration-300" data-purpose="pricing-card">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold text-white">Starter</h3>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Trial</span>
+</div>
+<div class="mb-4">
+<span class="text-4xl font-bold text-white tracking-tight">₹0</span>
+<span class="text-slate-400 text-xs font-medium ml-1">/ month</span>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed min-h-[40px] mb-6">
+              For boutique firms evaluating autonomous ledger reconciliation and fast GSTR sanity checks.
+            </p>
+<div class="w-full h-px bg-slate-800/80 mb-6"></div>
+<!-- Features List -->
+<ul class="space-y-3.5 text-xs text-slate-300 mb-8 font-normal">
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Up to 3 active client entities</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>1,500 invoice rows / month</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Basic GSTR-2B vs Books matching</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Standard CSV &amp; Excel report export</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>SOC 2 Type II compliant storage</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Community &amp; Knowledge Base support</span>
+</li>
+</ul>
+</div>
+<!-- Bottom Action Button -->
+<a class="w-full py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900/40 text-xs font-semibold text-white text-center hover:bg-slate-800 transition-all" href="#signup">
+            Get Started Free
+          </a>
+</div>
+<!-- CARD 2: Pro Firm (Featured / Most Popular) -->
+<div class="card-glass-active rounded-3xl p-7 lg:p-8 flex flex-col justify-between shadow-glow-cyan relative overflow-hidden transition-all duration-300" data-purpose="pricing-card-featured">
+<!-- Subtle Accent corner light -->
+<div class="absolute -top-16 -right-16 w-36 h-36 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold text-white flex items-center gap-2">
+                Pro Firm
+              </h3>
+<span class="text-[11px] font-medium tracking-wide uppercase px-2.5 py-0.5 rounded-full bg-cyan-400/10 text-cyan-300 border border-cyan-400/30">
+                Most Popular
+              </span>
+</div>
+<div class="mb-4">
+<span class="text-4xl font-bold text-white tracking-tight">₹4,999</span>
+<span class="text-slate-400 text-xs font-medium ml-1">/ month</span>
+<div class="text-[10px] text-cyan-400 mt-1">Billed annually, or ₹5,999/mo monthly</div>
+</div>
+<p class="text-xs text-slate-300 leading-relaxed min-h-[40px] mb-6">
+              Full neural engine power with Gemini 1.5 Pro fuzzy reconciliation, OCR parsing, and bank cross-matching.
+            </p>
+<div class="w-full h-px bg-cyan-500/20 mb-6"></div>
+<!-- Features List -->
+<ul class="space-y-3.5 text-xs text-slate-200 mb-8">
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span class="font-medium text-white">Gemini 1.5 Pro fuzzy invoice matcher</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Up to 25 active client companies</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>50,000 invoice rows / month</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>3-way Tax Recon (AIS + 26AS + Books)</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Bank statement OCR &amp; narration parser</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Instant discrepancy &amp; invoice prefix auto-resolver</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>SHA-256 Audit Trail certification stamp</span>
+</li>
+</ul>
+</div>
+<!-- Solid Prominent CTA -->
+<a class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-cyan-300 text-slate-950 text-xs font-bold text-center hover:from-cyan-300 hover:to-white hover:shadow-glow-cyan transition-all duration-200" href="#upgrade-pro">
+            Upgrade to Pro Firm
+          </a>
+</div>
+<!-- CARD 3: Enterprise Partner -->
+<div class="card-glass rounded-3xl p-7 lg:p-8 flex flex-col justify-between hover:border-slate-700 transition-all duration-300" data-purpose="pricing-card">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold text-white">Enterprise</h3>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Multi-Partner</span>
+</div>
+<div class="mb-4">
+<span class="text-4xl font-bold text-white tracking-tight">₹14,999</span>
+<span class="text-slate-400 text-xs font-medium ml-1">/ month</span>
+<div class="text-[10px] text-slate-400 mt-1">Scale custom volumes as needed</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed min-h-[40px] mb-6">
+              For mid-to-large CA practices handling high-volume statutory audits with strict role governance.
+            </p>
+<div class="w-full h-px bg-slate-800/80 mb-6"></div>
+<!-- Features List -->
+<ul class="space-y-3.5 text-xs text-slate-300 mb-8 font-normal">
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span class="text-white">Unlimited clients &amp; multi-GSTIN portfolios</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>500,000+ monthly entries &amp; priority BullMQ queue</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Real-time GSTN API auto-sync connector</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Custom RBAC (Partner, Auditor, Articled Clerk)</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>Dedicated CA onboarding manager &amp; phone line</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="text-cyan-400 font-bold mt-0.5">✓</span>
+<span>99.98% SLA &amp; isolated tenant database vault</span>
+</li>
+</ul>
+</div>
+<!-- Outlined CTA Button -->
+<a class="w-full py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900/40 text-xs font-semibold text-white text-center hover:bg-slate-800 transition-all" href="#contact-sales">
+            Contact Enterprise Sales
+          </a>
+</div>
+</div>
+</section>
+<!-- END: PricingCardsSection -->
+<!-- BEGIN: FeatureComparisonTable -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24" id="compare-plans">
+<!-- Section Title (x.ai style clean centered header) -->
+<div class="text-center mb-12">
+<h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-2">
+          Compare features across plans
+        </h2>
+<p class="text-xs sm:text-sm text-slate-400">
+          Everything your firm needs for rapid, zero-error financial audit automation.
+        </p>
+</div>
+<!-- Responsive Comparison Table Container -->
+<div class="overflow-x-auto rounded-2xl border border-slate-800/90 bg-[#090e18]/80 backdrop-blur-md shadow-2xl">
+<table class="w-full text-left border-collapse text-xs">
+<!-- Sticky / Prominent Table Header with Action Pills -->
+<thead>
+<tr class="border-b border-slate-800 bg-slate-950/70">
+<th class="py-5 px-6 font-medium text-slate-400 w-1/4" scope="col">
+                Capability
+              </th>
+<!-- Free Column -->
+<th class="py-5 px-4 text-center font-semibold text-white w-1/4" scope="col">
+<div class="text-sm font-semibold mb-1">Starter</div>
+<a class="inline-block px-3 py-1 text-[11px] font-medium rounded-full border border-slate-700 hover:border-slate-500 bg-slate-900 text-slate-300" href="#signup">
+                  Get Started
+                </a>
+</th>
+<!-- Pro Firm Column -->
+<th class="py-5 px-4 text-center font-semibold text-white w-1/4 bg-cyan-950/20 border-x border-cyan-500/20" scope="col">
+<div class="text-sm font-semibold text-cyan-300 mb-1">Pro Firm</div>
+<a class="inline-block px-3.5 py-1 text-[11px] font-semibold rounded-full bg-cyan-400 text-slate-950 hover:bg-cyan-300 shadow-sm" href="#upgrade-pro">
+                  Upgrade
+                </a>
+</th>
+<!-- Enterprise Column -->
+<th class="py-5 px-4 text-center font-semibold text-white w-1/4" scope="col">
+<div class="text-sm font-semibold mb-1">Enterprise</div>
+<a class="inline-block px-3 py-1 text-[11px] font-medium rounded-full border border-slate-700 hover:border-slate-500 bg-slate-900 text-slate-300" href="#contact-sales">
+                  Contact
+                </a>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-800/60 font-light">
+<!-- Category: AI & Matching Engines -->
+<tr class="bg-slate-950/40">
+<th class="py-3 px-6 text-[11px] font-semibold tracking-wider uppercase text-cyan-400/90" colspan="4">
+                AI &amp; Neural Matching Engine
+              </th>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Gemini 1.5 Pro Matcher</td>
+<td class="py-3.5 px-4 text-center text-slate-600">—</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ (Fine-tuned)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Fuzzy Invoice Number Resolver</td>
+<td class="py-3.5 px-4 text-center text-slate-400">Basic Regex</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓ (Levenshtein + AI)</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ (Custom Regex Rules)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">GSTR-2B vs Purchase Register</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">3-Way Tax Recon (AIS + 26AS + Books)</td>
+<td class="py-3.5 px-4 text-center text-slate-600">—</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Bank Statement Narration OCR</td>
+<td class="py-3.5 px-4 text-center text-slate-600">—</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+</tr>
+<!-- Category: Capacity & Speed -->
+<tr class="bg-slate-950/40">
+<th class="py-3 px-6 text-[11px] font-semibold tracking-wider uppercase text-cyan-400/90" colspan="4">
+                Capacity &amp; Processing Speed
+              </th>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Monthly Invoice Row Capacity</td>
+<td class="py-3.5 px-4 text-center text-slate-400">1,500 rows</td>
+<td class="py-3.5 px-4 text-center text-cyan-300 font-semibold bg-cyan-950/10 border-x border-cyan-500/10">50,000 rows</td>
+<td class="py-3.5 px-4 text-center text-white font-semibold">500,000+ (Elastic)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Active Client Entities</td>
+<td class="py-3.5 px-4 text-center text-slate-400">Up to 3</td>
+<td class="py-3.5 px-4 text-center text-cyan-300 font-semibold bg-cyan-950/10 border-x border-cyan-500/10">Up to 25</td>
+<td class="py-3.5 px-4 text-center text-white font-semibold">Unlimited</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Async BullMQ Priority Lane</td>
+<td class="py-3.5 px-4 text-center text-slate-400">Standard Queue</td>
+<td class="py-3.5 px-4 text-center text-cyan-300 bg-cyan-950/10 border-x border-cyan-500/10">Priority Lane</td>
+<td class="py-3.5 px-4 text-center text-emerald-400 font-semibold">Dedicated Cluster</td>
+</tr>
+<!-- Category: Security & Compliance -->
+<tr class="bg-slate-950/40">
+<th class="py-3 px-6 text-[11px] font-semibold tracking-wider uppercase text-cyan-400/90" colspan="4">
+                Security &amp; Statutory Compliance
+              </th>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">SHA-256 Audit Trail Certification</td>
+<td class="py-3.5 px-4 text-center text-slate-600">—</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ (Court Admissible)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">SOC 2 Type II &amp; ISO 27001</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">India Sovereign Data Residency</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ (VPC Isolated)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">AI Model Training On Your Data</td>
+<td class="py-3.5 px-4 text-center text-slate-300">Never</td>
+<td class="py-3.5 px-4 text-center text-slate-300 bg-cyan-950/10 border-x border-cyan-500/10">Never</td>
+<td class="py-3.5 px-4 text-center text-emerald-400 font-medium">Zero-Retention Guarantee</td>
+</tr>
+<!-- Category: Firm Governance & Integrations -->
+<tr class="bg-slate-950/40">
+<th class="py-3 px-6 text-[11px] font-semibold tracking-wider uppercase text-cyan-400/90" colspan="4">
+                Firm Governance &amp; Integrations
+              </th>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Team Seats &amp; Role-based Access (RBAC)</td>
+<td class="py-3.5 px-4 text-center text-slate-400">1 Seat</td>
+<td class="py-3.5 px-4 text-center text-cyan-300 bg-cyan-950/10 border-x border-cyan-500/10">Up to 5 Seats</td>
+<td class="py-3.5 px-4 text-center text-white font-semibold">Unlimited custom roles</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Direct GSTN Portal Live Pull</td>
+<td class="py-3.5 px-4 text-center text-slate-600">—</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓ (OTP Sync)</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ (Direct GSP Auto-Pull)</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">TallyPrime, Zoho Books &amp; SAP Sync</td>
+<td class="py-3.5 px-4 text-center text-slate-400">Excel / XML import</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold bg-cyan-950/10 border-x border-cyan-500/10">✓ Direct Plugin</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-bold">✓ Full Bi-directional REST API</td>
+</tr>
+<tr class="table-row-hover">
+<td class="py-3.5 px-6 text-slate-300 font-medium">Support &amp; Onboarding</td>
+<td class="py-3.5 px-4 text-center text-slate-400">Community</td>
+<td class="py-3.5 px-4 text-center text-slate-300 bg-cyan-950/10 border-x border-cyan-500/10">Priority Chat &amp; Email</td>
+<td class="py-3.5 px-4 text-center text-cyan-400 font-medium">Dedicated Chartered Accountant Partner</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- END: FeatureComparisonTable -->
+<!-- BEGIN: EnterpriseCustomBanner (Modeled after x.ai bottom custom plan box) -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+<div class="card-glass rounded-3xl p-8 sm:p-12 border border-slate-800 relative overflow-hidden flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+<div class="max-w-2xl">
+<div class="text-[11px] uppercase font-mono tracking-widest text-cyan-400 mb-2">Enterprise Custom Architecture</div>
+<h3 class="text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
+            Need a custom high-volume plan?
+          </h3>
+<p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Talk to our enterprise solution architects for private VPC deployments, volume API rates, on-premise ledger integration, and dedicated BullMQ worker clusters.
+          </p>
+<div class="mt-4 flex flex-wrap gap-4 text-xs text-slate-400">
+<span class="inline-flex items-center gap-1.5"><span class="text-cyan-400">✓</span> Custom rate limits</span>
+<span class="inline-flex items-center gap-1.5"><span class="text-cyan-400">✓</span> SSO &amp; SCIM Provisioning</span>
+<span class="inline-flex items-center gap-1.5"><span class="text-cyan-400">✓</span> Sovereign Data Residency</span>
+<span class="inline-flex items-center gap-1.5"><span class="text-cyan-400">✓</span> Volume scale pricing</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+<a class="px-6 py-3 rounded-xl bg-white text-slate-950 hover:bg-cyan-300 font-semibold text-xs text-center transition-all shadow-lg hover:shadow-glow-cyan" href="#contact-sales">
+            Contact Enterprise Sales
+          </a>
+<a class="px-6 py-3 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900/60 text-slate-200 hover:text-white font-medium text-xs text-center transition-all" href="mailto:sales@reconai.in">
+            Email sales@reconai.in
+          </a>
+</div>
+</div>
+</section>
+<!-- END: EnterpriseCustomBanner -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: SiteFooter -->
+<footer class="border-t border-slate-900 bg-[#05070a] relative z-10 text-xs text-slate-400">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+<!-- Brand Col -->
+<div class="col-span-2 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg overflow-hidden border border-cyan-500/20 flex items-center justify-center bg-[#0b1120]">
+<svg class="w-9 h-9" fill="none" viewbox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(160, 95) scale(0.9)">
+<g fill="none" opacity="0.9" stroke="#0077ff" stroke-width="2.5">
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(0)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(90)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(180)"></path>
+<path d="M0 -60 C20 -60, 35 -40, 20 -20 C10 -5, -10 -5, -20 -20 C-35 -40, -20 -60, 0 -60 Z" transform="rotate(270)"></path>
+</g>
+<circle cx="0" cy="0" fill="#00f0ff" r="4"></circle>
+</g>
+</svg>
+</div>
+<span class="text-sm font-bold tracking-widest text-white">RECON<span class="text-cyan-400">AI</span></span>
+</div>
+<p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+            Next-generation autonomous ledger defense and fuzzy GST audit reconciliation designed specifically for modern CA firms and statutory auditors.
+          </p>
+<div class="text-[11px] text-slate-400 pt-2">
+            © 2026 ReconAI Financial Technologies Inc. All rights reserved.
+          </div>
+</div>
+<!-- Products -->
+<div class="space-y-3">
+<div class="text-xs font-semibold text-white tracking-wider uppercase">Engines</div>
+<ul class="space-y-2 text-xs">
+<li><a class="hover:text-cyan-400 transition-colors" href="#">GST 2B Matcher</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">3-Way AIS / 26AS</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Bank OCR Parser</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Ledger Discrepancy Fixer</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">SHA-256 Audit Trail</a></li>
+</ul>
+</div>
+<!-- Developers & Solutions -->
+<div class="space-y-3">
+<div class="text-xs font-semibold text-white tracking-wider uppercase">Solutions</div>
+<ul class="space-y-2 text-xs">
+<li><a class="hover:text-cyan-400 transition-colors" href="#">CA Audit Firms</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Corporate Tax Depts</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">TallyPrime Connector</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">REST API Docs</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Security Overview</a></li>
+</ul>
+</div>
+<!-- Trust & Legal -->
+<div class="space-y-3">
+<div class="text-xs font-semibold text-white tracking-wider uppercase">Trust &amp; Legal</div>
+<ul class="space-y-2 text-xs">
+<li><a class="hover:text-cyan-400 transition-colors" href="#">SOC 2 Compliance</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">Data Residency (India)</a></li>
+<li><a class="hover:text-cyan-400 transition-colors" href="#">System Status</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-4">
+<div class="flex items-center gap-4">
+<span class="inline-flex items-center gap-1 text-emerald-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            All Matching Systems Operational
+          </span>
+<span>•</span>
+<span>Latency: 84ms BullMQ</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-white transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-white transition-colors" href="#">X (Twitter)</a>
+<a class="hover:text-white transition-colors" href="#">GitHub</a>
+<a class="hover:text-white transition-colors" href="#">Discord CA Guild</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: SiteFooter -->
+<!-- Simple script for handling the segmented tab toggle states -->
+<script data-purpose="toggle-handler">
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleContainer = document.querySelector('[data-purpose="plan-toggle"]');
+      if (toggleContainer) {
+        const buttons = toggleContainer.querySelectorAll('button');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            buttons.forEach(b => {
+              b.className = 'px-4 py-2 rounded-full text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors';
+            });
+            btn.className = 'px-5 py-2 rounded-full text-xs font-medium text-white bg-slate-800 border border-white/10 shadow-sm transition-all';
+          });
+        });
+      }
+    });
+  </script>
+</body></html>

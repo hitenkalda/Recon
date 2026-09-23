@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuditAI — Ledger Analytics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root {
+  --bg:#f4f6fb; --surface:#fff; --surface2:#f0f3fa; --border:#e4e8f4; --border2:#cdd3e8;
+  --ink:#0d1117; --ink2:#3a4160; --ink3:#7c83a0; --ink4:#b8bdd0;
+  --blue:#4361ee; --blue-l:#eef1ff; --blue-m:#c5cdf7;
+  --violet:#7c3aed; --violet-l:#f3f0ff;
+  --green:#059669; --green-l:#ecfdf5;
+  --red:#dc2626; --red-l:#fef2f2;
+  --amber:#d97706; --amber-l:#fffbeb;
+  --teal:#0891b2; --teal-l:#ecfeff;
+  --orange:#ea580c; --orange-l:#fff7ed;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --r:10px; --r-sm:6px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 16px rgba(0,0,0,.08);
+  --sh-lg:0 12px 40px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;min-height:100vh;}
+
+/* ── Topbar ── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;gap:16px;height:58px;position:sticky;top:0;z-index:300;box-shadow:var(--sh);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--violet));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;}
+.logo-text{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.logo-text span{color:var(--blue);}
+.topbar-divider{width:1px;height:26px;background:var(--border);}
+.topbar-meta{font-size:11px;color:var(--ink3);font-family:var(--mono);}
+.topbar-meta strong{color:var(--blue);font-weight:600;}
+.topbar-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:var(--r-sm);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#3251d4;box-shadow:0 4px 12px rgba(67,97,238,.3);}
+.btn-primary:disabled{background:var(--ink4);cursor:not-allowed;box-shadow:none;}
+.btn-outline{background:var(--surface);color:var(--ink2);border:1.5px solid var(--border2);}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l);}
+.btn-outline:disabled{opacity:.5;cursor:not-allowed;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#047857;box-shadow:0 4px 12px rgba(5,150,105,.3);}
+.btn-green:disabled{background:var(--ink4);cursor:not-allowed;}
+.btn-sm{padding:5px 12px;font-size:11px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+
+/* ── Upload Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(13,17,23,.55);backdrop-filter:blur(5px);z-index:500;display:flex;align-items:center;justify-content:center;}
+.modal{background:var(--surface);border-radius:16px;padding:36px;width:500px;box-shadow:var(--sh-lg);animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal h2{font-size:20px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;}
+.modal-sub{font-size:13px;color:var(--ink3);margin-bottom:22px;line-height:1.6;}
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:16px;}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--blue);background:var(--blue-l);}
+.dz-icon{font-size:32px;margin-bottom:10px;}
+.dz-main{font-size:14px;font-weight:600;color:var(--ink2);margin-bottom:4px;}
+.dz-sub{font-size:11px;color:var(--ink3);font-family:var(--mono);}
+.format-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;font-size:11px;font-family:var(--mono);color:var(--ink2);line-height:1.8;}
+.format-box strong{color:var(--blue);}
+#fileInput{display:none;}
+
+/* ── Layout ── */
+.app{display:flex;min-height:calc(100vh - 58px);}
+
+/* ── Sidebar ── */
+.sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:16px 12px;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;display:flex;flex-direction:column;gap:2px;}
+.sl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--ink4);text-transform:uppercase;padding:10px 10px 4px;}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;font-size:13px;font-weight:500;color:var(--ink2);transition:all .15s;border:1px solid transparent;}
+.nav:hover{background:var(--surface2);}
+.nav.active{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m);font-weight:700;}
+.nav-ico{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--red-l);color:var(--red);}
+.nav.active .nav-badge{background:var(--blue-m);color:var(--blue);}
+.sdiv{height:1px;background:var(--border);margin:8px 0;}
+.run-wrap{margin-top:auto;padding-top:14px;border-top:1px solid var(--border);}
+.run-wrap .btn{width:100%;justify-content:center;padding:10px;}
+.run-hint{font-size:10px;color:var(--ink4);text-align:center;margin-top:6px;font-family:var(--mono);}
+
+/* ── Content ── */
+.content{flex:1;padding:28px 32px;min-width:0;overflow-x:hidden;}
+.tab{display:none;}
+.tab.active{display:block;}
+
+/* ── Welcome ── */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:480px;text-align:center;}
+.welcome-ico{width:88px;height:88px;background:linear-gradient(135deg,var(--blue-l),var(--violet-l));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:22px;box-shadow:var(--sh-md);}
+.welcome h2{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;}
+.welcome p{font-size:13px;color:var(--ink3);max-width:360px;line-height:1.7;margin-bottom:22px;}
+
+/* ── Section head ── */
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.sec-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.sec-ico.blue{background:var(--blue-l);}
+.sec-ico.amber{background:var(--amber-l);}
+.sec-ico.green{background:var(--green-l);}
+.sec-ico.violet{background:var(--violet-l);}
+.sec-ico.red{background:var(--red-l);}
+.sec-head-text h2{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:2px;}
+.sec-head-text p{font-size:11px;color:var(--ink3);font-family:var(--mono);}
+.sec-head-actions{margin-left:auto;display:flex;gap:8px;}
+
+/* ── Stat cards ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:22px;}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);position:relative;overflow:hidden;}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
+.sc.blue::before{background:var(--blue);}
+.sc.red::before{background:var(--red);}
+.sc.amber::before{background:var(--amber);}
+.sc.green::before{background:var(--green);}
+.sc.violet::before{background:var(--violet);}
+.sc.teal::before{background:var(--teal);}
+.sc.orange::before{background:var(--orange);}
+.sc-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+.sc-val{font-family:var(--mono);font-size:24px;font-weight:700;line-height:1;margin-bottom:3px;}
+.sc.blue .sc-val{color:var(--blue);}
+.sc.red .sc-val{color:var(--red);}
+.sc.amber .sc-val{color:var(--amber);}
+.sc.green .sc-val{color:var(--green);}
+.sc.violet .sc-val{color:var(--violet);}
+.sc.teal .sc-val{color:var(--teal);}
+.sc.orange .sc-val{color:var(--orange);}
+.sc-sub{font-size:11px;color:var(--ink3);}
+
+/* ── AI box ── */
+.ai-box{background:linear-gradient(135deg,#fafbff,#f5f0ff);border:1px solid #ddd4f5;border-left:4px solid var(--violet);border-radius:0 var(--r) var(--r) 0;padding:14px 18px;margin-bottom:22px;}
+.ai-box-hdr{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--violet);text-transform:uppercase;margin-bottom:7px;}
+.ai-box-body{font-size:13px;line-height:1.75;color:var(--ink2);}
+
+/* ── Table ── */
+.tbl-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:160px;}
+.search-wrap::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;pointer-events:none;}
+.search-input{width:100%;padding:7px 10px 7px 30px;border:1.5px solid var(--border2);border-radius:var(--r-sm);font-size:12px;font-family:var(--sans);color:var(--ink);background:var(--surface);outline:none;transition:border-color .15s;}
+.search-input:focus{border-color:var(--blue);}
+.fbtn{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface);color:var(--ink3);font-family:var(--sans);transition:all .15s;white-space:nowrap;}
+.fbtn:hover{border-color:var(--blue);color:var(--blue);}
+.fbtn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.fbtn.f-red.active{background:var(--red);border-color:var(--red);}
+.fbtn.f-amber.active{background:var(--amber);border-color:var(--amber);}
+.fbtn.f-orange.active{background:var(--orange);border-color:var(--orange);}
+
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);}
+.dtbl{width:100%;border-collapse:collapse;font-size:12px;}
+.dtbl thead{background:var(--surface2);}
+.dtbl th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border);white-space:nowrap;}
+.dtbl td{padding:9px 13px;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:top;}
+.dtbl tr:last-child td{border-bottom:none;}
+.dtbl tr:hover td{background:var(--surface2);}
+.dtbl .amt{font-family:var(--mono);font-weight:600;color:var(--ink);text-align:right;white-space:nowrap;}
+.dtbl .narr{font-size:11px;color:var(--ink3);font-style:italic;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:help;}
+
+/* badges */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;}
+.bdg-red{background:var(--red-l);color:var(--red);}
+.bdg-amber{background:var(--amber-l);color:var(--amber);}
+.bdg-blue{background:var(--blue-l);color:var(--blue);}
+.bdg-green{background:var(--green-l);color:var(--green);}
+.bdg-violet{background:var(--violet-l);color:var(--violet);}
+.bdg-teal{background:var(--teal-l);color:var(--teal);}
+.bdg-orange{background:var(--orange-l);color:var(--orange);}
+.chip{display:inline-block;margin:1px 2px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;background:var(--surface2);color:var(--ink2);border:1px solid var(--border2);}
+
+/* ── Charts ── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+.chart-grid.full{grid-template-columns:1fr;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh);}
+.chart-title{font-size:12px;font-weight:700;margin-bottom:2px;}
+.chart-sub{font-size:11px;color:var(--ink3);font-family:var(--mono);margin-bottom:14px;}
+
+/* ── Progress ── */
+.prog-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:26px 28px;margin-bottom:22px;}
+.prog-wrap h3{font-size:15px;font-weight:700;margin-bottom:18px;}
+.prog-step{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--r-sm);margin-bottom:7px;font-size:13px;font-weight:500;color:var(--ink3);background:var(--bg);border:1px solid var(--border);transition:all .3s;}
+.prog-step.running{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m);}
+.prog-step.done{background:var(--green-l);color:var(--green);border-color:#a7f3d0;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.prog-step.running .prog-dot{animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── Overview cards ── */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px;}
+.ov-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:12px;}
+.ov-card-hdr{display:flex;align-items:center;gap:10px;}
+.ov-card-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ov-card-title{font-size:13px;font-weight:700;}
+.ov-card-sub{font-size:10px;color:var(--ink3);}
+.ov-stat{font-family:var(--mono);font-size:26px;font-weight:800;}
+
+/* empty */
+.mod-empty{text-align:center;padding:60px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);}
+.mod-empty .me-ico{font-size:34px;margin-bottom:10px;opacity:.4;}
+.mod-empty p{font-size:13px;color:var(--ink3);}
+
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .content{padding:16px;}
+  .chart-grid{grid-template-columns:1fr;}
+  .ov-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-mark">🔍</div>
+    <div class="logo-text">Audit<span>AI</span></div>
+  </div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-meta" id="topMeta">No file loaded</div>
+  <div class="topbar-actions">
+    <button class="btn btn-outline btn-sm" onclick="openModal()">📂 Upload File</button>
+    <button class="btn btn-green btn-sm" id="exportBtn" onclick="exportExcel()" disabled>⬇ Export Excel</button>
+    <button class="btn btn-primary btn-sm" id="runBtn" onclick="runAnalysis()" disabled>
+      <span id="runBtnTxt">⚡ Run Analysis</span>
+    </button>
+  </div>
+</header>
+
+<!-- Upload Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h2>Upload Ledger File</h2>
+    <p class="modal-sub">Upload your ledger export in the required format. Entity name and expense name are auto-read from the file header.</p>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="dz-icon">📊</div>
+      <div class="dz-main">Drop file here or click to browse</div>
+      <div class="dz-sub">.xlsx · .xls — one file per ledger head</div>
+    </div>
+    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadFile(event)">
+    <div class="format-box">
+      <strong>Required format:</strong><br>
+      Row 1: &nbsp;<span style="color:var(--blue)">Entity Name -</span> &nbsp;[Company Name]<br>
+      Row 2: &nbsp;<span style="color:var(--blue)">Expense Name -</span> &nbsp;[Ledger Head Name]<br>
+      Row 3: &nbsp;(blank)<br>
+      Row 4: &nbsp;<span style="color:var(--blue)">Date · Particulars · Voucher Type · Voucher No. · Voucher Ref. No. · Narration · Expense Amount</span><br>
+      Row 5+: Data rows
+    </div>
+    <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <div style="font-size:11px;color:var(--ink3);">Not sure about the format? Download the template.</div>
+      <button class="btn btn-outline btn-sm" onclick="downloadTemplate()" style="flex-shrink:0;">📥 Download Template</button>
+    </div>
+  </div>
+</div>
+
+<!-- App -->
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sl">Navigation</div>
+    <div class="nav active" onclick="goTab('dashboard')" id="nav-dashboard"><span class="nav-ico">🏠</span>Overview</div>
+    <div class="nav" onclick="goTab('scrutiny')" id="nav-scrutiny"><span class="nav-ico">🔍</span>Ledger Scrutiny<span class="nav-badge" id="bdg-scrutiny" style="display:none">0</span></div>
+    <div class="nav" onclick="goTab('duplicate')" id="nav-duplicate"><span class="nav-ico">📋</span>Duplicate Check<span class="nav-badge" id="bdg-duplicate" style="display:none">0</span></div>
+    <div class="nav" onclick="goTab('variance')" id="nav-variance"><span class="nav-ico">📊</span>Expense Variance<span class="nav-badge" id="bdg-variance" style="display:none">0</span></div>
+    <div class="nav" onclick="goTab('pattern')" id="nav-pattern"><span class="nav-ico">📈</span>Pattern Analysis<span class="nav-badge" id="bdg-pattern" style="display:none">0</span></div>
+    <div class="sdiv"></div>
+    <div class="run-wrap">
+      <button class="btn btn-primary" id="runBtn2" onclick="runAnalysis()" disabled>
+        <span id="runBtn2Txt">⚡ Run AI Analysis</span>
+      </button>
+      <div class="run-hint">Data stays on your device</div>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+    <div class="tab active" id="tab-dashboard">
+      <div class="welcome" id="welcomeEl">
+        <div class="welcome-ico">🔍</div>
+        <h2>Intelligent Ledger Analytics</h2>
+        <p>Upload your ledger export to detect anomalies, duplicates, variance and pattern deviations — powered by Claude AI.</p>
+        <button class="btn btn-primary" onclick="openModal()">📂 Upload Ledger File</button>
+      </div>
+      <div id="dashContent" style="display:none"></div>
+    </div>
+    <div class="tab" id="tab-scrutiny"><div class="mod-empty"><div class="me-ico">🔍</div><p>Run analysis to see ledger scrutiny results.</p></div></div>
+    <div class="tab" id="tab-duplicate"><div class="mod-empty"><div class="me-ico">📋</div><p>Run analysis to see duplicate check results.</p></div></div>
+    <div class="tab" id="tab-variance"><div class="mod-empty"><div class="me-ico">📊</div><p>Run analysis to see variance results.</p></div></div>
+    <div class="tab" id="tab-pattern"><div class="mod-empty"><div class="me-ico">📈</div><p>Run analysis to see pattern results.</p></div></div>
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let rows = [];         // parsed data rows
+let meta = {};         // entity, expense name
+let results = {};      // analysis results
+const CH = {};         // chart instances
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+const fmt  = n => '₹' + Math.abs(+n).toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:0});
+const fmtD = n => '₹' + Math.abs(+n).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtS = n => (n < 0 ? '-' : '') + fmtD(n);
+const monthKey = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+const monthLabel = k => { const [y,m]=k.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1]+' '+y; };
+
+function pDate(v) {
+  if (!v) return null;
+  if (typeof v === 'number') { const d = new Date(Math.round((v-25569)*86400*1000)); return isNaN(d)?null:d; }
+  const s = String(v).trim();
+  const mons = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  const m1 = s.match(/^(\d{1,2})[- \/]([A-Za-z]+)[- \/](\d{2,4})$/);
+  if (m1) { const mo=mons[m1[2].toLowerCase().slice(0,3)]; if(mo!==undefined){let y=+m1[3];if(y<100)y+=2000;return new Date(y,mo,+m1[1]);} }
+  const m2 = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+  if (m2) { let y=+m2[3];if(y<100)y+=2000;return new Date(y,+m2[2]-1,+m2[1]); }
+  const d = new Date(s); return isNaN(d)?null:d;
+}
+
+// ═══════════════════════════════
+// FILE LOADING
+// ═══════════════════════════════
+function openModal() { document.getElementById('modal').style.display='flex'; }
+
+function loadFile(evt) {
+  const file = evt.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const all = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+
+      // ── Read entity & expense name ──
+      // Format: Row has label in one cell, value in the NEXT non-empty cell
+      meta.entity  = '';
+      meta.expense = '';
+      for (let i = 0; i < Math.min(8, all.length); i++) {
+        const row = all[i];
+        for (let j = 0; j < row.length; j++) {
+          const cell = String(row[j]||'').toLowerCase().trim();
+          if (cell.includes('entity name')) {
+            // Value is in the next non-empty cell in same row
+            for (let k = j+1; k < row.length; k++) {
+              const val = String(row[k]||'').trim();
+              if (val && !val.toLowerCase().includes('name') && val !== '-' && val !== '—') {
+                meta.entity = val; break;
+              }
+            }
+          }
+          if (cell.includes('expense name')) {
+            for (let k = j+1; k < row.length; k++) {
+              const val = String(row[k]||'').trim();
+              if (val && !val.toLowerCase().includes('name') && val !== '-' && val !== '—') {
+                meta.expense = val; break;
+              }
+            }
+          }
+        }
+      }
+      if (!meta.entity)  meta.entity  = 'Unknown Entity';
+      if (!meta.expense) meta.expense = file.name.replace(/\.[^.]+$/, '');
+
+      // ── Find header row (contains 'Date') ──
+      let hdrIdx = -1;
+      for (let i = 0; i < all.length; i++) {
+        if (all[i].some(c => String(c).toLowerCase().trim() === 'date')) { hdrIdx = i; break; }
+      }
+      if (hdrIdx < 0) { alert('Could not find header row with "Date" column.'); return; }
+
+      const hdr = all[hdrIdx].map(c => String(c).toLowerCase().replace(/\s+/g,' ').trim());
+      const fi  = kws => hdr.findIndex(h => kws.some(k => h.includes(k)));
+
+      const dateIdx  = fi(['date']);
+      const partIdx  = fi(['particulars','party','name']);
+      const vtIdx    = fi(['voucher type','vch type']);
+      const vnIdx    = fi(['voucher no']);
+      const refIdx   = fi(['voucher ref','ref. no','ref no']);
+      const narrIdx  = fi(['narration','narr','description','remarks']);
+      const amtIdx   = fi(['expense amount','amount','debit','value']);
+
+      rows = [];
+      for (let i = hdrIdx + 1; i < all.length; i++) {
+        const r = all[i];
+        if (!r || r.every(c => !c)) continue;
+
+        const dateRaw = dateIdx >= 0 ? r[dateIdx] : r[1]; // fallback col 1 (after blank col 0)
+        const date = pDate(dateRaw);
+        if (!date || date.getFullYear() < 2000) continue;
+
+        const particulars = partIdx >= 0 ? String(r[partIdx]||'').trim() : '';
+        if (!particulars) continue;
+        const skip = ['total','grand','opening','closing','brought','carried'];
+        if (skip.some(s => particulars.toLowerCase().includes(s))) continue;
+
+        // Amount — use detected column strictly; if not found use last numeric column
+        let amount = 0;
+        const parseAmt = v => parseFloat(String(v||'').replace(/,/g,'').replace(/₹/g,'').replace(/\s*(Dr|Cr)\s*$/i,'').trim()) || 0;
+        if (amtIdx >= 0) {
+          amount = parseAmt(r[amtIdx]);
+        }
+        if (!amount) {
+          // fallback: last column that has a positive number (amount is rightmost in this format)
+          for (let j = r.length - 1; j >= 2; j--) {
+            const v = parseAmt(r[j]);
+            if (v > 0) { amount = v; break; }
+          }
+        }
+        if (!amount) continue;
+
+        rows.push({
+          date,
+          particulars,
+          voucherType: vtIdx  >= 0 ? String(r[vtIdx] ||'').trim() : '',
+          voucherNo:   vnIdx  >= 0 ? String(r[vnIdx]  ||'').trim() : '',
+          invoiceNo:   refIdx >= 0 ? String(r[refIdx] ||'').trim() : '',
+          narration:   narrIdx>= 0 ? String(r[narrIdx]||'').trim() : '',
+          amount,
+          rowIdx: i
+        });
+      }
+
+      if (!rows.length) { alert('No valid data rows found. Please check the file format.'); return; }
+
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('topMeta').innerHTML = `<strong>${meta.entity}</strong> &nbsp;·&nbsp; ${meta.expense} &nbsp;·&nbsp; ${rows.length} entries`;
+      document.getElementById('runBtn').disabled  = false;
+      document.getElementById('runBtn2').disabled = false;
+
+      // Quick summary on dashboard
+      document.getElementById('welcomeEl').style.display = 'none';
+      document.getElementById('dashContent').style.display = 'block';
+      const total = rows.reduce((s,r) => s + r.amount, 0);
+
+      // Party-wise totals for file load preview
+      const partyTotals = {};
+      rows.forEach(r => { partyTotals[r.particulars] = (partyTotals[r.particulars]||0) + r.amount; });
+      const topParties = Object.entries(partyTotals).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+      document.getElementById('dashContent').innerHTML = `
+        <div class="stat-row">
+          <div class="sc blue"><div class="sc-label">Entity</div><div class="sc-val" style="font-size:13px;font-family:var(--sans);font-weight:700">${meta.entity}</div><div class="sc-sub">${meta.expense}</div></div>
+          <div class="sc teal"><div class="sc-label">Total Entries</div><div class="sc-val">${rows.length}</div></div>
+          <div class="sc green"><div class="sc-label">Total Expense</div><div class="sc-val" style="font-size:15px">${fmt(total)}</div></div>
+          <div class="sc amber"><div class="sc-label">Unique Parties</div><div class="sc-val">${Object.keys(partyTotals).length}</div></div>
+          <div class="sc violet"><div class="sc-label">With Narration</div><div class="sc-val">${rows.filter(r=>r.narration).length}</div></div>
+        </div>
+        <div class="ai-box">
+          <div class="ai-box-hdr">🤖 Ready</div>
+          <div class="ai-box-body">Loaded <strong>${rows.length} entries</strong> for <strong>${meta.expense}</strong> — <strong>${meta.entity}</strong>. Total expense: <strong>${fmt(total)}</strong>. Click <strong>Run AI Analysis</strong> to begin.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh)">
+          <div style="font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">Party-wise Expense Summary</div>
+          <table class="dtbl">
+            <thead><tr><th>#</th><th>Party (Particulars)</th><th>Entries</th><th>Total Amount</th><th>% of Total</th></tr></thead>
+            <tbody>
+              ${topParties.map(([p,t],i)=>`<tr>
+                <td style="font-family:var(--mono);color:var(--ink3)">${i+1}</td>
+                <td style="font-weight:500">${p}</td>
+                <td style="text-align:center;font-family:var(--mono)">${rows.filter(r=>r.particulars===p).length}</td>
+                <td class="amt">${fmt(t)}</td>
+                <td style="font-family:var(--mono);font-weight:600;color:${(t/total)>=0.1?'var(--red)':'var(--ink2)'}">${((t/total)*100).toFixed(1)}%${(t/total)>=0.1?' ⚠':''}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+          ${Object.keys(partyTotals).length > 8 ? `<div style="font-size:11px;color:var(--ink3);margin-top:8px;font-family:var(--mono)">Showing top 8 of ${Object.keys(partyTotals).length} parties — run analysis for full breakdown</div>`:''}
+        </div>`;
+    } catch(err) { alert('Error reading file:\n' + err.message); console.error(err); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ═══════════════════════════════
+// TAB
+// ═══════════════════════════════
+function goTab(t) {
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.getElementById('nav-'+t).classList.add('active');
+}
+
+// ═══════════════════════════════
+// RUN
+// ═══════════════════════════════
+async function runAnalysis() {
+  if (!rows.length) { openModal(); return; }
+
+  ['runBtn','runBtn2'].forEach(id => {
+    const b=document.getElementById(id); b.disabled=true;
+    b.querySelector('span').innerHTML='<span class="spinner"></span> Analysing…';
+  });
+
+  goTab('dashboard');
+  document.getElementById('dashContent').style.display='block';
+  document.getElementById('dashContent').innerHTML = `
+    <div class="prog-wrap">
+      <h3>🔄 Running Analysis…</h3>
+      ${[['ps1','Ledger Scrutiny'],['ps2','Duplicate Check'],['ps3','Expense Variance'],['ps4','Pattern Analysis'],['ps5','AI Insights']].map(([id,lbl])=>`
+        <div class="prog-step" id="${id}" data-lbl="${lbl}">
+          <div class="prog-dot"></div><span class="ps-lbl">${lbl}</span>
+        </div>`).join('')}
+    </div>`;
+
+  const setStep = (id,state) => {
+    const el=document.getElementById(id); if(!el) return;
+    el.className='prog-step '+state;
+    el.querySelector('.ps-lbl').textContent = state==='done'?'✓ '+el.dataset.lbl : el.dataset.lbl+(state==='running'?' — Running…':'');
+  };
+
+  try {
+    setStep('ps1','running'); results.scrutiny  = computeScrutiny();  await sleep(120); setStep('ps1','done');
+    setStep('ps2','running'); results.duplicate = computeDuplicate(); await sleep(120); setStep('ps2','done');
+    setStep('ps3','running'); results.variance  = computeVariance();  await sleep(120); setStep('ps3','done');
+    setStep('ps4','running'); results.pattern   = computePattern();   await sleep(120); setStep('ps4','done');
+    setStep('ps5','running'); const ai = await fetchAI();             await sleep(100); setStep('ps5','done');
+
+    await sleep(300);
+    renderDashboard(ai);
+    renderScrutiny(ai.scrutiny);
+    renderDuplicate(ai.duplicate);
+    renderVariance(ai.variance);
+    renderPattern(ai.pattern);
+    updateBadges();
+    document.getElementById('exportBtn').disabled = false;
+    goTab('dashboard');
+  } catch(err) {
+    document.getElementById('dashContent').innerHTML += `<div style="color:var(--red);background:var(--red-l);padding:12px;border-radius:8px;margin-top:12px">Error: ${err.message}</div>`;
+    console.error(err);
+  }
+
+  ['runBtn','runBtn2'].forEach(id=>{
+    const b=document.getElementById(id); b.disabled=false;
+    b.querySelector('span').textContent='⚡ Re-run Analysis';
+  });
+}
+
+function updateBadges() {
+  const S=results.scrutiny, D=results.duplicate, V=results.variance, P=results.pattern;
+  const setBdg=(id,n)=>{ const el=document.getElementById(id); el.textContent=n; el.style.display=n?'':'none'; };
+  if(S) setBdg('bdg-scrutiny', S.flagged.filter(f=>f.risk==='HIGH').length || S.flagged.length);
+  if(D) setBdg('bdg-duplicate', D.dupes.length);
+  if(V) setBdg('bdg-variance', V.flags.length);
+  if(P) setBdg('bdg-pattern', P.recurring.filter(r=>r.anomalies.length||r.missing.length).length);
+}
+
+// ═══════════════════════════════
+// MODULE 1: SCRUTINY
+// ═══════════════════════════════
+function computeScrutiny() {
+  const total = rows.reduce((s,r)=>s+r.amount,0);
+  const highValThreshold = total * 0.10;
+
+  // Per-ledger stats (all same ledger here but keep for outlier calc)
+  const amounts = rows.map(r=>r.amount);
+  const mean = amounts.reduce((a,v)=>a+v,0)/amounts.length;
+  const std  = Math.sqrt(amounts.reduce((a,v)=>a+(v-mean)**2,0)/amounts.length);
+
+  const RISK_WORDS = ['advance','loan','written off','w/o','w-off','adjustment','adj','misc','miscellaneous','sundry','correction','reversal','reverse','refund','trf','transfer','settlement','contra','provision','prov','accrual'];
+
+  const flagged = rows.map(r => {
+    const flags = [];
+
+    // Round figure
+    const a = r.amount;
+    if (a >= 1000 && (a%10000===0||a%5000===0||a%1000===0))
+      flags.push({type:'ROUND FIGURE', detail:`${fmt(a)} is a round number`});
+
+    // Statistical outlier (>2.5 SD)
+    if (std > 0 && Math.abs(a - mean) > 2.5*std)
+      flags.push({type:'OUTLIER', detail:`${Math.round(((a-mean)/mean)*100) > 0 ? '+' : ''}${Math.round(((a-mean)/mean)*100)}% vs avg ${fmt(mean)}`});
+
+    // High value (>10% of total)
+    if (a >= highValThreshold)
+      flags.push({type:'HIGH VALUE', detail:`${fmt(a)} = ${((a/total)*100).toFixed(1)}% of total ${fmt(total)} (threshold: ${fmt(highValThreshold)})`});
+
+    // 31st March — Year end
+    if (r.date.getMonth()===2 && r.date.getDate()===31)
+      flags.push({type:'YEAR END', detail:'Entry on 31st March'});
+
+    // Month end (28–31, not 31st March already caught)
+    if (r.date.getDate()>=28 && !(r.date.getMonth()===2 && r.date.getDate()===31))
+      flags.push({type:'MONTH END', detail:`${r.date.getDate()}th of month`});
+
+    // Blank narration
+    if (!r.narration)
+      flags.push({type:'BLANK NARRATION', detail:'No narration recorded'});
+
+    // Blank invoice no.
+    if (!r.invoiceNo)
+      flags.push({type:'NO INVOICE REF', detail:'Voucher Ref. No. is blank'});
+
+    // Narration risk keywords
+    if (r.narration) {
+      const n = r.narration.toLowerCase();
+      const hit = RISK_WORDS.find(w=>n.includes(w));
+      if (hit) flags.push({type:'NARRATION FLAG', detail:`Contains "${hit}"`});
+    }
+
+    if (!flags.length) return null;
+
+    const risk = flags.some(f=>['OUTLIER','HIGH VALUE','YEAR END'].includes(f.type)) ? 'HIGH'
+               : flags.some(f=>['ROUND FIGURE','NARRATION FLAG','NO INVOICE REF'].includes(f.type)) ? 'MEDIUM'
+               : 'LOW';
+    return {...r, flags, risk};
+  }).filter(Boolean)
+    .sort((a,b)=>({HIGH:0,MEDIUM:1,LOW:2}[a.risk]-{HIGH:0,MEDIUM:1,LOW:2}[b.risk])||b.amount-a.amount);
+
+  return {
+    flagged, total, mean, std, highValThreshold,
+    high:   flagged.filter(f=>f.risk==='HIGH').length,
+    med:    flagged.filter(f=>f.risk==='MEDIUM').length,
+    low:    flagged.filter(f=>f.risk==='LOW').length,
+    yearEnd:flagged.filter(f=>f.flags.some(x=>x.type==='YEAR END')).length,
+    rounds: flagged.filter(f=>f.flags.some(x=>x.type==='ROUND FIGURE')).length,
+    noInv:  flagged.filter(f=>f.flags.some(x=>x.type==='NO INVOICE REF')).length,
+  };
+}
+
+// ═══════════════════════════════
+// MODULE 2: DUPLICATE
+// ═══════════════════════════════
+function computeDuplicate() {
+  const dupes = [];
+
+  // Rule: Same Date + Same Amount + Same Party + Same Voucher Ref No. (Invoice No.)
+  // Group all entries by this 4-field key
+  const byKey = {};
+  rows.forEach((r, i) => {
+    const dateStr = r.date.toDateString();
+    const invKey  = (r.invoiceNo || '').trim().toLowerCase();
+    const partyKey= r.particulars.trim().toLowerCase();
+    const amtKey  = r.amount.toFixed(2);
+    const k = `${dateStr}||${amtKey}||${partyKey}||${invKey}`;
+    if (!byKey[k]) byKey[k] = [];
+    byKey[k].push({...r, i});
+  });
+
+  Object.values(byKey).forEach(grp => {
+    if (grp.length < 2) return;
+    grp.forEach(r => {
+      dupes.push({
+        ...r,
+        dupeType: 'EXACT DUPLICATE',
+        risk: 'HIGH',
+        detail: `Same date, amount, party & invoice — appears ${grp.length} times (Voucher Nos: ${grp.map(g=>g.voucherNo||'—').join(', ')})`
+      });
+    });
+  });
+
+  dupes.sort((a,b) => b.amount - a.amount);
+
+  return {
+    dupes,
+    high:     dupes.length,
+    med:      0,
+    low:      0,
+    groups:   Object.values(byKey).filter(g=>g.length>1).length,
+  };
+}
+
+// ═══════════════════════════════
+// MODULE 3: VARIANCE
+// ═══════════════════════════════
+function computeVariance() {
+  const byMonth = {};
+  rows.forEach(r => { const k=monthKey(r.date); byMonth[k]=(byMonth[k]||0)+r.amount; });
+  const months = Object.keys(byMonth).sort();
+  const flags = [];
+
+  for (let i=1;i<months.length;i++) {
+    const prev=byMonth[months[i-1]], curr=byMonth[months[i]];
+    const diff=curr-prev;
+    if (prev===0) { flags.push({month:months[i],prev,curr,diff,pct:null,flag:'NEW MONTH'}); continue; }
+    const pct=((curr-prev)/prev)*100;
+    if (Math.abs(pct)>=30||Math.abs(diff)>=50000)
+      flags.push({month:months[i],prev,curr,diff,pct,flag:pct>0?'SPIKE':'DROP'});
+  }
+
+  return {
+    byMonth, months, flags,
+    spikes: flags.filter(f=>f.flag==='SPIKE').length,
+    drops:  flags.filter(f=>f.flag==='DROP').length,
+    total:  rows.reduce((s,r)=>s+r.amount,0),
+    avg:    months.length ? rows.reduce((s,r)=>s+r.amount,0)/months.length : 0,
+  };
+}
+
+// ═══════════════════════════════
+// MODULE 4: PATTERN
+// ═══════════════════════════════
+function computePattern() {
+  // Group by party + month
+  const partyMonths = {}, partyAmts = {};
+  rows.forEach(r => {
+    const mk = monthKey(r.date);
+    if (!partyMonths[r.particulars]) partyMonths[r.particulars]=new Set();
+    partyMonths[r.particulars].add(mk);
+    if (!partyAmts[r.particulars]) partyAmts[r.particulars]={};
+    partyAmts[r.particulars][mk]=(partyAmts[r.particulars][mk]||0)+r.amount;
+  });
+
+  const allMonths = [...new Set(rows.map(r=>monthKey(r.date)))].sort();
+
+  const recurring = Object.keys(partyMonths)
+    .filter(p=>partyMonths[p].size>=3)
+    .map(p => {
+      const mths=[...partyMonths[p]].sort();
+      const amounts=mths.map(m=>partyAmts[p][m]);
+      const mean=amounts.reduce((a,v)=>a+v,0)/amounts.length;
+      const std=Math.sqrt(amounts.reduce((a,v)=>a+(v-mean)**2,0)/amounts.length);
+      const cv=mean>0?std/mean:0;
+      const missing=allMonths.filter(m=>!partyMonths[p].has(m)&&m>=mths[0]&&m<=mths[mths.length-1]);
+      const anomalies=mths.map((m,i)=>{
+        const v=amounts[i];
+        if(mean>0&&std>0&&Math.abs(v-mean)>1.8*std)
+          return {month:m,amount:v,expected:mean,pct:Math.round(((v-mean)/mean)*100)};
+        return null;
+      }).filter(Boolean);
+      return {party:p,months:mths,amounts,mean,std,cv,missing,anomalies,
+        isStable:cv<0.15,isSemi:cv>=0.15&&cv<0.40};
+    })
+    .sort((a,b)=>(b.anomalies.length+b.missing.length)-(a.anomalies.length+a.missing.length)||b.mean-a.mean);
+
+  return {
+    recurring, allMonths,
+    stable:  recurring.filter(r=>r.isStable).length,
+    semi:    recurring.filter(r=>r.isSemi).length,
+    variable:recurring.filter(r=>!r.isStable&&!r.isSemi).length,
+    withAnom:recurring.filter(r=>r.anomalies.length>0||r.missing.length>0).length,
+  };
+}
+
+// ═══════════════════════════════
+// AI INSIGHTS
+// ═══════════════════════════════
+async function fetchAI() {
+  const S=results.scrutiny, D=results.duplicate, V=results.variance, P=results.pattern;
+  const total=rows.reduce((s,r)=>s+r.amount,0);
+
+  let prompt = `You are a senior Chartered Accountant reviewing AI audit analytics for ledger "${meta.expense}" of entity "${meta.entity}". Entries: ${rows.length}, Total: ₹${Math.round(total).toLocaleString('en-IN')}.
+
+SCRUTINY: ${S.flagged.length} flagged (H:${S.high} M:${S.med} L:${S.low}), ${S.yearEnd} year-end (31-Mar), ${S.rounds} round figures, ${S.noInv} no invoice ref.
+Top flagged: ${S.flagged.slice(0,4).map(f=>`${f.particulars} ₹${f.amount.toLocaleString('en-IN')} [${f.risk}] flags:${f.flags.map(x=>x.type).join('+')} narr:"${f.narration||'—'}"`).join(' | ')}
+
+DUPLICATE: ${D.dupes.length} duplicate entries found (${D.groups} duplicate groups).
+Top dupes: ${D.dupes.slice(0,3).map(d=>`${d.particulars} ${fmt(d.amount)} on ${d.date.toLocaleDateString('en-IN')} Invoice:${d.invoiceNo||'—'}`).join(' | ')}
+
+VARIANCE: ${V.flags.length} months flagged (spikes:${V.spikes} drops:${V.drops}), avg/month: ₹${Math.round(V.avg).toLocaleString('en-IN')}
+Top: ${V.flags.slice(0,3).map(f=>`${monthLabel(f.month)}: ${f.pct!==null?Math.round(f.pct)+'%':f.flag}`).join(' | ')}
+
+PATTERN: ${P.recurring.length} recurring parties (stable:${P.stable} semi:${P.semi} variable:${P.variable}), ${P.withAnom} with anomalies/missing months.
+Top: ${P.recurring.slice(0,3).map(r=>`${r.party} avg:${fmt(r.mean)} CV:${Math.round(r.cv*100)}% anom:${r.anomalies.length} missing:${r.missing.length}`).join(' | ')}
+
+Respond ONLY with valid JSON (no markdown). Keys:
+"scrutiny": "2-3 sentence CA observation — mention narration patterns, year-end risk, high value entries",
+"duplicate": "2-3 sentence observation — invoice duplicates, risk of double payment",
+"variance": "2-3 sentence observation — key spikes/drops and possible reasons",
+"pattern": "2-3 sentence observation — stable recurring vs anomalous parties",
+"overall": "1-2 sentence overall audit risk and priority action"`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
+    });
+    const d = await resp.json();
+    const t = d.content?.find(c=>c.type==='text')?.text||'{}';
+    return JSON.parse(t.replace(/```json|```/g,'').trim());
+  } catch(e) { console.warn(e); return {overall:'AI insights unavailable — statistical results shown below.'}; }
+}
+
+// ═══════════════════════════════
+// RENDER DASHBOARD
+// ═══════════════════════════════
+function renderDashboard(ai) {
+  const S=results.scrutiny, D=results.duplicate, V=results.variance, P=results.pattern;
+  const total=rows.reduce((s,r)=>s+r.amount,0);
+
+  document.getElementById('dashContent').innerHTML = `
+    <div class="stat-row">
+      <div class="sc blue"><div class="sc-label">Entity</div><div class="sc-val" style="font-size:14px;font-family:var(--sans)">${meta.entity}</div><div class="sc-sub">${meta.expense}</div></div>
+      <div class="sc teal"><div class="sc-label">Total Expense</div><div class="sc-val" style="font-size:16px">${fmt(total)}</div><div class="sc-sub">${rows.length} entries</div></div>
+      <div class="sc red"><div class="sc-label">Flagged</div><div class="sc-val">${S.flagged.length}</div><div class="sc-sub">${S.high} high risk</div></div>
+      <div class="sc amber"><div class="sc-label">Duplicates</div><div class="sc-val">${D.dupes.length}</div><div class="sc-sub">${D.high} high risk</div></div>
+      <div class="sc violet"><div class="sc-label">Variances</div><div class="sc-val">${V.flags.length}</div><div class="sc-sub">${V.spikes} spikes · ${V.drops} drops</div></div>
+    </div>
+    <div class="ai-box">
+      <div class="ai-box-hdr">🤖 AI Overall Assessment</div>
+      <div class="ai-box-body">${ai.overall||'Analysis complete.'}</div>
+    </div>
+    <div class="ov-grid">
+      <div class="ov-card">
+        <div class="ov-card-hdr">
+          <div class="ov-card-ico" style="background:var(--red-l)">🔍</div>
+          <div><div class="ov-card-title">Ledger Scrutiny</div><div class="ov-card-sub">${S.flagged.length} entries flagged</div></div>
+        </div>
+        <div class="ov-stat" style="color:var(--red)">${S.high} <span style="font-size:13px;color:var(--ink3);font-family:var(--sans);font-weight:400">High Risk</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="bdg bdg-red">● ${S.high} High</span>
+          <span class="bdg bdg-amber">● ${S.med} Medium</span>
+          <span class="bdg bdg-blue">● ${S.low} Low</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="goTab('scrutiny')">View Details →</button>
+      </div>
+      <div class="ov-card">
+        <div class="ov-card-hdr">
+          <div class="ov-card-ico" style="background:var(--orange-l)">📋</div>
+          <div><div class="ov-card-title">Duplicate Check</div><div class="ov-card-sub">${D.dupes.length} entries flagged</div></div>
+        </div>
+        <div class="ov-stat" style="color:var(--orange)">${D.high} <span style="font-size:13px;color:var(--ink3);font-family:var(--sans);font-weight:400">High Risk</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="bdg bdg-red">● ${D.high} High</span>
+          <span class="bdg bdg-amber">● ${D.med} Medium</span>
+          <span class="bdg bdg-blue">● ${D.low} Low</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="goTab('duplicate')">View Details →</button>
+      </div>
+      <div class="ov-card">
+        <div class="ov-card-hdr">
+          <div class="ov-card-ico" style="background:var(--amber-l)">📊</div>
+          <div><div class="ov-card-title">Variance + Pattern</div><div class="ov-card-sub">${V.months.length} months analysed</div></div>
+        </div>
+        <div class="ov-stat" style="color:var(--amber)">${V.flags.length} <span style="font-size:13px;color:var(--ink3);font-family:var(--sans);font-weight:400">Variances</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="bdg bdg-red">↑ ${V.spikes} Spikes</span>
+          <span class="bdg bdg-blue">↓ ${V.drops} Drops</span>
+          <span class="bdg bdg-violet">~ ${P.withAnom} Anomalies</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="goTab('variance')">View Details →</button>
+      </div>
+    </div>
+
+    <!-- Party-wise expense breakdown -->
+    ${(() => {
+      const partyTotals = {};
+      rows.forEach(r => { partyTotals[r.particulars] = (partyTotals[r.particulars]||0) + r.amount; });
+      const sorted = Object.entries(partyTotals).sort((a,b)=>b[1]-a[1]);
+      const highVal = total * 0.10;
+      const aboveThreshold = sorted.filter(([,t])=>t>=highVal).length;
+      return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">Party-wise Expense Summary</div>
+            <div style="font-size:11px;color:var(--ink3);font-family:var(--mono);margin-top:2px">${sorted.length} parties · Total ${fmt(total)} · 10% threshold = ${fmt(highVal)}</div>
+          </div>
+          ${aboveThreshold ? `<span class="bdg bdg-red">⚠ ${aboveThreshold} exceed 10%</span>` : '<span class="bdg bdg-green">✓ No party exceeds 10%</span>'}
+        </div>
+        <div class="tbl-wrap">
+          <table class="dtbl">
+            <thead><tr><th>#</th><th>Party (Particulars)</th><th>Entries</th><th>Total Amount</th><th>% of Total</th><th>Status</th></tr></thead>
+            <tbody>
+              ${sorted.map(([p,t],i) => {
+                const pct = (t/total)*100;
+                const over = t >= highVal;
+                return `<tr>
+                  <td style="font-family:var(--mono);color:var(--ink3);font-size:11px">${i+1}</td>
+                  <td style="font-weight:500">${p}</td>
+                  <td style="text-align:center;font-family:var(--mono)">${rows.filter(r=>r.particulars===p).length}</td>
+                  <td class="amt" style="color:${over?'var(--red)':'var(--ink)'}">${fmt(t)}</td>
+                  <td style="font-family:var(--mono);font-weight:700;color:${over?'var(--red)':'var(--ink2)'}">${pct.toFixed(1)}%</td>
+                  <td>${over ? '<span class="bdg bdg-red">⚠ EXCEEDS 10%</span>' : '<span class="bdg bdg-green">✓ OK</span>'}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+    })()}`;
+}
+
+// ═══════════════════════════════
+// RENDER SCRUTINY
+// ═══════════════════════════════
+function renderScrutiny(aiText) {
+  const S=results.scrutiny;
+  const tab=document.getElementById('tab-scrutiny');
+
+  // Flag type counts
+  const fc={};
+  S.flagged.forEach(r=>r.flags.forEach(f=>{fc[f.type]=(fc[f.type]||0)+1;}));
+
+  tab.innerHTML=`
+  <div class="sec-head">
+    <div class="sec-ico red">🔍</div>
+    <div class="sec-head-text"><h2>Ledger Scrutiny</h2><p>${S.flagged.length} entries flagged · ${rows.length} total entries</p></div>
+    <div class="sec-head-actions"><button class="btn btn-outline btn-sm" onclick="exportModuleXLSX('scrutiny')">⬇ Export</button></div>
+  </div>
+  <div class="stat-row">
+    <div class="sc red"><div class="sc-label">High Risk</div><div class="sc-val">${S.high}</div></div>
+    <div class="sc amber"><div class="sc-label">Medium Risk</div><div class="sc-val">${S.med}</div></div>
+    <div class="sc blue"><div class="sc-label">Low Risk</div><div class="sc-val">${S.low}</div></div>
+    <div class="sc orange"><div class="sc-label">Year-End (31 Mar)</div><div class="sc-val">${S.yearEnd}</div></div>
+    <div class="sc teal"><div class="sc-label">Round Figures</div><div class="sc-val">${S.rounds}</div></div>
+    <div class="sc violet"><div class="sc-label">No Invoice Ref</div><div class="sc-val">${S.noInv}</div></div>
+  </div>
+  ${aiText?`<div class="ai-box"><div class="ai-box-hdr">🤖 AI Observation</div><div class="ai-box-body">${aiText}</div></div>`:''}
+  <div class="chart-grid">
+    <div class="chart-card"><div class="chart-title">Flag Distribution</div><div class="chart-sub">Count by flag type</div><canvas id="chScrutinyFlags" height="220"></canvas></div>
+    <div class="chart-card"><div class="chart-title">Risk Breakdown</div><div class="chart-sub">Entries by risk level</div><canvas id="chScrutinyRisk" height="220"></canvas></div>
+  </div>
+  <div class="tbl-toolbar">
+    <div class="search-wrap"><input class="search-input" placeholder="Search party, narration, flag…" oninput="srchTbl('scrTbody',this.value)"></div>
+    <button class="fbtn active" onclick="fltTbl(this,'scrTbody','data-risk','ALL')">All (${S.flagged.length})</button>
+    <button class="fbtn f-red" onclick="fltTbl(this,'scrTbody','data-risk','HIGH')">🔴 High (${S.high})</button>
+    <button class="fbtn f-amber" onclick="fltTbl(this,'scrTbody','data-risk','MEDIUM')">🟡 Med (${S.med})</button>
+    <button class="fbtn" onclick="fltTbl(this,'scrTbody','data-risk','LOW')">🔵 Low (${S.low})</button>
+  </div>
+  <div class="tbl-wrap">
+    <table class="dtbl">
+      <thead><tr><th>Date</th><th>Particulars</th><th>Voucher Type</th><th>Invoice No.</th><th>Amount</th><th>Risk</th><th>Flags</th><th>Narration</th></tr></thead>
+      <tbody id="scrTbody">
+        ${S.flagged.map(r=>`<tr data-risk="${r.risk}">
+          <td style="white-space:nowrap;font-family:var(--mono);font-size:11px">${r.date.toLocaleDateString('en-IN')}</td>
+          <td style="font-weight:500;max-width:160px">${r.particulars}</td>
+          <td style="font-size:11px;color:var(--ink3)">${r.voucherType||'—'}</td>
+          <td style="font-family:var(--mono);font-size:11px">${r.invoiceNo||'<span style="color:var(--ink4)">—</span>'}</td>
+          <td class="amt">${fmtD(r.amount)}</td>
+          <td><span class="bdg ${r.risk==='HIGH'?'bdg-red':r.risk==='MEDIUM'?'bdg-amber':'bdg-blue'}">${r.risk}</span></td>
+          <td style="max-width:220px">${r.flags.map(f=>`<span class="chip">${f.type}: ${f.detail}</span>`).join(' ')}</td>
+          <td class="narr" title="${r.narration||''}">${r.narration||'<span style="color:var(--ink4)">—</span>'}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+
+  if(CH.sflags) CH.sflags.destroy();
+  CH.sflags=new Chart(document.getElementById('chScrutinyFlags'),{
+    type:'bar',
+    data:{labels:Object.keys(fc),datasets:[{data:Object.values(fc),backgroundColor:['#4361ee','#dc2626','#d97706','#059669','#7c3aed','#0891b2','#ea580c','#0d9488'],borderRadius:4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}},y:{beginAtZero:true,ticks:{stepSize:1}}}}
+  });
+  if(CH.srisk) CH.srisk.destroy();
+  CH.srisk=new Chart(document.getElementById('chScrutinyRisk'),{
+    type:'doughnut',
+    data:{labels:['High','Medium','Low'],datasets:[{data:[S.high,S.med,S.low],backgroundColor:['#dc2626','#d97706','#4361ee'],borderWidth:0}]},
+    options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10,padding:12}}}}
+  });
+}
+
+// ═══════════════════════════════
+// RENDER DUPLICATE
+// ═══════════════════════════════
+function renderDuplicate(aiText) {
+  const D=results.duplicate;
+  const tab=document.getElementById('tab-duplicate');
+
+  const tc={};
+  D.dupes.forEach(d=>{tc[d.dupeType]=(tc[d.dupeType]||0)+1;});
+
+  tab.innerHTML=`
+  <div class="sec-head">
+    <div class="sec-ico" style="background:var(--orange-l)">📋</div>
+    <div class="sec-head-text"><h2>Duplicate Entry Check</h2><p>${D.dupes.length} entries flagged across ${rows.length} total</p></div>
+    <div class="sec-head-actions"><button class="btn btn-outline btn-sm" onclick="exportModuleXLSX('duplicate')">⬇ Export</button></div>
+  </div>
+  <div class="stat-row">
+    <div class="sc red"><div class="sc-label">High Risk</div><div class="sc-val">${D.high}</div><div class="sc-sub">Invoice duplicates</div></div>
+    <div class="sc amber"><div class="sc-label">Medium Risk</div><div class="sc-val">${D.med}</div><div class="sc-sub">Date+Amt+Party</div></div>
+    <div class="sc blue"><div class="sc-label">Low Risk</div><div class="sc-val">${D.low}</div><div class="sc-sub">Narration match</div></div>
+    <div class="sc orange"><div class="sc-label">Invoice Groups</div><div class="sc-val">${D.invDupes}</div><div class="sc-sub">Unique duplicated</div></div>
+  </div>
+  ${aiText?`<div class="ai-box"><div class="ai-box-hdr">🤖 AI Observation</div><div class="ai-box-body">${aiText}</div></div>`:''}
+  <div class="chart-grid">
+    <div class="chart-card"><div class="chart-title">Duplicate Type Distribution</div><div class="chart-sub">Count by duplicate type detected</div><canvas id="chDupeType" height="220"></canvas></div>
+    <div class="chart-card"><div class="chart-title">Risk Breakdown</div><div class="chart-sub">Duplicate entries by risk level</div><canvas id="chDupeRisk" height="220"></canvas></div>
+  </div>
+  <div class="tbl-toolbar">
+    <div class="search-wrap"><input class="search-input" placeholder="Search party, invoice, narration…" oninput="srchTbl('dupeTbody',this.value)"></div>
+    <button class="fbtn active" onclick="fltTbl(this,'dupeTbody','data-risk','ALL')">All (${D.dupes.length})</button>
+    <button class="fbtn f-red" onclick="fltTbl(this,'dupeTbody','data-risk','HIGH')">🔴 High (${D.high})</button>
+    <button class="fbtn f-amber" onclick="fltTbl(this,'dupeTbody','data-risk','MEDIUM')">🟡 Med (${D.med})</button>
+    <button class="fbtn" onclick="fltTbl(this,'dupeTbody','data-risk','LOW')">🔵 Low (${D.low})</button>
+  </div>
+  <div class="tbl-wrap">
+    <table class="dtbl">
+      <thead><tr><th>Date</th><th>Particulars</th><th>Invoice No.</th><th>Voucher No.</th><th>Amount</th><th>Risk</th><th>Type</th><th>Detail</th><th>Narration</th></tr></thead>
+      <tbody id="dupeTbody">
+        ${D.dupes.map(r=>`<tr data-risk="${r.risk}">
+          <td style="white-space:nowrap;font-family:var(--mono);font-size:11px">${r.date.toLocaleDateString('en-IN')}</td>
+          <td style="font-weight:500;max-width:150px">${r.particulars}</td>
+          <td style="font-family:var(--mono);font-size:11px">${r.invoiceNo||'<span style="color:var(--ink4)">—</span>'}</td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--ink3)">${r.voucherNo||'—'}</td>
+          <td class="amt">${fmtD(r.amount)}</td>
+          <td><span class="bdg ${r.risk==='HIGH'?'bdg-red':r.risk==='MEDIUM'?'bdg-amber':'bdg-blue'}">${r.risk}</span></td>
+          <td><span class="bdg bdg-orange">${r.dupeType}</span></td>
+          <td style="font-size:11px;max-width:200px;color:var(--ink2)">${r.detail}</td>
+          <td class="narr" title="${r.narration||''}">${r.narration||'<span style="color:var(--ink4)">—</span>'}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+
+  if(CH.dtype) CH.dtype.destroy();
+  CH.dtype=new Chart(document.getElementById('chDupeType'),{
+    type:'bar',
+    data:{labels:Object.keys(tc),datasets:[{data:Object.values(tc),backgroundColor:['#dc2626','#ea580c','#d97706','#4361ee'],borderRadius:4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},maxRotation:20}},y:{beginAtZero:true,ticks:{stepSize:1}}}}
+  });
+  if(CH.drisk) CH.drisk.destroy();
+  CH.drisk=new Chart(document.getElementById('chDupeRisk'),{
+    type:'doughnut',
+    data:{labels:['High','Medium','Low'],datasets:[{data:[D.high,D.med,D.low],backgroundColor:['#dc2626','#d97706','#4361ee'],borderWidth:0}]},
+    options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10,padding:12}}}}
+  });
+}
+
+// ═══════════════════════════════
+// RENDER VARIANCE
+// ═══════════════════════════════
+function renderVariance(aiText) {
+  const V=results.variance;
+  const tab=document.getElementById('tab-variance');
+  const monthVals=V.months.map(m=>V.byMonth[m]);
+
+  tab.innerHTML=`
+  <div class="sec-head">
+    <div class="sec-ico amber">📊</div>
+    <div class="sec-head-text"><h2>Expense Variance Analysis</h2><p>${V.flags.length} variances flagged · ${V.months.length} months</p></div>
+    <div class="sec-head-actions"><button class="btn btn-outline btn-sm" onclick="exportModuleXLSX('variance')">⬇ Export</button></div>
+  </div>
+  <div class="stat-row">
+    <div class="sc blue"><div class="sc-label">Months Analysed</div><div class="sc-val">${V.months.length}</div></div>
+    <div class="sc teal"><div class="sc-label">Total Expense</div><div class="sc-val" style="font-size:15px">${fmt(V.total)}</div></div>
+    <div class="sc amber"><div class="sc-label">Avg / Month</div><div class="sc-val" style="font-size:15px">${fmt(V.avg)}</div></div>
+    <div class="sc red"><div class="sc-label">Spikes ↑</div><div class="sc-val">${V.spikes}</div></div>
+    <div class="sc green"><div class="sc-label">Drops ↓</div><div class="sc-val">${V.drops}</div></div>
+  </div>
+  ${aiText?`<div class="ai-box"><div class="ai-box-hdr">🤖 AI Observation</div><div class="ai-box-body">${aiText}</div></div>`:''}
+  <div class="chart-grid full">
+    <div class="chart-card">
+      <div class="chart-title">Monthly Expense Trend</div>
+      <div class="chart-sub">Month-on-month spend with flagged variances highlighted</div>
+      <canvas id="chVarTrend" height="200"></canvas>
+    </div>
+  </div>
+  ${V.flags.length?`
+  <div class="tbl-wrap" style="margin-bottom:20px">
+    <table class="dtbl">
+      <thead><tr><th>Month</th><th>Previous Month</th><th>Current Month</th><th>Change</th><th>% Change</th><th>Flag</th></tr></thead>
+      <tbody>
+        ${V.flags.map(f=>`<tr>
+          <td style="font-weight:600">${monthLabel(f.month)}</td>
+          <td class="amt">${fmt(f.prev)}</td>
+          <td class="amt">${fmt(f.curr)}</td>
+          <td class="amt" style="color:${f.diff>0?'var(--red)':'var(--green)'}">${f.diff>0?'+':''}${fmtS(f.diff)}</td>
+          <td style="font-family:var(--mono);font-weight:600;color:${f.diff>0?'var(--red)':'var(--green)'}">${f.pct!==null?(f.pct>0?'+':'')+Math.round(f.pct)+'%':'—'}</td>
+          <td><span class="bdg ${f.flag==='SPIKE'?'bdg-red':f.flag==='DROP'?'bdg-green':'bdg-teal'}">${f.flag}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`:'<div class="mod-empty"><div class="me-ico">✅</div><p>No significant variances detected.</p></div>'}`;
+
+  // Bar chart — color spike/drop months differently
+  const barColors = V.months.map(m=>{
+    const f=V.flags.find(f=>f.month===m);
+    if(!f) return '#4361ee88';
+    return f.flag==='SPIKE'?'#dc262699':'#05996988';
+  });
+  const borderColors = V.months.map(m=>{
+    const f=V.flags.find(f=>f.month===m);
+    if(!f) return '#4361ee';
+    return f.flag==='SPIKE'?'#dc2626':'#059669';
+  });
+
+  if(CH.vtrend) CH.vtrend.destroy();
+  CH.vtrend=new Chart(document.getElementById('chVarTrend'),{
+    type:'bar',
+    data:{
+      labels:V.months.map(monthLabel),
+      datasets:[{
+        label:'Expense (₹)',
+        data:monthVals,
+        backgroundColor:barColors,
+        borderColor:borderColors,
+        borderWidth:1.5,
+        borderRadius:4,
+      }]
+    },
+    options:{responsive:true,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>'₹'+ctx.raw.toLocaleString('en-IN')}}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')}}}}
+  });
+}
+
+// ═══════════════════════════════
+// RENDER PATTERN
+// ═══════════════════════════════
+function renderPattern(aiText) {
+  const P=results.pattern;
+  const tab=document.getElementById('tab-pattern');
+
+  // Filter buttons counts
+  const stableN   = P.recurring.filter(r=>r.isStable).length;
+  const semiN     = P.recurring.filter(r=>r.isSemi).length;
+  const varN      = P.recurring.filter(r=>!r.isStable&&!r.isSemi).length;
+  const anomN     = P.recurring.filter(r=>r.anomalies.length>0||r.missing.length>0).length;
+  const cleanN    = P.recurring.filter(r=>r.anomalies.length===0&&r.missing.length===0).length;
+
+  tab.innerHTML=`
+  <div class="sec-head">
+    <div class="sec-ico violet">📈</div>
+    <div class="sec-head-text">
+      <h2>Routine Expense Pattern Analysis</h2>
+      <p>${P.recurring.length} recurring parties · ${P.withAnom} need attention · ${cleanN} fully consistent</p>
+    </div>
+    <div class="sec-head-actions"><button class="btn btn-outline btn-sm" onclick="exportModuleXLSX('pattern')">⬇ Export</button></div>
+  </div>
+
+  <div class="stat-row">
+    <div class="sc green"><div class="sc-label">Stable (CV&lt;15%)</div><div class="sc-val">${stableN}</div><div class="sc-sub">Fixed pattern</div></div>
+    <div class="sc amber"><div class="sc-label">Semi-Fixed</div><div class="sc-val">${semiN}</div><div class="sc-sub">CV 15–40%</div></div>
+    <div class="sc red"><div class="sc-label">Variable</div><div class="sc-val">${varN}</div><div class="sc-sub">CV &gt;40%</div></div>
+    <div class="sc violet"><div class="sc-label">Need Attention</div><div class="sc-val">${anomN}</div><div class="sc-sub">Anomaly or missing</div></div>
+    <div class="sc green" style="--green:#059669"><div class="sc-label">Fully Consistent</div><div class="sc-val">${cleanN}</div><div class="sc-sub">No issues found</div></div>
+  </div>
+
+  ${aiText?`<div class="ai-box"><div class="ai-box-hdr">🤖 AI Observation</div><div class="ai-box-body">${aiText}</div></div>`:''}
+
+  <div style="background:var(--blue-l);border:1px solid var(--blue-m);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--blue);">
+    <strong>How to read this table:</strong> 
+    Each row shows a recurring party's payment pattern across all months. 
+    <strong>Expected Range</strong> = mean ± 1 std dev (normal band). 
+    <strong>Monthly Breakdown</strong> shows each month — 
+    <span style="background:var(--green-l);color:var(--green);padding:1px 6px;border-radius:3px;font-weight:600">green = within normal range</span>, 
+    <span style="background:var(--red-l);color:var(--red);padding:1px 6px;border-radius:3px;font-weight:600">red = anomaly</span>, 
+    <span style="background:var(--amber-l);color:var(--amber);padding:1px 6px;border-radius:3px;font-weight:600">amber = missing</span>, 
+    <span style="background:var(--surface2);color:var(--ink3);padding:1px 6px;border-radius:3px;font-weight:600">grey = not applicable</span>.
+  </div>
+
+  <div class="tbl-toolbar">
+    <div class="search-wrap"><input class="search-input" placeholder="Search party name…" oninput="srchTbl('patTbody',this.value)"></div>
+    <button class="fbtn active" onclick="fltTbl(this,'patTbody','data-pat','ALL')">All (${P.recurring.length})</button>
+    <button class="fbtn f-red" onclick="fltTbl(this,'patTbody','data-pat','ISSUE')">⚠ Need Attention (${anomN})</button>
+    <button class="fbtn" onclick="fltTbl(this,'patTbody','data-pat','CLEAN')">✓ Consistent (${cleanN})</button>
+    <button class="fbtn" onclick="fltTbl(this,'patTbody','data-cls','STABLE')">Stable (${stableN})</button>
+    <button class="fbtn f-amber" onclick="fltTbl(this,'patTbody','data-cls','SEMI-FIXED')">Semi-Fixed (${semiN})</button>
+    <button class="fbtn f-red" onclick="fltTbl(this,'patTbody','data-cls','VARIABLE')">Variable (${varN})</button>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="dtbl">
+      <thead>
+        <tr>
+          <th>Party (Particulars)</th>
+          <th>Pattern</th>
+          <th>Months Active</th>
+          <th>Avg / Month</th>
+          <th>Expected Range</th>
+          <th>Min → Max Actual</th>
+          <th>CV</th>
+          <th>Monthly Breakdown</th>
+          <th>Issues</th>
+        </tr>
+      </thead>
+      <tbody id="patTbody">
+        ${P.recurring.map(r => {
+          const cls    = r.isStable?'STABLE':r.isSemi?'SEMI-FIXED':'VARIABLE';
+          const hasIssue = r.anomalies.length>0||r.missing.length>0;
+          const pat    = hasIssue?'ISSUE':'CLEAN';
+          const lo     = r.mean - r.std;
+          const hi     = r.mean + r.std;
+          const minAmt = Math.min(...r.amounts);
+          const maxAmt = Math.max(...r.amounts);
+
+          // Monthly breakdown cells — one chip per month in the full date range
+          const monthCells = P.allMonths.map(m => {
+            const idx = r.months.indexOf(m);
+            // Month is before this party started or after it ended — grey N/A
+            if (m < r.months[0] || m > r.months[r.months.length-1]) {
+              return `<span style="display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-family:var(--mono);background:var(--surface2);color:var(--ink4);margin:1px">—</span>`;
+            }
+            // Month is within range but missing
+            if (idx < 0) {
+              return `<span title="Missing: ${monthLabel(m)}" style="display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-family:var(--mono);background:var(--amber-l);color:var(--amber);border:1px solid #fcd34d;margin:1px;font-weight:600">${monthLabel(m).split(' ')[0]}<br>MISSING</span>`;
+            }
+            const v = r.amounts[idx];
+            const isAnom = r.anomalies.find(a=>a.month===m);
+            if (isAnom) {
+              return `<span title="${monthLabel(m)}: ${fmt(v)} (${isAnom.pct>0?'+':''}${isAnom.pct}% vs avg)" style="display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-family:var(--mono);background:var(--red-l);color:var(--red);border:1px solid #fca5a5;margin:1px;font-weight:600">${monthLabel(m).split(' ')[0]}<br>${fmt(v)}</span>`;
+            }
+            return `<span title="${monthLabel(m)}: ${fmt(v)}" style="display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-family:var(--mono);background:var(--green-l);color:var(--green);border:1px solid #a7f3d0;margin:1px">${monthLabel(m).split(' ')[0]}<br>${fmt(v)}</span>`;
+          }).join('');
+
+          // Issues summary
+          let issues = '';
+          if (!hasIssue) {
+            issues = `<span class="bdg bdg-green">✓ Pattern confirmed</span>`;
+          } else {
+            if (r.anomalies.length) issues += `<div style="margin-bottom:3px"><span class="bdg bdg-red">⚠ ${r.anomalies.length} anomal${r.anomalies.length>1?'ies':'y'}</span></div>`;
+            if (r.missing.length)   issues += `<div><span class="bdg bdg-amber">⚠ ${r.missing.length} missing month${r.missing.length>1?'s':''}</span></div>`;
+          }
+
+          return `<tr data-pat="${pat}" data-cls="${cls}">
+            <td style="font-weight:600;min-width:120px">${r.party}</td>
+            <td><span class="bdg ${r.isStable?'bdg-green':r.isSemi?'bdg-amber':'bdg-red'}">${cls}</span></td>
+            <td style="text-align:center;font-family:var(--mono)">${r.months.length} / ${P.allMonths.filter(m=>m>=r.months[0]&&m<=r.months[r.months.length-1]).length}</td>
+            <td class="amt">${fmt(r.mean)}</td>
+            <td style="font-family:var(--mono);font-size:11px;white-space:nowrap">
+              ${r.isStable
+                ? `<span style="color:var(--green);font-weight:600">${fmt(r.mean)}</span> <span style="color:var(--ink4)">(fixed)</span>`
+                : `${fmt(Math.max(0,lo))} – ${fmt(hi)}`}
+            </td>
+            <td style="font-family:var(--mono);font-size:11px;white-space:nowrap;color:var(--ink2)">${fmt(minAmt)} → ${fmt(maxAmt)}</td>
+            <td style="font-family:var(--mono);font-size:11px;font-weight:600;color:${r.isStable?'var(--green)':r.isSemi?'var(--amber)':'var(--red)'}">${Math.round(r.cv*100)}%</td>
+            <td style="min-width:300px">${monthCells}</td>
+            <td style="min-width:130px">${issues}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ═══════════════════════════════
+// TABLE FILTER / SEARCH
+// ═══════════════════════════════
+function fltTbl(btn, tbodyId, attr, val) {
+  btn.closest('.tbl-toolbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#'+tbodyId+' tr').forEach(tr=>{
+    tr.style.display=(val==='ALL'||tr.getAttribute(attr)===val)?'':'none';
+  });
+}
+function srchTbl(tbodyId, q) {
+  document.querySelectorAll('#'+tbodyId+' tr').forEach(tr=>{
+    tr.style.display=(!q||tr.textContent.toLowerCase().includes(q.toLowerCase()))?'':'none';
+  });
+}
+
+// ═══════════════════════════════
+// EXCEL EXPORT
+// ═══════════════════════════════
+function exportExcel() {
+  const wb=XLSX.utils.book_new();
+  const S=results.scrutiny, D=results.duplicate, V=results.variance, P=results.pattern;
+  const today=new Date().toLocaleDateString('en-IN');
+
+  // Summary
+  const sumRows=[
+    ['AuditAI — Analysis Report'],
+    ['Entity',meta.entity],['Ledger Head',meta.expense],['Generated',today],['Total Entries',rows.length],
+    ['Total Expense',rows.reduce((s,r)=>s+r.amount,0)],[''],
+    ['MODULE','METRIC','COUNT'],
+  ];
+  if(S){sumRows.push(['Ledger Scrutiny','Flagged',S.flagged.length],['','High Risk',S.high],['','Medium Risk',S.med],['','Low Risk',S.low],['','Year-End (31 Mar)',S.yearEnd],['','Round Figures',S.rounds],['','No Invoice Ref',S.noInv],['','']);}
+  if(D){sumRows.push(['Duplicate Check','Total Flagged',D.dupes.length],['','High Risk (Invoice)',D.high],['','Medium Risk',D.med],['','Low Risk',D.low],['','']);}
+  if(V){sumRows.push(['Expense Variance','Months Analysed',V.months.length],['','Spikes',V.spikes],['','Drops',V.drops],['','']);}
+  if(P){sumRows.push(['Pattern Analysis','Recurring Parties',P.recurring.length],['','Stable',P.stable],['','Semi-Fixed',P.semi],['','With Anomalies',P.withAnom]);}
+  const wsSumm=XLSX.utils.aoa_to_sheet(sumRows);
+  wsSumm['!cols']=[{wch:22},{wch:28},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,wsSumm,'Summary');
+
+  // Scrutiny detail
+  if(S){
+    const rows2=[['Date','Particulars','Voucher Type','Invoice No.','Amount (₹)','Risk','Flag Types','Flag Details','Narration']];
+    S.flagged.forEach(r=>rows2.push([r.date.toLocaleDateString('en-IN'),r.particulars,r.voucherType,r.invoiceNo,r.amount,r.risk,r.flags.map(f=>f.type).join(' + '),r.flags.map(f=>f.detail).join(' | '),r.narration]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2);
+    ws['!cols']=[{wch:12},{wch:28},{wch:14},{wch:16},{wch:14},{wch:8},{wch:36},{wch:60},{wch:40}];
+    XLSX.utils.book_append_sheet(wb,ws,'Ledger Scrutiny');
+  }
+
+  // Duplicate detail
+  if(D){
+    const rows2=[['Date','Particulars','Invoice No.','Voucher No.','Amount (₹)','Risk','Duplicate Type','Detail','Narration']];
+    D.dupes.forEach(r=>rows2.push([r.date.toLocaleDateString('en-IN'),r.particulars,r.invoiceNo,r.voucherNo,r.amount,r.risk,r.dupeType,r.detail,r.narration]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2);
+    ws['!cols']=[{wch:12},{wch:28},{wch:16},{wch:14},{wch:14},{wch:8},{wch:28},{wch:50},{wch:40}];
+    XLSX.utils.book_append_sheet(wb,ws,'Duplicate Check');
+  }
+
+  // Variance detail
+  if(V){
+    const rows2=[['Month','Amount (₹)','Previous Month (₹)','Change (₹)','% Change','Flag']];
+    V.months.forEach(m=>{
+      const f=V.flags.find(fl=>fl.month===m);
+      rows2.push([monthLabel(m),V.byMonth[m],f?f.prev:'',f?parseFloat(f.diff.toFixed(2)):'',f&&f.pct!==null?parseFloat(f.pct.toFixed(2)):'',f?f.flag:'OK']);
+    });
+    const ws=XLSX.utils.aoa_to_sheet(rows2);
+    ws['!cols']=[{wch:12},{wch:16},{wch:18},{wch:16},{wch:12},{wch:10}];
+    XLSX.utils.book_append_sheet(wb,ws,'Expense Variance');
+  }
+
+  // Pattern detail
+  if(P){
+    const rows2=[['Party','Months Active','Avg/Month (₹)','Std Dev (₹)','CV%','Pattern','Anomalous Months','Missing Months']];
+    P.recurring.forEach(r=>rows2.push([r.party,r.months.length,parseFloat(r.mean.toFixed(2)),parseFloat(r.std.toFixed(2)),parseFloat((r.cv*100).toFixed(1))+'%',r.isStable?'STABLE':r.isSemi?'SEMI-FIXED':'VARIABLE',r.anomalies.map(a=>monthLabel(a.month)+' ('+a.pct+'%)').join(', '),r.missing.map(m=>monthLabel(m)).join(', ')]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2);
+    ws['!cols']=[{wch:28},{wch:14},{wch:16},{wch:14},{wch:8},{wch:12},{wch:40},{wch:30}];
+    XLSX.utils.book_append_sheet(wb,ws,'Pattern Analysis');
+  }
+
+  XLSX.writeFile(wb,`AuditAI_${meta.expense.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function exportModuleXLSX(mod) {
+  const wb=XLSX.utils.book_new(), S=results.scrutiny, D=results.duplicate, V=results.variance, P=results.pattern;
+  if(mod==='scrutiny'&&S){
+    const rows2=[['Date','Particulars','Voucher Type','Invoice No.','Amount (₹)','Risk','Flag Types','Flag Details','Narration']];
+    S.flagged.forEach(r=>rows2.push([r.date.toLocaleDateString('en-IN'),r.particulars,r.voucherType,r.invoiceNo,r.amount,r.risk,r.flags.map(f=>f.type).join(' + '),r.flags.map(f=>f.detail).join(' | '),r.narration]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2); ws['!cols']=[{wch:12},{wch:28},{wch:14},{wch:16},{wch:14},{wch:8},{wch:36},{wch:60},{wch:40}];
+    XLSX.utils.book_append_sheet(wb,ws,'Ledger Scrutiny');
+  } else if(mod==='duplicate'&&D){
+    const rows2=[['Date','Particulars','Invoice No.','Voucher No.','Amount (₹)','Risk','Type','Detail','Narration']];
+    D.dupes.forEach(r=>rows2.push([r.date.toLocaleDateString('en-IN'),r.particulars,r.invoiceNo,r.voucherNo,r.amount,r.risk,r.dupeType,r.detail,r.narration]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2); ws['!cols']=[{wch:12},{wch:28},{wch:16},{wch:14},{wch:14},{wch:8},{wch:28},{wch:50},{wch:40}];
+    XLSX.utils.book_append_sheet(wb,ws,'Duplicate Check');
+  } else if(mod==='variance'&&V){
+    const rows2=[['Month','Amount (₹)','Previous (₹)','Change (₹)','% Change','Flag']];
+    V.months.forEach(m=>{const f=V.flags.find(fl=>fl.month===m);rows2.push([monthLabel(m),V.byMonth[m],f?f.prev:'',f?parseFloat(f.diff.toFixed(2)):'',f&&f.pct!==null?parseFloat(f.pct.toFixed(2)):'',f?f.flag:'OK']);});
+    const ws=XLSX.utils.aoa_to_sheet(rows2); ws['!cols']=[{wch:12},{wch:16},{wch:16},{wch:14},{wch:12},{wch:10}];
+    XLSX.utils.book_append_sheet(wb,ws,'Expense Variance');
+  } else if(mod==='pattern'&&P){
+    const rows2=[['Party','Months','Avg/Month','Std Dev','CV%','Pattern','Anomalous Months','Missing Months']];
+    P.recurring.forEach(r=>rows2.push([r.party,r.months.length,parseFloat(r.mean.toFixed(2)),parseFloat(r.std.toFixed(2)),parseFloat((r.cv*100).toFixed(1))+'%',r.isStable?'STABLE':r.isSemi?'SEMI-FIXED':'VARIABLE',r.anomalies.map(a=>monthLabel(a.month)+' ('+a.pct+'%)').join(', '),r.missing.map(m=>monthLabel(m)).join(', ')]));
+    const ws=XLSX.utils.aoa_to_sheet(rows2); ws['!cols']=[{wch:28},{wch:12},{wch:16},{wch:14},{wch:8},{wch:12},{wch:40},{wch:30}];
+    XLSX.utils.book_append_sheet(wb,ws,'Pattern Analysis');
+  }
+  XLSX.writeFile(wb,`AuditAI_${mod}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// ═══════════════════════════════
+// DOWNLOAD TEMPLATE
+// ═══════════════════════════════
+function downloadTemplate() {
+  const wb = XLSX.utils.book_new();
+
+  // ── Build template sheet ──
+  const templateData = [
+    // Row 0 — blank
+    ['', '', '', '', '', '', '', ''],
+    // Row 1 — Entity Name
+    ['', 'Entity Name -', 'Enter Company / Client Name Here', '', '', '', '', ''],
+    // Row 2 — Expense Name
+    ['', 'Expense Name - ', 'Enter Ledger Head Name Here (e.g. Transportation Local)', '', '', '', '', ''],
+    // Row 3 — blank
+    ['', '', '', '', '', '', '', ''],
+    // Row 4 — Column headers
+    ['', 'Date', 'Particulars', 'Voucher Type', 'Voucher No.', 'Voucher Ref. No.', 'Narration', 'Expense Amount '],
+    // Row 5–9 — Sample data rows
+    ['', '01-Apr-2024', 'ABC Transport Co.', 'Payment', 'PV-001', 'INV-2024-101', 'Transportation charges for April', 15000],
+    ['', '05-Apr-2024', 'XYZ Logistics', 'Payment', 'PV-002', 'INV-XYZ-045', 'Local delivery charges', 8500],
+    ['', '10-Apr-2024', 'ABC Transport Co.', 'Payment', 'PV-003', 'INV-2024-102', 'Transportation charges second trip', 15000],
+    ['', '28-Apr-2024', 'Quick Courier', 'Payment', 'PV-004', '', 'Urgent delivery - no invoice yet', 3200],
+    ['', '30-Apr-2024', 'ABC Transport Co.', 'Payment', 'PV-005', 'INV-2024-103', 'Month end transport charges', 20000],
+  ];
+
+  const ws = XLSX.utils.aoa_to_sheet(templateData);
+
+  // Column widths
+  ws['!cols'] = [
+    {wch:4},   // A — blank
+    {wch:16},  // B — Date
+    {wch:28},  // C — Particulars
+    {wch:16},  // D — Voucher Type
+    {wch:14},  // E — Voucher No.
+    {wch:18},  // F — Voucher Ref. No.
+    {wch:40},  // G — Narration
+    {wch:16},  // H — Expense Amount
+  ];
+
+  // Add instructions sheet
+  const instrData = [
+    ['AUDITAI — LEDGER IMPORT TEMPLATE — INSTRUCTIONS'],
+    [''],
+    ['FIELD', 'DESCRIPTION', 'REQUIRED', 'EXAMPLE'],
+    ['Entity Name',     'Company or client name — read from Row 1 of the data sheet',       'Yes', 'ABC Pvt Ltd'],
+    ['Expense Name',    'Ledger head name — read from Row 2 of the data sheet',              'Yes', 'Transportation Local'],
+    [''],
+    ['COLUMN',          'DESCRIPTION',                                                        'REQUIRED', 'NOTES'],
+    ['Date',            'Transaction date',                                                   'Yes',      'Formats: DD-Mon-YYYY, DD-MM-YYYY, DD/MM/YYYY'],
+    ['Particulars',     'Party / vendor name',                                                'Yes',      'Used for pattern analysis and duplicate detection'],
+    ['Voucher Type',    'Type of voucher in Tally (Payment, Journal, etc.)',                  'No',       'Shown in results for reference'],
+    ['Voucher No.',     'Internal Tally voucher number',                                      'No',       'Shown in results for reference'],
+    ['Voucher Ref. No.','Supplier invoice number / external reference',                       'No',       'Used for duplicate detection — blank = no invoice ref flag'],
+    ['Narration',       'Transaction description / narration from Tally',                     'No',       'Read by AI for context — risk keywords auto-detected'],
+    ['Expense Amount',  'Transaction amount (positive number)',                               'Yes',      'Do not include Dr/Cr suffix — plain number only'],
+    [''],
+    ['IMPORTANT NOTES'],
+    ['1. One file = one ledger head only'],
+    ['2. Do not change the structure of rows 1–4 (header section)'],
+    ['3. Data rows start from row 5 onwards'],
+    ['4. Do not include totals, subtotals, or summary rows in the data'],
+    ['5. Blank rows between data entries are automatically skipped'],
+    ['6. Voucher Ref. No. (invoice number) should be unique per transaction for best duplicate detection'],
+  ];
+  const wsInstr = XLSX.utils.aoa_to_sheet(instrData);
+  wsInstr['!cols'] = [{wch:20},{wch:55},{wch:12},{wch:40}];
+
+  XLSX.utils.book_append_sheet(wb, ws,     'Ledger Import Template');
+  XLSX.utils.book_append_sheet(wb, wsInstr,'Instructions');
+
+  XLSX.writeFile(wb, 'AuditAI_Ledger_Import_Template.xlsx');
+}
+
+// Drag and drop
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault(); dz.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f){const dt=new DataTransfer();dt.items.add(f);document.getElementById('fileInput').files=dt.files;loadFile({target:{files:dt.files}});}
+});
+</script>
+</body>
+</html>

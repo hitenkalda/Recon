@@ -1,0 +1,79 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.pnpm-store
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Prisma
+services/engine/.prisma/
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+api.log
+api_err.log
+web.log
+web_err.log
+
+# Uploads (local dev temp)
+uploads/
+
+# Large generated benchmark outputs (keep the reports, not the raw dumps)
+services/engine/benchmark_data/stress_results.json
+services/engine/benchmark_data/tds_100k_export.xlsx
+services/engine/benchmark_data/stress_run_log.txt
+services/engine/benchmark_data/stress_run_err.txt
+
+# 100k stress-test dataset (~92 MB) — regenerate from source if needed
+ReconAI_real_world_stress_dataset_v1/
+
+# Backup zip exports
+*.zip
+
+# Nested git repos (sub-repos managed independently)
+reconai/.git/

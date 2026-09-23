@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-lowest": "#0e0e0e", "on-secondary-fixed-variant": "#454747", "on-surface": "#e2e2e2", "background": "#131313", "surface-container-highest": "#353535", "on-secondary-container": "#b4b5b5", "text-secondary": "#9ca3af", "state-warning": "#fbbf24", "inverse-on-surface": "#303030", "error": "#ffb4ab", "on-primary-fixed": "#001f23", "border-subtle": "rgba(255, 255, 255, 0.06)", "inverse-surface": "#e2e2e2", "surface-card": "#0d0d0e", "surface-bright": "#393939", "surface-tint": "#54d8e8", "surface": "#131313", "surface-base": "#000000", "text-primary": "#ffffff", "surface-raised": "#080808", "error-container": "#93000a", "primary-container": "#67e8f9", "state-error": "#f87171", "on-surface-variant": "#bcc9cb", "on-primary": "#00363c", "on-secondary-fixed": "#1a1c1c", "surface-container-high": "#2a2a2a", "border-prominent": "rgba(255, 255, 255, 0.12)", "border-highlight": "rgba(255, 255, 255, 0.22)", "tertiary-fixed": "#e3e1ec", "on-background": "#e2e2e2", "on-secondary": "#2f3131", "on-primary-fixed-variant": "#004f57", "secondary-container": "#454747", "on-tertiary": "#2f3038", "state-success": "#34d399", "primary": "#d5f9ff", "surface-dim": "#131313", "tertiary-container": "#d6d5df", "primary-fixed": "#91f1ff", "secondary-fixed-dim": "#c6c6c7", "accent-cyan-glow": "rgba(103, 232, 249, 0.12)", "inverse-primary": "#006973", "surface-container": "#1f1f1f", "surface-variant": "#353535", "outline": "#869395", "on-tertiary-fixed": "#1a1b22", "on-error": "#690005", "outline-variant": "#3c494b", "text-dim": "#71717a", "secondary-fixed": "#e2e2e2", "on-error-container": "#ffdad6", "surface-overlay": "#141416", "tertiary": "#f3f1fc", "secondary": "#c6c6c7", "on-tertiary-container": "#5c5c65", "on-primary-container": "#006771", "primary-fixed-dim": "#54d8e8", "text-ghost": "#3f3f46", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#c6c5cf", "on-tertiary-fixed-variant": "#46464e" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-tablet": "2rem", "margin": "1rem", "space-xl": "2.5rem", "gutter-desktop": "1.5rem", "gutter": "1rem", "margin-desktop": "3rem", "space-lg": "1.5rem" }, "fontFamily": { "data-metric": [ "JetBrains Mono" ], "display": [ "Geist" ], "headline-md": [ "Geist" ], "body-md": [ "JetBrains Mono" ], "headline-sm": [ "Geist" ], "body-lg": [ "JetBrains Mono" ], "headline-lg": [ "Geist" ], "headline-lg-mobile": [ "Geist" ], "body-sm": [ "JetBrains Mono" ], "data-metric-sm": [ "JetBrains Mono" ], "display-mobile": [ "Geist" ], "label-caps": [ "JetBrains Mono" ], "label-regular": [ "JetBrains Mono" ] }, "fontSize": { "data-metric": [ "28px", { "lineHeight": "32px", "letterSpacing": "-0.03em", "fontWeight": "500" } ], "display": [ "56px", { "lineHeight": "60px", "letterSpacing": "-0.04em", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "26px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-md": [ "13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" } ], "headline-sm": [ "16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "body-lg": [ "15px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "headline-lg": [ "32px", { "lineHeight": "38px", "letterSpacing": "-0.03em", "fontWeight": "500" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-sm": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" } ], "data-metric-sm": [ "18px", { "lineHeight": "22px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "display-mobile": [ "36px", { "lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "label-caps": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "label-regular": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface-base font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-raised z-50 flex flex-col justify-between py-space-md"><div class="flex flex-col gap-space-md"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="Clean vector logo of ReconAI featuring the neural blossom network icon and RECONAI wordmark in vibrant cyan and electric blue, without the 'SINCE 2026' text, matching user specification." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WHKT5pE-2TtymchT4F2z1RjFuFcMxylI_rHhJ1_IuPUY74ajwFn1gdbD3FirLT9gVQR5H1FpialQAGEJAEuYJOeqYSRBhVH987tY5PnPKXeAbvrTRPC4j92iSjUgozRl7tPcomalBrPtfWP5didgTjlO10iFAnA79jH-pFcl31nxALxz0aZ1M5bNRr5DUVQWn2Iu46EpKo18CKLUXO4XuDqEhkK8aMOg_4qfBWd2ebqUfBE3_Iucj4evI"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-text-primary uppercase tracking-wider font-semibold">ReconAI</span><span class="font-label-caps text-label-caps text-text-dim">Institutional v4.8</span></div></div><div class="px-space-md"><div class="bg-surface-card p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs overflow-hidden"><span class="material-symbols-outlined text-primary-container text-[18px]">corporate_fare</span><div class="flex flex-col truncate"><span class="font-label-caps text-label-caps text-text-dim truncate">Practice Entity</span><span class="font-label-regular text-label-regular text-text-primary truncate font-medium">Rajesh &amp; Co. CA</span></div></div><span class="material-symbols-outlined text-text-dim text-[16px]">unfold_more</span></div></div><nav class="flex flex-col gap-space-xs px-space-sm" data-active-classes="bg-surface-card text-primary-container font-medium"><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="clients" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span>Clients</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-colors bg-surface-card text-primary-container font-medium" data-path="engagements" href="#"><span class="material-symbols-outlined text-[18px]">fact_check</span><span>Engagements</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="team" href="#"><span class="material-symbols-outlined text-[18px]">badge</span><span>Team</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs font-body-md text-body-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span>Settings</span></a></nav></div><div class="px-space-md flex flex-col gap-space-sm"><div class="bg-surface-card p-space-xs flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 bg-state-success rounded-full"></span><span class="font-label-caps text-label-caps text-text-dim">Engine Sync</span></div><span class="font-label-caps text-label-caps text-primary-container">99.98%</span></div><div class="flex items-center justify-between pt-space-xs text-text-dim font-label-caps text-label-caps"><span>Dual-Ledger V3.2</span><span class="text-primary-container font-mono">SECURE</span></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-raised/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-text-dim font-label-caps text-label-caps"><span class="material-symbols-outlined text-[16px]">assured_workload</span><span>Rajesh &amp; Co. CA</span><span class="text-text-ghost">/</span><span class="text-on-surface">Fiscal Audit 2025-26</span></div><div class="hidden lg:flex items-center bg-surface-card px-space-sm py-space-xs gap-space-xs"><span class="material-symbols-outlined text-text-dim text-[16px]">terminal</span><input class="bg-transparent text-text-primary placeholder-text-dim text-body-sm font-body-sm focus:outline-none w-80" placeholder="Press ⌘K to query ledgers, client IDs, audit codes..." type="text"/><kbd class="bg-surface-base px-1 text-[10px] text-text-dim font-mono">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><button class="relative p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary-container"></span></button><button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">history_edu</span></button></div><div class="h-6 w-px bg-surface-container-high"></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-regular text-label-regular text-text-primary font-medium leading-none">Rajesh Sharma, FCA</span><span class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider mt-0.5">Managing Partner</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida/AEtjO1XPD5kKBmqJQzFtMvJPE-XmZemu3QdJAl8Xt0piF3HobkInXLwxM0-d4hgrudb2yoQOyaCcdSk6JV9AQlJBmSZMbGK90w0pcR4uOsKR6rcDsoC1UtgYJEbdSMT6K-jwEh4iGluHRmvXmwUgRTfbGJPiZgKlAafdRJo6PfMMWs5KjQMXPaK3lH5jenAjCRAFXrIe35WKxPgwL9jL4X1R1vJFrIqbULJpKEYz89mRSh0otiUgoeE3eIVG7wY"/></div></div></header><main class="w-full pt-16 bg-surface-base flex-1"><div class="flex flex-col w-full">
+<div class="px-space-md lg:px-margin-desktop py-space-md flex flex-col gap-space-lg">
+<!-- Top Action Protocol Bar -->
+<section class="bg-surface-raised p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="bg-surface-card text-primary-container px-2 py-0.5 font-label-caps text-label-caps">SA 230 COMPLIANT</span>
+<span class="text-text-dim font-label-caps text-label-caps">DOSSIER REF: IND-DEL-2024-Q2-089</span>
+</div>
+<div class="flex items-baseline gap-space-sm flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">Audit Working Papers (WP) — Apex Global Logistics (FY 24-25 Q2)</h1>
+</div>
+<p class="font-body-sm text-body-sm text-text-dim">ICAI Standard on Auditing (SA 230) Working Papers Archival &amp; Dual-Signatory Cryptographic Chain</p>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap self-start md:self-auto">
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface font-body-md text-body-md px-space-md py-space-xs flex items-center gap-space-xs transition-colors" id="btnDownloadPack">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+<span>Download Audit Pack (ZIP/PDF)</span>
+</button>
+<button class="bg-text-primary hover:bg-surface-bright text-surface-base font-body-md text-body-md font-medium px-space-md py-space-xs flex items-center gap-space-xs transition-colors" id="btnSubmitPartner">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span>Submit for Partner Review</span>
+</button>
+</div>
+</section>
+<!-- Key Metrics Ribbon -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm">
+<div class="bg-surface-card p-space-md flex flex-col justify-between shadow-sm">
+<span class="font-label-caps text-label-caps text-text-dim">TOTAL AUDIT SCHEDULES</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-data-metric text-data-metric text-text-primary">18 <span class="text-body-sm text-text-dim font-body-sm">WPs</span></span>
+<span class="bg-surface-base text-state-success font-label-caps text-label-caps px-1.5 py-0.5">88.8% INDEXED</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary-container mt-space-xs">14 verified by Manager</span>
+</div>
+<div class="bg-surface-card p-space-md flex flex-col justify-between shadow-sm">
+<span class="font-label-caps text-label-caps text-text-dim">TESTING SAMPLE VALUE</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-data-metric text-data-metric text-text-primary">₹ 48.24 Cr</span>
+<span class="text-state-success font-body-sm text-body-sm">99.4% Match</span>
+</div>
+<span class="font-body-sm text-body-sm text-text-dim mt-space-xs">Materiality threshold: ₹ 1.20 Cr</span>
+</div>
+<div class="bg-surface-card p-space-md flex flex-col justify-between shadow-sm">
+<span class="font-label-caps text-label-caps text-text-dim">EXCEPTION &amp; VARIANCE COUNT</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-data-metric text-data-metric text-state-warning">03 <span class="text-body-sm text-text-dim font-body-sm">ALERTS</span></span>
+<span class="bg-surface-base text-state-warning font-label-caps text-label-caps px-1.5 py-0.5">SEC 16(4) FLAGGED</span>
+</div>
+<span class="font-body-sm text-body-sm text-text-dim mt-space-xs">Tax exposure: ₹ 14,82,900</span>
+</div>
+<div class="bg-surface-card p-space-md flex flex-col justify-between shadow-sm">
+<span class="font-label-caps text-label-caps text-text-dim">CHAIN INTEGRITY</span>
+<div class="flex items-baseline justify-between mt-space-xs">
+<span class="font-data-metric text-data-metric text-primary-container">STABLE</span>
+<span class="material-symbols-outlined text-state-success text-[18px]">verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-text-dim mt-space-xs">Merkle Root: 9140...8e11</span>
+</div>
+</section>
+<!-- Split Working Paper Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- Left Column: Working Paper Index & Status (5 cols) -->
+<section class="lg:col-span-5 flex flex-col gap-space-sm">
+<div class="bg-surface-raised p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-text-dim text-[16px]">list_alt</span>
+<span class="font-label-caps text-label-caps text-text-primary uppercase tracking-wider">Working Paper Dossier Index</span>
+</div>
+<span class="font-label-caps text-label-caps text-text-dim">4 ACTIVE SCHEDULES</span>
+</div>
+<!-- Working Paper Index Item List -->
+<div class="flex flex-col gap-space-xs" id="wpListContainer">
+<!-- WP-01 (Active Selection) -->
+<article class="wp-card cursor-pointer bg-surface-card p-space-md flex flex-col gap-space-xs transition-all shadow-sm" data-wp="WP-01">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="bg-surface-base text-primary-container font-label-caps text-label-caps px-1.5 py-0.5 font-bold">WP-01</span>
+<span class="font-label-caps text-label-caps text-text-dim">GSTR RECON</span>
+</div>
+<span class="bg-surface-base text-state-success font-label-caps text-label-caps px-2 py-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-state-success rounded-full"></span>
+                Signed Off &amp; Verified
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary mt-1 leading-snug">GSTR-2B vs Purchase Register Analytical Review &amp; Reconciliation Schedule</h3>
+<div class="flex items-center justify-between pt-space-xs text-text-dim font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span>Prep: Amit V. (Articled)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px] text-state-success">check_circle</span>
+<span class="text-on-surface">Mgr: Rajesh K.</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps pt-1 text-text-ghost">
+<span>Lines: 14,892 Recs</span>
+<span>Diff: ₹ 0.00 (Reconciled)</span>
+</div>
+</article>
+<!-- WP-02 -->
+<article class="wp-card cursor-pointer bg-surface-card/60 hover:bg-surface-card p-space-md flex flex-col gap-space-xs transition-all shadow-sm" data-wp="WP-02">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="bg-surface-base text-on-surface-variant font-label-caps text-label-caps px-1.5 py-0.5">WP-02</span>
+<span class="font-label-caps text-label-caps text-text-dim">TAX CREDITS</span>
+</div>
+<span class="bg-surface-base text-text-dim font-label-caps text-label-caps px-2 py-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-text-dim rounded-full"></span>
+                Draft
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary mt-1 leading-snug">Form 26AS &amp; AIS TDS Credit Confirmation &amp; Advance Tax Verification</h3>
+<div class="flex items-center justify-between pt-space-xs text-text-dim font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span>Prep: Priya M.</span>
+</div>
+<div class="flex items-center gap-space-xs text-text-ghost">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+<span>Unassigned</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps pt-1 text-text-ghost">
+<span>TRACES Download: Complete</span>
+<span>Pending Challan 280 Match</span>
+</div>
+</article>
+<!-- WP-03 -->
+<article class="wp-card cursor-pointer bg-surface-card/60 hover:bg-surface-card p-space-md flex flex-col gap-space-xs transition-all shadow-sm" data-wp="WP-03">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="bg-surface-base text-on-surface-variant font-label-caps text-label-caps px-1.5 py-0.5">WP-03</span>
+<span class="font-label-caps text-label-caps text-text-dim">TREASURY AUDIT</span>
+</div>
+<span class="bg-surface-base text-primary-container font-label-caps text-label-caps px-2 py-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary-container rounded-full"></span>
+                Completed
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary mt-1 leading-snug">Bank Reconciliation Statement (BRS) with OCR Narration Traceability</h3>
+<div class="flex items-center justify-between pt-space-xs text-text-dim font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span>Prep: Sunil R.</span>
+</div>
+<div class="flex items-center gap-space-xs text-state-success">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="text-on-surface">Mgr: Rajesh K.</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps pt-1 text-text-ghost">
+<span>HDFC &amp; SBI Accounts (4 Nos.)</span>
+<span>OCR Match: 99.8%</span>
+</div>
+</article>
+<!-- WP-04 -->
+<article class="wp-card cursor-pointer bg-surface-card/60 hover:bg-surface-card p-space-md flex flex-col gap-space-xs transition-all shadow-sm" data-wp="WP-04">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="bg-surface-base text-state-error font-label-caps text-label-caps px-1.5 py-0.5">WP-04</span>
+<span class="font-label-caps text-label-caps text-text-dim">STATUTORY CUTOFF</span>
+</div>
+<span class="bg-surface-base text-state-warning font-label-caps text-label-caps px-2 py-0.5 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-state-warning rounded-full"></span>
+                Needs Review
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-text-primary mt-1 leading-snug">Section 16(4) Ineligible ITC Disallowance &amp; Dispute Schedule</h3>
+<div class="flex items-center justify-between pt-space-xs text-text-dim font-body-sm text-body-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span>Prep: Amit V.</span>
+</div>
+<div class="flex items-center gap-space-xs text-state-warning">
+<span class="material-symbols-outlined text-[14px]">rate_review</span>
+<span class="text-state-warning font-medium">Partner Attention</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps pt-1 text-text-ghost">
+<span>23 Invoices Exceeded 30 Nov Cutoff</span>
+<span class="text-state-error">Disallowance: ₹ 14.82 L</span>
+</div>
+</article>
+</div>
+<!-- Evidence Attachment Capsule -->
+<div class="bg-surface-raised p-space-md flex flex-col gap-space-xs shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim uppercase">Associated Evidence Vault</span>
+<span class="material-symbols-outlined text-text-dim text-[16px]">cloud_done</span>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">Apex_GSTR2B_Q2_JSON_Payload.gz</span>
+<span class="text-text-dim font-mono">14.2 MB</span>
+</div>
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">HDFC_Bank_Confirmation_Signed.pdf</span>
+<span class="text-text-dim font-mono">1.8 MB</span>
+</div>
+</div>
+</section>
+<!-- Right Column: Interactive Working Paper Preview Pane (7 cols) -->
+<section class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Standardized Working Paper Sheet -->
+<div class="bg-surface-raised p-space-lg flex flex-col gap-space-md shadow-md">
+<!-- Standard Sheet Header Block -->
+<div class="flex flex-col gap-space-sm bg-surface-card p-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary-container font-mono tracking-widest">FORM AUD-230-STD // SCHEDULE WP-01</span>
+<h2 class="font-headline-md text-headline-md text-text-primary tracking-tight mt-0.5">GSTR-2B vs Purchase Register Analytical Schedule</h2>
+</div>
+<div class="text-right sm:text-right flex flex-col sm:items-end">
+<span class="font-label-caps text-label-caps text-text-dim">STATUTORY WORKING PAPER</span>
+<span class="font-label-regular text-label-regular text-state-success font-medium">VERIFIED // READY FOR DOSSIER</span>
+</div>
+</div>
+<!-- Meta Details Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-xs pt-space-xs bg-surface-base p-space-xs font-body-sm text-body-sm">
+<div class="flex flex-col">
+<span class="text-text-ghost font-label-caps text-label-caps">CLIENT ENTITY</span>
+<span class="text-on-surface font-medium truncate">Apex Global Logistics Ltd</span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-ghost font-label-caps text-label-caps">AUDIT PERIOD</span>
+<span class="text-on-surface font-medium">FY 2024-25 Q2</span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-ghost font-label-caps text-label-caps">PREPARED BY</span>
+<span class="text-on-surface font-medium">Amit V. (Articled Asst.)</span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-ghost font-label-caps text-label-caps">REVIEWED BY</span>
+<span class="text-primary-container font-medium">Rajesh K., FCA</span>
+</div>
+</div>
+</div>
+<!-- Analytical Reconciliation Breakdown Table -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">SUB-LEDGER RECONCILIATION SUMMARY (INR)</span>
+<span class="font-label-caps text-label-caps text-state-success">BALANCE CONVERGED</span>
+</div>
+<div class="overflow-x-auto bg-surface-card">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-base text-text-dim font-label-caps text-label-caps">
+<th class="p-space-xs font-medium">Tax Component</th>
+<th class="p-space-xs font-medium text-right">Per GSTR-2B</th>
+<th class="p-space-xs font-medium text-right">Per Books (PR)</th>
+<th class="p-space-xs font-medium text-right">Delta Variance</th>
+<th class="p-space-xs font-medium text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<tr class="bg-surface-card hover:bg-surface-container transition-colors">
+<td class="p-space-xs text-text-primary font-medium">IGST (Integrated Tax)</td>
+<td class="p-space-xs text-right font-mono text-on-surface">18,42,11,800.00</td>
+<td class="p-space-xs text-right font-mono text-on-surface">18,42,11,800.00</td>
+<td class="p-space-xs text-right font-mono text-state-success">0.00</td>
+<td class="p-space-xs text-center"><span class="bg-surface-base text-state-success px-1 py-0.5 font-label-caps text-label-caps">MATCH</span></td>
+</tr>
+<tr class="bg-surface-raised hover:bg-surface-container transition-colors">
+<td class="p-space-xs text-text-primary font-medium">CGST (Central Tax)</td>
+<td class="p-space-xs text-right font-mono text-on-surface">6,21,44,320.50</td>
+<td class="p-space-xs text-right font-mono text-on-surface">6,21,44,320.50</td>
+<td class="p-space-xs text-right font-mono text-state-success">0.00</td>
+<td class="p-space-xs text-center"><span class="bg-surface-base text-state-success px-1 py-0.5 font-label-caps text-label-caps">MATCH</span></td>
+</tr>
+<tr class="bg-surface-card hover:bg-surface-container transition-colors">
+<td class="p-space-xs text-text-primary font-medium">SGST (State Tax)</td>
+<td class="p-space-xs text-right font-mono text-on-surface">6,21,44,320.50</td>
+<td class="p-space-xs text-right font-mono text-on-surface">6,21,44,320.50</td>
+<td class="p-space-xs text-right font-mono text-state-success">0.00</td>
+<td class="p-space-xs text-center"><span class="bg-surface-base text-state-success px-1 py-0.5 font-label-caps text-label-caps">MATCH</span></td>
+</tr>
+<tr class="bg-surface-raised hover:bg-surface-container transition-colors">
+<td class="p-space-xs text-text-primary font-medium">Sec 16(2) Timing Lag (In-Transit)</td>
+<td class="p-space-xs text-right font-mono text-text-dim">44,80,000.00</td>
+<td class="p-space-xs text-right font-mono text-text-dim">0.00</td>
+<td class="p-space-xs text-right font-mono text-state-warning">+44,80,000.00</td>
+<td class="p-space-xs text-center"><span class="bg-surface-base text-state-warning px-1 py-0.5 font-label-caps text-label-caps">NOTED</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Auditor Analytical Notes (SA 230 Requirements) -->
+<div class="bg-surface-card p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">AUDITOR'S SUBSTANTIVE PROCEDURAL MEMORANDUM</span>
+<span class="font-label-caps text-label-caps text-primary-container">PARA 8 REF</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+              We have test-checked 100% of vendor line items over the performance materiality threshold of ₹ 10,00,000 against actual supplier tax invoices and e-Way bills. The ₹ 44.80 Lac variance represents goods in transit dispatched by Bharat Heavy Haulers on Sep 29, 2024 and physically taken into store on Oct 03, 2024 (GRN #GH-8819), satisfying Section 16(2)(b) possession requirement in October. No disallowance warranted for Q2.
+            </p>
+</div>
+<!-- Inline Visual Audit Graphic: Sampling Coverage -->
+<div class="bg-surface-card p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">SAMPLING COVERAGE &amp; MATERIALITY CHECK</span>
+<span class="font-body-sm text-body-sm text-state-success font-mono">100% High Risk Tested</span>
+</div>
+<!-- Lightweight SVG Distribution Chart -->
+<div class="h-10 w-full flex items-center">
+<svg class="w-full h-8" fill="none" viewbox="0 0 400 24" xmlns="http://www.w3.org/2000/svg">
+<!-- Group 1: 100% Tested -->
+<rect class="fill-primary-container" height="16" opacity="0.9" width="280" x="0" y="4"></rect>
+<!-- Group 2: Random Representative -->
+<rect class="fill-state-success" height="16" opacity="0.8" width="80" x="282" y="4"></rect>
+<!-- Group 3: Immaterial Residue -->
+<rect class="fill-surface-container-highest" height="16" opacity="0.6" width="36" x="364" y="4"></rect>
+</svg>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps text-text-dim">
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-primary-container inline-block"></span> High-Value Invoices (&gt; ₹10L): 70%</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-state-success inline-block"></span> Random Statistical Sample: 20%</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-surface-container-highest inline-block"></span> Low Risk: 10%</span>
+</div>
+</div>
+<!-- Cryptographic Stamp & Merkle Audit Trail -->
+<div class="bg-surface-base p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">SHA-256 AUDIT TRAIL CRYPTOGRAPHIC STAMP</span>
+<div class="flex items-center gap-1 text-state-success">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-label-caps text-label-caps">IMMUTABLE ARCHIVE</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs bg-surface-card p-space-xs">
+<span class="font-mono text-primary-container font-label-regular text-label-regular select-all break-all">
+                7f8a9e4d2819c43a0e1fb73b98c3924f7e2a9b1c5d3e7f9a8b2c4d6e8f0a1b4c2
+              </span>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-2 py-1 font-label-caps text-label-caps flex items-center gap-1 self-start sm:self-auto shrink-0" id="btnCopyHash">
+<span class="material-symbols-outlined text-[12px]">content_copy</span>
+<span id="copyFeedback">COPY HASH</span>
+</button>
+</div>
+<div class="flex items-center justify-between font-label-caps text-label-caps text-text-dim pt-1">
+<span>Timestamp: 2024-10-24T18:42:19.412Z</span>
+<span>Block Sequence: #481,992</span>
+</div>
+</div>
+<!-- Digital Signature & Partner Verification Panel -->
+<div class="bg-surface-card p-space-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim uppercase tracking-wider">Digital Signature Sign-Off Matrix</span>
+<span class="bg-surface-base text-primary-container font-label-caps text-label-caps px-2 py-0.5">ICAI CLASS-3 DSC LINKED</span>
+</div>
+<!-- Signatory Comparison Nodes -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Preparer Box -->
+<div class="bg-surface-raised p-space-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">PREPARED BY</span>
+<span class="text-state-success font-label-caps text-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span> SIGNED
+                  </span>
+</div>
+<div class="flex items-center gap-space-sm py-space-xs">
+<div class="w-8 h-8 bg-surface-container flex items-center justify-center text-primary-container font-bold text-headline-sm">
+                    AV
+                  </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-text-primary">Amit Verma</span>
+<span class="font-label-caps text-label-caps text-text-dim">Articled Assistant (Reg: NRO-049281)</span>
+</div>
+</div>
+<div class="text-text-ghost font-mono text-body-sm pt-space-xs bg-surface-base px-2 py-1 flex items-center justify-between">
+<span>Sign Date: 2024-10-24 16:30 IST</span>
+<span class="text-state-success">DSC VALID</span>
+</div>
+</div>
+<!-- Reviewer / Partner Box -->
+<div class="bg-surface-raised p-space-sm flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-text-dim">STATUTORY AUDIT PARTNER REVIEW</span>
+<span class="text-primary-container font-label-caps text-label-caps flex items-center gap-1" id="partnerStatusLabel">
+<span class="material-symbols-outlined text-[12px]">pending</span> VERIFICATION ACTIVE
+                  </span>
+</div>
+<div class="flex items-center gap-space-sm py-space-xs">
+<div class="w-8 h-8 bg-surface-container flex items-center justify-center text-state-success font-bold text-headline-sm">
+                    RK
+                  </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-text-primary">Rajesh K. Sharma</span>
+<span class="font-label-caps text-label-caps text-text-dim">FCA, Engagement Partner (M.No: 084920)</span>
+</div>
+</div>
+<div class="text-text-ghost font-mono text-body-sm pt-space-xs bg-surface-base px-2 py-1 flex items-center justify-between">
+<span>UDIN: 24084920AAAAAK9128</span>
+<span class="text-state-success">AUTHORIZED</span>
+</div>
+</div>
+</div>
+<!-- Sign-Off Interactive Checkbox Control -->
+<div class="bg-surface-base p-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<label class="flex items-start gap-space-xs cursor-pointer select-none">
+<input checked="" class="mt-1 w-4 h-4 accent-primary-container bg-surface-card rounded-none cursor-pointer" id="chkPartnerApproval" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-text-primary font-medium">Affirm SA 230 Working Paper Review &amp; Sufficiency of Audit Evidence</span>
+<span class="font-body-sm text-body-sm text-text-dim">I confirm the procedures documented herein conform to mandatory ICAI auditing guidelines.</span>
+</div>
+</label>
+<button class="bg-primary-container hover:bg-primary text-on-primary-fixed font-body-md text-body-md font-medium px-space-md py-space-xs shrink-0 flex items-center gap-space-xs transition-colors" id="btnSignOffAction">
+<span class="material-symbols-outlined text-[16px]">draw</span>
+<span>Affix Partner Stamp</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Copy Hash Interaction
+    const copyBtn = document.getElementById('copyHash');
+    const feedback = document.getElementById('copyFeedback');
+    const hashText = '7f8a9e4d2819c43a0e1fb73b98c3924f7e2a9b1c5d3e7f9a8b2c4d6e8f0a1b4c2';
+
+    if (copyBtn && feedback) {
+      copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(hashText).then(function() {
+          feedback.textContent = 'COPIED!';
+          setTimeout(function() {
+            feedback.textContent = 'COPY HASH';
+          }, 2000);
+        }).catch(function() {
+          feedback.textContent = 'COPIED!';
+          setTimeout(function() {
+            feedback.textContent = 'COPY HASH';
+          }, 2000);
+        });
+      });
+    }
+
+    // Interactive Working Paper Selection
+    const wpCards = document.querySelectorAll('.wp-card');
+    wpCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        wpCards.forEach(function(c) {
+          c.classList.remove('bg-surface-card');
+          c.classList.add('bg-surface-card/60');
+        });
+        card.classList.remove('bg-surface-card/60');
+        card.classList.add('bg-surface-card');
+      });
+    });
+
+    // Partner Affirmation Checkbox Toggle
+    const chk = document.getElementById('chkPartnerApproval');
+    const signBtn = document.getElementById('btnSignOffAction');
+    const statusLabel = document.getElementById('partnerStatusLabel');
+
+    if (chk && signBtn && statusLabel) {
+      chk.addEventListener('change', function() {
+        if (chk.checked) {
+          signBtn.removeAttribute('disabled');
+          signBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+          statusLabel.innerHTML = '<span class="material-symbols-outlined text-[12px]">verified</span> AFFIRMED BY PARTNER';
+          statusLabel.className = 'text-state-success font-label-caps text-label-caps flex items-center gap-1';
+        } else {
+          signBtn.setAttribute('disabled', 'true');
+          signBtn.classList.add('opacity-40', 'cursor-not-allowed');
+          statusLabel.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> VERIFICATION PENDING';
+          statusLabel.className = 'text-text-dim font-label-caps text-label-caps flex items-center gap-1';
+        }
+      });
+
+      signBtn.addEventListener('click', function() {
+        if (chk.checked) {
+          signBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span> <span>Cryptographically Locked</span>';
+          signBtn.classList.remove('bg-primary-container', 'text-on-primary-fixed');
+          signBtn.classList.add('bg-state-success', 'text-surface-base');
+        }
+      });
+    }
+
+    // Top action triggers
+    const btnDownload = document.getElementById('btnDownloadPack');
+    if (btnDownload) {
+      btnDownload.addEventListener('click', function() {
+        const prevText = btnDownload.innerHTML;
+        btnDownload.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Archiving SA 230 Pack...</span>';
+        setTimeout(function() {
+          btnDownload.innerHTML = '<span class="material-symbols-outlined text-[16px] text-state-success">check</span><span>Apex_Q2_AuditDossier.zip Ready</span>';
+        }, 1200);
+      });
+    }
+
+    const btnSubmit = document.getElementById('btnSubmitPartner');
+    if (btnSubmit) {
+      btnSubmit.addEventListener('click', function() {
+        const prevText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = '<span class="material-symbols-outlined text-[16px] text-state-success">done_all</span><span>Transmitted to FCA Queue</span>';
+        btnSubmit.classList.add('bg-state-success');
+      });
+    }
+  })();
+</script></main></div></body></html>

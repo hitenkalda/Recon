@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SML — Trial Balance P&L Variance Analysis Tool v5</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+<style>
+:root{
+  --bg:#f8f9fc;--white:#fff;--surface2:#f2f4f8;
+  --border:#e2e6ef;--border2:#c8cfe0;
+  --navy:#1a2b4a;--navy2:#243558;
+  --green:#1a7a3c;--green-light:#e8f5ee;
+  --accent:#1a7a3c;--accent-hover:#155e30;
+  --danger:#c0392b;--danger-light:#fdf0ee;
+  --warn:#d4620a;--warn-light:#fef3e8;
+  --ok:#1a7a3c;--ok-light:#e8f5ee;
+  --purple:#5b3fa0;--purple-light:#f0edfb;
+  --blue:#1a56db;--blue-light:#ebf0ff;
+  --text:#1a2b4a;--text2:#4a5568;--text3:#8896ad;--text4:#b0bac8;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  --radius:8px;
+  --shadow:0 1px 3px rgba(26,43,74,.08),0 1px 2px rgba(26,43,74,.05);
+  --shadow-md:0 4px 12px rgba(26,43,74,.10),0 2px 4px rgba(26,43,74,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* ── HEADER ── */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
+.header-left{display:flex;align-items:center;gap:20px}
+.logo-img{height:40px;width:auto}
+.header-divider{width:1px;height:32px;background:var(--border)}
+.header-title h1{font-size:15px;font-weight:600;color:var(--navy);letter-spacing:-.01em;line-height:1.2}
+.header-title span{font-size:11.5px;color:var(--text3)}
+.header-badge{background:var(--green-light);color:var(--green);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #b8dfc8;white-space:nowrap}
+
+/* ── STEP TABS ── */
+.steps{display:flex;gap:0;margin-bottom:28px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.step-tab{flex:1;padding:14px 20px;background:transparent;border:none;cursor:pointer;color:var(--text3);font-family:var(--sans);font-size:13px;font-weight:500;border-right:1px solid var(--border);transition:all .2s;display:flex;align-items:center;gap:10px}
+.step-tab:last-child{border-right:none}
+.step-tab:hover{background:var(--surface2);color:var(--text)}
+.step-tab.active{background:var(--navy);color:#fff}
+.step-tab.done{color:var(--ok)}
+.step-num{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.step-tab.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
+.step-tab.done .step-num{background:var(--ok);border-color:var(--ok);color:#fff}
+
+/* ── MAIN ── */
+.main{max-width:1380px;margin:0 auto;padding:28px 40px 80px}
+.panel{display:none}.panel.active{display:block}
+
+/* ── CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';display:block;width:3px;height:16px;background:var(--accent);border-radius:2px}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:36px 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);margin-bottom:16px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--navy);background:var(--surface2)}
+.upload-zone.loaded{border-color:var(--ok);background:var(--ok-light);border-style:solid}
+.upload-icon{font-size:32px;margin-bottom:10px}
+.upload-zone p{color:var(--text3);font-size:13px;margin-top:4px}
+.upload-cta{color:var(--navy);font-weight:700;font-size:13px;margin-top:8px}
+.upload-zone.loaded p{color:var(--ok);font-weight:600}
+input[type=file]{display:none}
+
+/* ── FIELDS ── */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field-row.three{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11.5px;font-weight:600;color:var(--text2);letter-spacing:.02em}
+.field input,.field select{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:9px 12px;font-family:var(--sans);font-size:13px;border-radius:6px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,43,74,.08)}
+.field small{font-size:11px;color:var(--text3)}
+
+/* ── PL FILTER SECTION ── */
+.pl-config{background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--radius);padding:18px 20px;margin-bottom:18px}
+.pl-config-title{font-size:11.5px;font-weight:700;color:var(--navy);letter-spacing:.03em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.pl-config-title::before{content:'📊';font-size:14px}
+.pl-mode-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.pl-mode-btn{padding:7px 14px;border:1.5px solid var(--border2);border-radius:20px;background:var(--white);font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s}
+.pl-mode-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pl-mode-btn:hover:not(.active){background:var(--surface2)}
+.pl-keyword-wrap{display:none}
+.pl-keyword-wrap.visible{display:block}
+.keyword-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.kw-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--navy);color:#fff;border-radius:4px;font-size:11.5px;font-weight:600}
+.kw-tag button{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;line-height:1;padding:0 2px}
+.kw-tag button:hover{color:#fff}
+.kw-add-row{display:flex;gap:8px;margin-top:10px}
+.kw-add-row input{flex:1;background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:7px 12px;font-family:var(--sans);font-size:12px;border-radius:6px;outline:none}
+.kw-add-row input:focus{border-color:var(--navy)}
+.kw-add-row button{padding:7px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer}
+.pl-stat{font-size:11.5px;color:var(--text3);margin-top:8px}
+.pl-stat strong{color:var(--navy)}
+
+/* ── HINTS ── */
+.hint{background:#f0f4ff;border-left:3px solid #4a7de8;padding:9px 14px;font-size:12px;color:var(--text2);border-radius:0 6px 6px 0;margin-bottom:14px}
+.hint-warn{background:var(--warn-light);border-left:3px solid var(--warn);padding:9px 14px;font-size:12px;color:var(--text2);border-radius:0 6px 6px 0;margin-bottom:14px}
+.hint-ok{background:var(--ok-light);border-left:3px solid var(--ok);padding:9px 14px;font-size:12px;color:var(--text2);border-radius:0 6px 6px 0;margin-bottom:14px}
+
+/* ── PREVIEW TABLE ── */
+.preview-wrap{overflow-x:auto;margin-top:16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--white)}
+.preview-table{width:100%;border-collapse:collapse;font-size:12px}
+.preview-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.03em;white-space:nowrap}
+.preview-table td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:11.5px}
+.preview-table tr:last-child td{border-bottom:none}
+.preview-table tr:hover td{background:var(--surface2)}
+
+/* ── COLUMN MAPPER ── */
+.col-map{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0}
+.col-field{display:flex;flex-direction:column;gap:4px}
+.col-field label{font-size:10.5px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase}
+.col-field select{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:7px 10px;font-family:var(--sans);font-size:12px;border-radius:6px;outline:none}
+.col-field select:focus{border-color:var(--navy)}
+.col-field select.mapped{border-color:var(--ok);background:var(--ok-light)}
+
+/* ── BUTTONS ── */
+.btn{padding:10px 20px;border:none;cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:600;border-radius:6px;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-primary:disabled{background:var(--text4);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-secondary{background:var(--white);color:var(--navy);border:1.5px solid var(--border2)}
+.btn-secondary:hover{background:var(--surface2)}
+.btn-xl{background:#1e6e3a;color:#fff;padding:11px 22px;border:none;cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:700;border-radius:6px;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-xl:hover{background:#155e30;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.25)}
+
+/* ── NAV FOOTER ── */
+.nav-footer{display:flex;justify-content:space-between;margin-top:24px}
+.nav-footer.right{justify-content:flex-end}
+
+/* ── SUMMARY CARDS ── */
+.summary-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.summary-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);cursor:pointer;position:relative;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:8px 8px 0 0}
+.summary-card.active{border-color:var(--border2);box-shadow:var(--shadow-md)}
+.summary-card:hover{box-shadow:var(--shadow-md)}
+.sc-all::before{background:var(--navy)}.sc-all.active{background:#f0f3f8}
+.sc-new::before{background:var(--green)}.sc-new.active{background:var(--green-light)}
+.sc-nomove::before{background:var(--blue)}.sc-nomove.active{background:var(--blue-light)}
+.sc-quick::before{background:var(--warn)}.sc-quick.active{background:var(--warn-light)}
+.sc-detailed::before{background:var(--danger)}.sc-detailed.active{background:var(--danger-light)}
+.s-label{font-size:10.5px;font-weight:600;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.s-value{font-size:30px;font-weight:700;line-height:1;letter-spacing:-.02em;margin-bottom:4px}
+.sc-all .s-value{color:var(--navy)}.sc-new .s-value{color:var(--green)}
+.sc-nomove .s-value{color:var(--blue)}.sc-quick .s-value{color:var(--warn)}.sc-detailed .s-value{color:var(--danger)}
+.s-sub{font-size:11px;color:var(--text3)}
+
+/* ── OB BANNER ── */
+.ob-banner{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:var(--radius);font-size:13px;margin-bottom:16px;border:1px solid}
+.ob-banner.warn{background:var(--warn-light);border-color:#f0d8c0;color:var(--warn)}
+.ob-banner.ok{background:var(--ok-light);border-color:#b8dfc8;color:var(--ok)}
+.ob-banner strong{font-weight:600}
+.ob-banner a{color:var(--blue);cursor:pointer;text-decoration:underline;font-size:12px;margin-left:8px}
+
+/* ── RESULTS TABLE ── */
+.table-wrap{overflow-x:auto}
+.results-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--white)}
+.results-table th{background:var(--surface2);color:var(--text2);padding:9px 13px;text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.02em;border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:68px;z-index:5}
+.results-table th:hover{color:var(--navy)}
+.results-table th.sorted{color:var(--navy)}
+.results-table th:nth-child(n+2){text-align:right}
+.results-table th:last-child{text-align:center}
+.results-table td{padding:9px 13px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+.results-table tr:last-child td{border-bottom:none}
+.results-table tr:hover td{background:var(--bg)}
+.results-table td:nth-child(n+2){text-align:right}
+.results-table td:last-child{text-align:center}
+
+.num{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--navy)}
+.num.pos{color:var(--ok);font-weight:600}
+.num.neg{color:var(--danger);font-weight:600}
+.num.nil{color:var(--text4);font-style:italic;font-weight:400}
+
+.tag{display:inline-block;padding:2px 9px;font-size:10.5px;font-weight:700;border-radius:4px;letter-spacing:.04em;white-space:nowrap}
+.tag-new{background:var(--green-light);color:var(--ok)}
+.tag-nomove{background:var(--blue-light);color:var(--blue)}
+.tag-quick{background:var(--warn-light);color:var(--warn)}
+.tag-detailed{background:var(--danger-light);color:var(--danger)}
+.tag-ok{background:var(--surface2);color:var(--text3)}
+.tag-dropped{background:var(--purple-light);color:var(--purple)}
+
+.var-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.var-bar{width:48px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.var-bar-fill{height:100%;border-radius:3px}
+.bar-ok{background:var(--ok)}.bar-warn{background:var(--warn)}.bar-danger{background:var(--danger)}
+
+.row-new td{background:rgba(232,245,238,.4)}.row-new:hover td{background:rgba(232,245,238,.8)!important}
+.row-nomove td{background:rgba(235,240,255,.4)}.row-nomove:hover td{background:rgba(235,240,255,.8)!important}
+.row-quick td{background:rgba(254,243,232,.5)}.row-quick:hover td{background:rgba(254,243,232,.9)!important}
+.row-detailed td{background:rgba(253,240,238,.5)}.row-detailed:hover td{background:rgba(253,240,238,.9)!important}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:220px}
+.search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text4);pointer-events:none}
+.search-wrap input{width:100%;background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:9px 12px 9px 34px;font-family:var(--sans);font-size:13px;border-radius:6px;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,43,74,.08)}
+
+/* ── EXPORT BAR ── */
+.export-bar{display:flex;gap:12px;margin-bottom:20px;padding:16px 20px;background:var(--navy);border-radius:var(--radius);align-items:center;justify-content:space-between;color:rgba(255,255,255,.85);font-size:13px}
+.export-bar strong{color:#fff;font-size:14px}
+.export-btns{display:flex;gap:10px}
+.btn-export-print{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);padding:9px 16px;cursor:pointer;font-family:var(--sans);font-size:12.5px;font-weight:600;border-radius:6px;display:inline-flex;align-items:center;gap:6px;transition:background .2s}
+.btn-export-print:hover{background:rgba(255,255,255,.2)}
+
+/* ── STATUS BAR ── */
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);font-size:11.5px;color:var(--text3);margin-top:-1px}
+.status-bar strong{color:var(--navy)}
+.status-bar .fa{color:var(--accent);font-weight:600}
+
+/* ── PL SCOPE BADGE ── */
+.scope-badge{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:20px;letter-spacing:.03em}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-state .icon{font-size:36px;margin-bottom:12px}
+.empty-state h3{font-size:16px;font-weight:600;color:var(--text2);margin-bottom:8px}
+
+.section-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.section-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.ob-diff-section{display:none;margin-bottom:20px}
+.ob-diff-section.visible{display:block}
+
+.sort-arrow{font-size:10px;margin-left:2px;opacity:.7}
+
+@media(max-width:900px){.main{padding:20px}.summary-cards{grid-template-columns:1fr 1fr}.header{padding:0 20px}.col-map{grid-template-columns:1fr 1fr}}
+@media print{.header,.export-bar,.toolbar,.nav-footer,.steps{position:static}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <img src="data:image/png;base64,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" alt="SML AND CO LLP" class="logo-img">
+    <div class="header-divider"></div>
+    <div class="header-title">
+      <h1>Trial Balance — P&amp;L Variance Analysis Tool</h1>
+      <span>Upload both period TBs · Filter to P&amp;L accounts · Run analysis · Export to Excel</span>
+    </div>
+  </div>
+  <div class="header-badge">v5 &nbsp;|&nbsp; SML AND CO LLP</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STEP TABS -->
+  <div class="steps">
+    <button class="step-tab active" onclick="goStep(1)" id="tab1"><span class="step-num">1</span> Prior Period TB</button>
+    <button class="step-tab" onclick="goStep(2)" id="tab2"><span class="step-num">2</span> Current Period TB</button>
+    <button class="step-tab" onclick="goStep(3)" id="tab3"><span class="step-num">3</span> P&amp;L Variance &amp; Export</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANEL 1 — PRIOR PERIOD -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="panel active" id="panel1">
+    <div class="card">
+      <div class="card-title">Step 1 — Prior Period Trial Balance</div>
+
+      <div class="field-row" style="margin-bottom:20px">
+        <div class="field">
+          <label>Period Label *</label>
+          <input type="text" id="p1_label" placeholder="e.g. FY 2023-24" value="FY 2023-24">
+          <small>This label appears in the analysis and Excel export</small>
+        </div>
+        <div class="field">
+          <label>Entity / Client Name</label>
+          <input type="text" id="p1_entity" placeholder="e.g. Royal Foodstuffs Pvt Ltd">
+        </div>
+      </div>
+
+      <div class="upload-zone" id="zone1" onclick="document.getElementById('file1').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="dropFile(event,1)">
+        <div class="upload-icon" id="zone1_icon">📂</div>
+        <p id="zone1_msg">Upload Prior Period Trial Balance</p>
+        <p>.xlsx &nbsp;/&nbsp; .xls &nbsp;/&nbsp; .csv &nbsp;supported</p>
+        <p class="upload-cta" id="zone1_cta">CLICK TO UPLOAD OR DRAG &amp; DROP</p>
+      </div>
+      <input type="file" id="file1" accept=".xlsx,.xls,.csv" onchange="loadFile(event,1)">
+      <div class="hint">💡 The file may have company address / title rows above the data. Specify the header row below after upload.</div>
+
+      <div id="p1_sheet_row" style="display:none;margin-bottom:14px">
+        <div class="field-row">
+          <div class="field">
+            <label>Select Sheet</label>
+            <select id="p1_sheet" onchange="onSheetChange(1)"></select>
+          </div>
+          <div class="field">
+            <label>Header Row Number <small style="font-weight:400">(row with Particulars, Opening Balance, Debit, Credit, Closing Balance)</small></label>
+            <input type="number" id="p1_hrow" min="1" value="1" onchange="onHeaderRowChange(1)">
+          </div>
+        </div>
+        <div class="hint-ok" id="p1_detect_msg" style="display:none"></div>
+      </div>
+
+      <div id="p1_preview" style="display:none">
+        <div class="section-label">File Preview (first 8 data rows after header)</div>
+        <div class="preview-wrap"><table class="preview-table" id="p1_preview_tbl"></table></div>
+        <div class="section-label" style="margin-top:20px">Map Columns to TB Fields</div>
+        <div class="hint-warn">⚠️ Confirm that each TB field maps to the correct column. "Particulars" is the ledger name column.</div>
+        <div class="col-map" id="p1_col_map"></div>
+
+        <!-- ── P&L Filter Configuration ── -->
+        <div class="section-label" style="margin-top:24px">P&amp;L Account Identification</div>
+        <div class="pl-config">
+          <div class="pl-config-title">Define which ledgers belong to the Profit &amp; Loss Account</div>
+          <div class="pl-mode-row">
+            <button class="pl-mode-btn active" id="pl_mode_kw" onclick="setPLMode('keyword')">🔑 Keyword Filter</button>
+            <button class="pl-mode-btn" id="pl_mode_all" onclick="setPLMode('all')">📋 Analyse All Ledgers</button>
+          </div>
+
+          <div class="pl-keyword-wrap visible" id="pl_kw_wrap">
+            <div class="hint" style="margin-bottom:10px">💡 Enter keywords that appear in ledger names of P&amp;L items (Sales, Purchases, Expenses, Income). The tool will include any ledger whose name <strong>contains</strong> any of these keywords (case-insensitive). Common P&amp;L groups are pre-loaded.</div>
+            <div class="keyword-list" id="kw_list"></div>
+            <div class="kw-add-row">
+              <input type="text" id="kw_input" placeholder="e.g. Expenses, Income, Sales, Purchases…" onkeydown="if(event.key==='Enter')addKeyword()">
+              <button onclick="addKeyword()">+ Add</button>
+            </div>
+            <div class="pl-stat" id="pl_stat">Upload a file first to see the ledger count.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-footer right">
+      <button class="btn btn-primary" id="btn1_next" onclick="goStep(2)" disabled>Next: Upload Current Period TB →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANEL 2 — CURRENT PERIOD -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel2">
+    <div class="card">
+      <div class="card-title">Step 2 — Current Period Trial Balance</div>
+      <div class="field-row" style="margin-bottom:20px">
+        <div class="field">
+          <label>Period Label *</label>
+          <input type="text" id="p2_label" placeholder="e.g. FY 2024-25" value="FY 2024-25">
+        </div>
+        <div class="field"></div>
+      </div>
+
+      <div class="upload-zone" id="zone2" onclick="document.getElementById('file2').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="dropFile(event,2)">
+        <div class="upload-icon" id="zone2_icon">📂</div>
+        <p id="zone2_msg">Upload Current Period Trial Balance</p>
+        <p>.xlsx &nbsp;/&nbsp; .xls &nbsp;/&nbsp; .csv &nbsp;supported</p>
+        <p class="upload-cta" id="zone2_cta">CLICK TO UPLOAD OR DRAG &amp; DROP</p>
+      </div>
+      <input type="file" id="file2" accept=".xlsx,.xls,.csv" onchange="loadFile(event,2)">
+      <div class="hint">💡 Same structure as the prior period file. Specify the header row after upload.</div>
+
+      <div id="p2_sheet_row" style="display:none;margin-bottom:14px">
+        <div class="field-row">
+          <div class="field">
+            <label>Select Sheet</label>
+            <select id="p2_sheet" onchange="onSheetChange(2)"></select>
+          </div>
+          <div class="field">
+            <label>Header Row Number</label>
+            <input type="number" id="p2_hrow" min="1" value="1" onchange="onHeaderRowChange(2)">
+          </div>
+        </div>
+        <div class="hint-ok" id="p2_detect_msg" style="display:none"></div>
+      </div>
+
+      <div id="p2_preview" style="display:none">
+        <div class="section-label">File Preview (first 8 data rows after header)</div>
+        <div class="preview-wrap"><table class="preview-table" id="p2_preview_tbl"></table></div>
+        <div class="section-label" style="margin-top:20px">Map Columns to TB Fields</div>
+        <div class="hint-warn">⚠️ Confirm column mapping for the current period file.</div>
+        <div class="col-map" id="p2_col_map"></div>
+      </div>
+    </div>
+    <div class="nav-footer">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" id="btn2_next" onclick="runAnalysis()" disabled>Run P&amp;L Variance Analysis →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANEL 3 — ANALYSIS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel3">
+
+    <div id="scope_badge_wrap"></div>
+
+    <!-- Summary cards -->
+    <div class="summary-cards">
+      <div class="summary-card sc-all active" onclick="filterBy('all',this)">
+        <div class="s-label">All P&amp;L Ledgers</div>
+        <div class="s-value" id="cnt-all">—</div>
+        <div class="s-sub">In current period</div>
+      </div>
+      <div class="summary-card sc-new" onclick="filterBy('new',this)">
+        <div class="s-label">New Ledgers</div>
+        <div class="s-value" id="cnt-new">—</div>
+        <div class="s-sub">Not in prior period</div>
+      </div>
+      <div class="summary-card sc-nomove" onclick="filterBy('nomove',this)">
+        <div class="s-label">No Movement</div>
+        <div class="s-value" id="cnt-nomove">—</div>
+        <div class="s-sub">Nil / Dropped</div>
+      </div>
+      <div class="summary-card sc-quick" onclick="filterBy('quick',this)">
+        <div class="s-label">Quick Review</div>
+        <div class="s-value" id="cnt-quick">—</div>
+        <div class="s-sub">Variance 10%–20%</div>
+      </div>
+      <div class="summary-card sc-detailed" onclick="filterBy('detailed',this)">
+        <div class="s-label">Detailed Review</div>
+        <div class="s-value" id="cnt-detailed">—</div>
+        <div class="s-sub">Variance &gt;20%</div>
+      </div>
+    </div>
+
+    <!-- OB Banner -->
+    <div class="ob-banner warn" id="obBanner" style="display:none">
+      <span style="font-size:18px">⚠️</span>
+      <div id="obBannerMsg"></div>
+    </div>
+
+    <!-- OB Diff table (collapsible) -->
+    <div class="ob-diff-section card" id="obDiffSection" style="padding:20px">
+      <div class="section-label">Opening Balance Reconciliation — Exceptions</div>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead><tr>
+            <th style="position:static;cursor:default">Ledger Account</th>
+            <th style="position:static;cursor:default">Prior Period Closing (A)</th>
+            <th style="position:static;cursor:default">Current Period Opening (B)</th>
+            <th style="position:static;cursor:default">Difference (B − A)</th>
+            <th style="position:static;cursor:default;text-align:center">Remark</th>
+          </tr></thead>
+          <tbody id="obDiffBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Export bar -->
+    <div class="export-bar">
+      <div>
+        <strong>Export Analysis Workbook</strong>
+        <span style="margin-left:12px;font-size:12px">7-sheet Excel — one sheet per variance category + full analysis + OB reconciliation</span>
+      </div>
+      <div class="export-btns">
+        <button class="btn-xl" onclick="exportExcel()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export to Excel (.xlsx)
+        </button>
+        <button class="btn-export-print" onclick="window.print()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Results card -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchBox" placeholder="Search ledger account…" oninput="renderTable()">
+        </div>
+        <button class="btn btn-secondary" onclick="toggleSort('particulars')">Sort: Name</button>
+        <button class="btn btn-secondary" onclick="toggleSort('varPct')">Sort: Variance %</button>
+        <button class="btn btn-secondary" onclick="toggleSort('newClose')">Sort: Amount</button>
+        <button class="btn btn-secondary" onclick="goStep(1)" style="margin-left:auto">← Edit Uploads</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="results-table" id="mainTable">
+          <thead><tr>
+            <th onclick="toggleSort('particulars')">Ledger Account<span class="sort-arrow" id="sa-particulars"></span></th>
+            <th onclick="toggleSort('oldClose')" id="th_oldClose">Prior Closing<span class="sort-arrow" id="sa-oldClose"></span></th>
+            <th onclick="toggleSort('newOpen')" id="th_newOpen">Current Opening<span class="sort-arrow" id="sa-newOpen"></span></th>
+            <th onclick="toggleSort('newClose')" id="th_newClose">Current Closing<span class="sort-arrow" id="sa-newClose"></span></th>
+            <th onclick="toggleSort('varAbs')">Abs. Variance<span class="sort-arrow" id="sa-varAbs"></span></th>
+            <th onclick="toggleSort('varPct')">Variance %<span class="sort-arrow" id="sa-varPct"></span></th>
+            <th style="cursor:default;text-align:center">Audit Flag</th>
+          </tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div class="empty-state" id="emptyState" style="display:none">
+          <div class="icon">🔍</div>
+          <h3>No ledgers match</h3>
+          <p>Try adjusting your search or filter.</p>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <span>Showing <strong id="showingCount">0</strong> of <strong id="totalCount">0</strong> P&amp;L ledgers &nbsp;|&nbsp; <span class="fa" id="activeFilterLabel"></span></span>
+        <span>Variance = (Current Closing − Prior Closing) ÷ |Prior Closing| × 100 &nbsp;|&nbsp; Basis: Closing Balance</span>
+      </div>
+    </div>
+
+    <div class="nav-footer">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Back to Step 2</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+const state = {
+  1: { wb:null, sheetNames:[], rawRows:[], headerRow:1, colMap:{}, parsed:[], label:'', entity:'' },
+  2: { wb:null, sheetNames:[], rawRows:[], headerRow:1, colMap:{}, parsed:[], label:'' }
+};
+
+const COL_FIELDS = [
+  { key:'particulars', label:'Particulars (Ledger Name)', required:true },
+  { key:'opening',     label:'Opening Balance',           required:false },
+  { key:'debit',       label:'Debit',                     required:false },
+  { key:'credit',      label:'Credit',                    required:false },
+  { key:'closing',     label:'Closing Balance',           required:true }
+];
+
+// P&L filter state
+let plMode = 'keyword'; // 'keyword' | 'all'
+let plKeywords = [
+  'sales','purchase','income','expense','expenditure',
+  'revenue','profit','loss','depreciation','interest',
+  'salary','wages','freight','commission','rent','tax',
+  'turnover','cost of','direct','indirect','finance charge',
+  'bank charge','insurance','repairs','maintenance'
+];
+
+let analysisRows = [];
+let activeFilter = 'all';
+let sortKey = 'varPct';
+let sortDir  = -1;
+
+// ════════════════════════════════════════════
+// STEP NAV
+// ════════════════════════════════════════════
+function goStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('panel'+i).classList.toggle('active', i===n);
+    const tab = document.getElementById('tab'+i);
+    tab.classList.remove('active','done');
+    if (i===n) tab.classList.add('active');
+    else if (i<n) tab.classList.add('done');
+  });
+}
+
+// ════════════════════════════════════════════
+// P&L KEYWORD MANAGEMENT
+// ════════════════════════════════════════════
+function renderKeywords() {
+  const list = document.getElementById('kw_list');
+  list.innerHTML = plKeywords.map((k,i) =>
+    `<span class="kw-tag">${escHtml(k)}<button onclick="removeKeyword(${i})" title="Remove">×</button></span>`
+  ).join('');
+  updatePLStat();
+}
+
+function addKeyword() {
+  const inp = document.getElementById('kw_input');
+  const val = inp.value.trim().toLowerCase();
+  if (val && !plKeywords.includes(val)) { plKeywords.push(val); renderKeywords(); }
+  inp.value = '';
+}
+
+function removeKeyword(i) { plKeywords.splice(i,1); renderKeywords(); }
+
+function setPLMode(mode) {
+  plMode = mode;
+  document.getElementById('pl_mode_kw').classList.toggle('active', mode==='keyword');
+  document.getElementById('pl_mode_all').classList.toggle('active', mode==='all');
+  document.getElementById('pl_kw_wrap').classList.toggle('visible', mode==='keyword');
+  updatePLStat();
+}
+
+function isPLLedger(name) {
+  if (plMode === 'all') return true;
+  const nl = name.toLowerCase();
+  return plKeywords.some(k => nl.includes(k));
+}
+
+function updatePLStat() {
+  const el = document.getElementById('pl_stat');
+  if (!state[1].parsed.length) { el.textContent = 'Upload a file first to see the ledger count.'; return; }
+  if (plMode === 'all') {
+    el.innerHTML = `<strong>All ${state[1].parsed.length} ledgers</strong> will be included in the analysis.`;
+  } else {
+    const matched = state[1].parsed.filter(r => isPLLedger(r.particulars)).length;
+    el.innerHTML = `<strong>${matched} of ${state[1].parsed.length} ledgers</strong> match your P&amp;L keywords and will be analysed.`;
+  }
+}
+
+// ════════════════════════════════════════════
+// FILE LOADING
+// ════════════════════════════════════════════
+function dropFile(ev, period) {
+  ev.preventDefault();
+  document.getElementById('zone'+period).classList.remove('drag');
+  const file = ev.dataTransfer.files[0];
+  if (file) processFile(file, period);
+}
+
+function loadFile(ev, period) {
+  const file = ev.target.files[0];
+  if (file) processFile(file, period);
+}
+
+function processFile(file, period) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
+      state[period].wb = wb;
+      state[period].sheetNames = wb.SheetNames;
+
+      const zone = document.getElementById('zone'+period);
+      zone.classList.add('loaded');
+      document.getElementById('zone'+period+'_icon').textContent = '✅';
+      document.getElementById('zone'+period+'_msg').textContent  = file.name + ' loaded';
+      document.getElementById('zone'+period+'_cta').textContent  = 'Click to replace file';
+
+      const sheetEl = document.getElementById('p'+period+'_sheet');
+      sheetEl.innerHTML = wb.SheetNames.map((s,i) => `<option value="${i}">${s}</option>`).join('');
+      document.getElementById('p'+period+'_sheet_row').style.display = 'block';
+
+      onSheetChange(period);
+    } catch(err) { alert('Error reading file: ' + err.message); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function onSheetChange(period) {
+  const idx = parseInt(document.getElementById('p'+period+'_sheet').value);
+  const ws  = state[period].wb.Sheets[state[period].wb.SheetNames[idx]];
+  const rows = XLSX.utils.sheet_to_json(ws, { header:1, defval:'' });
+  state[period].rawRows = rows;
+
+  // Auto-detect header row
+  let detected = 1;
+  for (let i = 0; i < Math.min(rows.length, 30); i++) {
+    const rowStr = rows[i].map(c => String(c).toLowerCase().trim()).join(' ');
+    if (rowStr.includes('particulars') || rowStr.includes('ledger')) { detected = i+1; break; }
+  }
+  document.getElementById('p'+period+'_hrow').value = detected;
+  state[period].headerRow = detected;
+
+  const msg = document.getElementById('p'+period+'_detect_msg');
+  msg.style.display = 'block';
+  msg.textContent = `✓ Header row auto-detected at row ${detected}. Adjust if needed.`;
+
+  buildPreviewAndMapper(period);
+}
+
+function onHeaderRowChange(period) {
+  state[period].headerRow = parseInt(document.getElementById('p'+period+'_hrow').value) || 1;
+  buildPreviewAndMapper(period);
+}
+
+function buildPreviewAndMapper(period) {
+  const { rawRows, headerRow } = state[period];
+  if (!rawRows.length) return;
+
+  const hIdx    = headerRow - 1;
+  const headers = rawRows[hIdx] ? rawRows[hIdx].map(String) : [];
+  const dataRows = rawRows.slice(hIdx+1).filter(r => r.some(c => c !== ''));
+  const prevRows = dataRows.slice(0, 8);
+
+  // Preview
+  const tbl = document.getElementById('p'+period+'_preview_tbl');
+  tbl.innerHTML = '<thead><tr>' + headers.map((h,i)=>`<th>Col ${i+1}: ${h||'(empty)'}</th>`).join('') + '</tr></thead><tbody>'
+    + prevRows.map(row => '<tr>' + headers.map((_,i)=>`<td>${escHtml(String(row[i]??''))}</td>`).join('') + '</tr>').join('')
+    + '</tbody>';
+
+  // Auto-guess column mapping
+  const guesses = {};
+  headers.forEach((h,i) => {
+    const hl = h.toLowerCase().trim();
+    if (/particulars|ledger|account.*name|narration/.test(hl)) guesses.particulars = i;
+    else if (/opening|op\.?\s*bal/.test(hl))  guesses.opening = i;
+    else if (/^debit$|^dr$/.test(hl))          guesses.debit   = i;
+    else if (/^credit$|^cr$/.test(hl))         guesses.credit  = i;
+    else if (/closing|cl\.?\s*bal/.test(hl))   guesses.closing = i;
+  });
+  // Positional fallback for 5-column TBs
+  if (headers.length >= 5 && Object.keys(guesses).length < 3) {
+    guesses.particulars=0; guesses.opening=1; guesses.debit=2; guesses.credit=3; guesses.closing=4;
+  }
+  state[period].colMap = { ...guesses };
+
+  const colOptions = ['— Not mapped —', ...headers.map((h,i) => h || `Column ${i+1}`)];
+  document.getElementById('p'+period+'_col_map').innerHTML = COL_FIELDS.map(f => {
+    const sel = guesses[f.key] !== undefined ? guesses[f.key]+1 : 0;
+    return `<div class="col-field">
+      <label>${f.label}${f.required?' *':''}</label>
+      <select id="cm_${period}_${f.key}" onchange="updateColMap(${period},'${f.key}',this.value)" class="${guesses[f.key]!==undefined?'mapped':''}">
+        ${colOptions.map((o,i)=>`<option value="${i}" ${i===sel?'selected':''}>${o}</option>`).join('')}
+      </select></div>`;
+  }).join('');
+
+  document.getElementById('p'+period+'_preview').style.display = 'block';
+  parsePeriodData(period, headers, dataRows);
+  checkReadyNext(period);
+
+  // Update P&L stat only for period 1
+  if (period === 1) { renderKeywords(); updatePLStat(); }
+}
+
+function updateColMap(period, field, val) {
+  state[period].colMap[field] = val > 0 ? parseInt(val)-1 : undefined;
+  document.getElementById(`cm_${period}_${field}`).classList.toggle('mapped', val > 0);
+  const hIdx = state[period].headerRow - 1;
+  const rawRows = state[period].rawRows;
+  const headers  = rawRows[hIdx] ? rawRows[hIdx].map(String) : [];
+  const dataRows = rawRows.slice(hIdx+1).filter(r => r.some(c => c!==''));
+  parsePeriodData(period, headers, dataRows);
+  checkReadyNext(period);
+  if (period === 1) updatePLStat();
+}
+
+function parsePeriodData(period, headers, dataRows) {
+  const cm = state[period].colMap;
+  state[period].parsed = dataRows.map(row => ({
+    particulars: cm.particulars !== undefined ? String(row[cm.particulars]??'').trim() : '',
+    opening:     cm.opening     !== undefined ? toNum(row[cm.opening])  : null,
+    debit:       cm.debit       !== undefined ? toNum(row[cm.debit])    : null,
+    credit:      cm.credit      !== undefined ? toNum(row[cm.credit])   : null,
+    closing:     cm.closing     !== undefined ? toNum(row[cm.closing])  : null
+  })).filter(r => r.particulars !== '');
+}
+
+function checkReadyNext(period) {
+  const cm = state[period].colMap;
+  document.getElementById('btn'+period+'_next').disabled = !(cm.particulars !== undefined && cm.closing !== undefined);
+}
+
+// ════════════════════════════════════════════
+// ANALYSIS v5
+// ════════════════════════════════════════════
+function runAnalysis() {
+  const p1 = document.getElementById('p1_label').value || 'Prior Period';
+  const p2 = document.getElementById('p2_label').value || 'Current Period';
+
+  document.getElementById('th_oldClose').childNodes[0].textContent = p1 + ' Closing ';
+  document.getElementById('th_newOpen').childNodes[0].textContent  = p2 + ' Opening ';
+  document.getElementById('th_newClose').childNodes[0].textContent = p2 + ' Closing ';
+
+  // ── Deduplicated lookup map ──
+  function buildMap(arr) {
+    const m = {};
+    arr.forEach(r => { const k = r.particulars.toLowerCase(); if (!m[k]) m[k] = r; });
+    return m;
+  }
+
+  // ── Full TB data (all ledgers — for New, No Movement, OB checks) ──
+  const oldAll    = state[1].parsed;
+  const newAll    = state[2].parsed;
+  const oldAllMap = buildMap(oldAll);
+  const newAllMap = buildMap(newAll);
+
+  // ── P&L filtered data (for variance checks: Detailed, Quick, OK) ──
+  const oldPL    = oldAll.filter(r => isPLLedger(r.particulars));
+  const newPL    = newAll.filter(r => isPLLedger(r.particulars));
+  const oldPLMap = buildMap(oldPL);
+
+  const rows = [];
+  // Track which keys have been captured to avoid double-counting
+  const captured = new Set();
+
+  // ── CHECK 1: New Ledgers — ENTIRE TB ──
+  // Ledger present in current period TB but absent from prior period TB
+  newAll.forEach(nr => {
+    const key = nr.particulars.toLowerCase();
+    if (oldAllMap[key]) return; // exists in prior — not new
+    const newClose = nr.closing;
+    if (newClose === null || newClose === 0) return; // nil — no-move territory
+    captured.add(key);
+    rows.push({
+      particulars: nr.particulars,
+      oldClose: null, newOpen: nr.opening, newClose,
+      varAbs: null, absVar: null, varPct: null,
+      flag: 'new', scope: 'TB-wide'
+    });
+  });
+
+  // ── CHECK 2: No Movement — ENTIRE TB ──
+  // (a) In current TB with zero/null closing balance
+  newAll.forEach(nr => {
+    const key = nr.particulars.toLowerCase();
+    if (captured.has(key)) return;
+    const oldR = oldAllMap[key];
+    if (!oldR) return; // already caught as new or truly absent
+    const newClose = nr.closing;
+    if (newClose !== null && newClose !== 0) return; // has movement
+    captured.add(key);
+    rows.push({
+      particulars: nr.particulars,
+      oldClose: oldR.closing, newOpen: nr.opening, newClose,
+      varAbs: null, absVar: null, varPct: null,
+      flag: 'nomove', scope: 'TB-wide'
+    });
+  });
+  // (b) Dropped: in prior but completely absent from current
+  oldAll.forEach(or => {
+    const key = or.particulars.toLowerCase();
+    if (newAllMap[key]) return; // still exists
+    if (captured.has(key)) return;
+    captured.add(key);
+    rows.push({
+      particulars: or.particulars + ' ⊘',
+      oldClose: or.closing, newOpen: null, newClose: null,
+      varAbs: or.closing !== null ? -or.closing : null,
+      absVar: or.closing !== null ? Math.abs(or.closing) : null,
+      varPct: null, flag: 'nomove', scope: 'TB-wide', dropped: true
+    });
+  });
+
+  // ── CHECKS 3–5: Variance Analysis — P&L ledgers only ──
+  // Only ledgers that (a) pass the P&L keyword filter AND
+  // (b) have not already been captured by the full-TB checks above
+  newPL.forEach(nr => {
+    const key = nr.particulars.toLowerCase();
+    if (captured.has(key)) return; // already handled as new/nomove above
+
+    const oldR     = oldPLMap[key];
+    const newClose = nr.closing;
+    const oldClose = oldR ? oldR.closing : null;
+
+    // Edge: P&L ledger exists in new but not old (would be new — skip, already caught at TB level OR truly missed)
+    if (!oldR) {
+      // Only add if not already captured and has a balance (safety net)
+      if (newClose !== null && newClose !== 0) {
+        captured.add(key);
+        rows.push({
+          particulars: nr.particulars,
+          oldClose: null, newOpen: nr.opening, newClose,
+          varAbs: null, absVar: null, varPct: null,
+          flag: 'new', scope: 'P&L'
+        });
+      }
+      return;
+    }
+
+    // No movement check (P&L scope — safety net, should be caught above)
+    if (newClose === null || newClose === 0) {
+      captured.add(key);
+      rows.push({
+        particulars: nr.particulars,
+        oldClose, newOpen: nr.opening, newClose,
+        varAbs: null, absVar: null, varPct: null,
+        flag: 'nomove', scope: 'P&L'
+      });
+      return;
+    }
+
+    // Prior had zero/null, current has value → treat as detailed (infinite variance)
+    if (oldClose === null || oldClose === 0) {
+      captured.add(key);
+      rows.push({
+        particulars: nr.particulars,
+        oldClose, newOpen: nr.opening, newClose,
+        varAbs: newClose, absVar: Math.abs(newClose), varPct: null,
+        flag: 'detailed', scope: 'P&L'
+      });
+      return;
+    }
+
+    // Normal variance calculation
+    const varAbs = newClose - oldClose;
+    const varPct = (varAbs / Math.abs(oldClose)) * 100;
+    const a = Math.abs(varPct);
+    const flag = a > 20 ? 'detailed' : a >= 10 ? 'quick' : 'ok';
+    captured.add(key);
+    rows.push({
+      particulars: nr.particulars,
+      oldClose, newOpen: nr.opening, newClose,
+      varAbs, absVar: Math.abs(varAbs), varPct,
+      flag, scope: 'P&L'
+    });
+  });
+
+  analysisRows = rows;
+
+  // ── Counts ──
+  const counts = { all: rows.length, new: 0, nomove: 0, quick: 0, detailed: 0 };
+  rows.forEach(r => { if (counts[r.flag] !== undefined) counts[r.flag]++; });
+  ['all','new','nomove','quick','detailed'].forEach(k =>
+    document.getElementById('cnt-' + k).textContent = counts[k]);
+
+  // ── Scope badge ──
+  const tbWide = rows.filter(r => r.scope === 'TB-wide').length;
+  const plOnly = rows.filter(r => r.scope === 'P&L').length;
+  const modeDesc = plMode === 'all' ? 'All ledgers' : `${plKeywords.length} P&L keyword${plKeywords.length!==1?'s':''}`;
+  document.getElementById('scope_badge_wrap').innerHTML =
+    `<div class="scope-badge">📊 ${rows.length} ledgers analysed &nbsp;|&nbsp; ` +
+    `New &amp; No Movement: entire TB (${tbWide}) &nbsp;|&nbsp; ` +
+    `Variance checks: P&amp;L filter — ${modeDesc} (${plOnly})</div>`;
+
+  // ── OB check always on entire TB ──
+  obCheck(oldAllMap);
+
+  activeFilter = 'all'; sortKey = 'varPct'; sortDir = -1;
+  document.querySelectorAll('.summary-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.sc-all').classList.add('active');
+  document.getElementById('sa-varPct').textContent = ' ↓';
+
+  goStep(3);
+  renderTable();
+}
+
+// ════════════════════════════════════════════
+// OB CHECK (runs on ALL parsed ledgers, not just P&L)
+// ════════════════════════════════════════════
+function obCheck(oldMapAll) {
+  const diffs = [];
+  state[2].parsed.forEach(nr => {
+    if (nr.opening === null) return;
+    const key = nr.particulars.toLowerCase();
+    const oldR = oldMapAll[key];
+    if (!oldR || oldR.closing === null) return;
+    const diff = nr.opening - oldR.closing;
+    if (Math.abs(diff) > 0.5) diffs.push({ particulars:nr.particulars, oldClose:oldR.closing, newOpen:nr.opening, diff });
+  });
+
+  const banner = document.getElementById('obBanner');
+  const msg    = document.getElementById('obBannerMsg');
+  banner.style.display = 'flex';
+
+  if (!diffs.length) {
+    banner.className = 'ob-banner ok';
+    msg.innerHTML = '<strong>✓ Opening Balance Reconciliation — No exceptions.</strong> All current period opening balances agree with prior period closing balances.';
+  } else {
+    banner.className = 'ob-banner warn';
+    msg.innerHTML = `<strong>${diffs.length} Opening Balance mismatch(es) detected.</strong> Current opening ≠ Prior closing for ledgers below.<a onclick="toggleOBDiff()">View / Hide ▾</a>`;
+    document.getElementById('obDiffBody').innerHTML = diffs.map(d =>
+      `<tr><td style="color:var(--text);font-weight:500">${escHtml(d.particulars)}</td>
+       <td class="num">${numFmt(d.oldClose)}</td><td class="num">${numFmt(d.newOpen)}</td>
+       <td class="num ${d.diff>0?'pos':'neg'}">${d.diff>0?'+':''}${numFmt(d.diff)}</td>
+       <td><span class="tag tag-detailed">Investigate</span></td></tr>`).join('');
+  }
+}
+
+function toggleOBDiff() { document.getElementById('obDiffSection').classList.toggle('visible'); }
+
+// ════════════════════════════════════════════
+// RENDER TABLE
+// ════════════════════════════════════════════
+function renderTable() {
+  const search = document.getElementById('searchBox').value.toLowerCase();
+  let rows = analysisRows.filter(r => {
+    if (activeFilter !== 'all' && r.flag !== activeFilter) return false;
+    if (search && !r.particulars.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  rows.sort((a,b) => {
+    let va=a[sortKey], vb=b[sortKey];
+    if (va===null||va===undefined) va = sortDir===-1 ? -Infinity : Infinity;
+    if (vb===null||vb===undefined) vb = sortDir===-1 ? -Infinity : Infinity;
+    if (sortKey==='particulars') {
+      va=a.particulars.toLowerCase(); vb=b.particulars.toLowerCase();
+      return va<vb ? -sortDir : va>vb ? sortDir : 0;
+    }
+    return (va-vb)*sortDir;
+  });
+
+  const maxVP = Math.max(...rows.map(r => r.varPct!==null?Math.abs(r.varPct):0), 1);
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (!rows.length) { tbody.innerHTML=''; empty.style.display='block'; }
+  else {
+    empty.style.display = 'none';
+    const flagHTML = {
+      new:      '<span class="tag tag-new">New Ledger</span>',
+      nomove:   '<span class="tag tag-nomove">No Movement</span>',
+      quick:    '<span class="tag tag-quick">Quick Review</span>',
+      detailed: '<span class="tag tag-detailed">Detailed Review</span>',
+      ok:       '<span class="tag tag-ok">Within Threshold</span>'
+    };
+
+    tbody.innerHTML = rows.map(r => {
+      const nd = v => v!==null ? `<td class="num">${numFmt(v)}</td>` : `<td class="num nil">—</td>`;
+      let varAbsTd = `<td class="num nil">—</td>`;
+      let varPctTd = `<td>—</td>`;
+
+      if (r.varAbs !== null) {
+        const cls = r.varAbs>0?'pos':r.varAbs<0?'neg':'';
+        varAbsTd = `<td class="num ${cls}">${r.varAbs>0?'+':''}${numFmt(r.varAbs)}</td>`;
+      }
+      if (r.varPct !== null) {
+        const a=Math.abs(r.varPct), w=Math.min(100,a/maxVP*100).toFixed(0);
+        const bc=a>20?'bar-danger':a>=10?'bar-warn':'bar-ok';
+        const pc=r.varPct>0?'pos':'neg';
+        varPctTd=`<td><div class="var-cell"><div class="var-bar"><div class="var-bar-fill ${bc}" style="width:${w}%"></div></div><span class="num ${pc}">${pctFmt(r.varPct)}</span></div></td>`;
+      } else if (r.flag==='new') {
+        varPctTd=`<td><span class="tag tag-new">NEW</span></td>`;
+      } else if (r.flag==='detailed') {
+        varPctTd=`<td class="num neg">∞</td>`;
+      }
+
+      const flagCell = r.dropped ? '<span class="tag tag-dropped">Dropped</span>' : (flagHTML[r.flag]||'');
+      return `<tr class="row-${r.flag}">
+        <td style="color:var(--text);font-weight:500">${escHtml(r.particulars)}</td>
+        ${nd(r.oldClose)}${nd(r.newOpen)}${nd(r.newClose)}${varAbsTd}${varPctTd}
+        <td>${flagCell}</td></tr>`;
+    }).join('');
+  }
+
+  document.getElementById('showingCount').textContent  = rows.length;
+  document.getElementById('totalCount').textContent    = analysisRows.length;
+  const labels = { all:'', new:'New Ledgers', nomove:'No Movement / Dropped', quick:'Quick Review (10–20%)', detailed:'Detailed Review Required (>20%)' };
+  document.getElementById('activeFilterLabel').textContent = labels[activeFilter]||'';
+}
+
+function filterBy(f,el) {
+  activeFilter=f;
+  document.querySelectorAll('.summary-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderTable();
+}
+
+function toggleSort(key) {
+  if (sortKey===key) sortDir*=-1; else { sortKey=key; sortDir=-1; }
+  ['particulars','oldClose','newOpen','newClose','varAbs','varPct'].forEach(k => {
+    const el=document.getElementById('sa-'+k); if(el) el.textContent='';
+  });
+  const el=document.getElementById('sa-'+key);
+  if(el) el.textContent = sortDir===-1?' ↓':' ↑';
+  renderTable();
+}
+
+// ════════════════════════════════════════════
+// EXCEL EXPORT v5 — styled tables, Calibri 10, per-category sheets
+// ════════════════════════════════════════════
+function exportExcel() {
+  const p1     = document.getElementById('p1_label').value  || 'Prior Period';
+  const p2     = document.getElementById('p2_label').value  || 'Current Period';
+  const entity = document.getElementById('p1_entity').value || 'Client';
+  const today  = new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  const isoDate = new Date().toISOString().slice(0,10);
+
+  const wb = XLSX.utils.book_new();
+  const nv = v => (v!==null && v!==undefined && !isNaN(v)) ? Number(v) : '';
+
+  // ── Style helpers ──
+  const FONT       = { name:'Calibri', sz:10 };
+  const FONT_BOLD  = { name:'Calibri', sz:10, bold:true };
+  const FONT_TITLE = { name:'Calibri', sz:13, bold:true, color:{rgb:'1A2B4A'} };
+  const FONT_META  = { name:'Calibri', sz:10, italic:true, color:{rgb:'718096'} };
+  const FONT_HDR   = { name:'Calibri', sz:10, bold:true, color:{rgb:'FFFFFF'} };
+
+  const FILL_HDR     = { fgColor:{rgb:'1A2B4A'}, patternType:'solid' }; // navy
+  const FILL_TITLE   = { fgColor:{rgb:'EBF0FF'}, patternType:'solid' }; // blue-tinted
+  const FILL_ALT     = { fgColor:{rgb:'F8F9FC'}, patternType:'solid' }; // light grey alt row
+  const FILL_NEW     = { fgColor:{rgb:'E8F5EE'}, patternType:'solid' };
+  const FILL_NOMOVE  = { fgColor:{rgb:'EBF0FF'}, patternType:'solid' };
+  const FILL_QUICK   = { fgColor:{rgb:'FEF3E8'}, patternType:'solid' };
+  const FILL_DETAIL  = { fgColor:{rgb:'FDF0EE'}, patternType:'solid' };
+  const FILL_OK      = null; // white
+
+  const BORDER_THIN = {
+    top:   {style:'thin', color:{rgb:'C8CFE0'}},
+    bottom:{style:'thin', color:{rgb:'C8CFE0'}},
+    left:  {style:'thin', color:{rgb:'C8CFE0'}},
+    right: {style:'thin', color:{rgb:'C8CFE0'}}
+  };
+  const BORDER_HDR = {
+    top:   {style:'medium', color:{rgb:'1A2B4A'}},
+    bottom:{style:'medium', color:{rgb:'1A2B4A'}},
+    left:  {style:'thin',   color:{rgb:'1A2B4A'}},
+    right: {style:'thin',   color:{rgb:'1A2B4A'}}
+  };
+
+  const AL_RIGHT = { horizontal:'right' };
+  const AL_LEFT  = { horizontal:'left'  };
+  const AL_CENT  = { horizontal:'center' };
+  const NUM_FMT  = '#,##0.00';
+  const PCT_FMT  = '0.00"%"';
+
+  // ── Flag → row fill ──
+  function flagFill(flag) {
+    if (flag==='new')      return FILL_NEW;
+    if (flag==='nomove')   return FILL_NOMOVE;
+    if (flag==='quick')    return FILL_QUICK;
+    if (flag==='detailed') return FILL_DETAIL;
+    return null;
+  }
+
+  // ── Build a styled cell ──
+  function sc(v, {font, fill, numFmt:nf, align, border}={}) {
+    const c = { v, t: typeof v === 'number' ? 'n' : 's' };
+    if (v === '' || v === null || v === undefined) { c.v = ''; c.t = 's'; }
+    const s = {};
+    if (font)   s.font   = font;
+    if (fill)   s.fill   = fill;
+    if (nf)     s.numFmt = nf;
+    if (align)  s.alignment = align;
+    if (border) s.border = border;
+    if (Object.keys(s).length) c.s = s;
+    return c;
+  }
+
+  // ── Build a full sheet with styling + Excel table ──
+  function makeSheet(sheetTitle, headers, dataRows, colWidths, rowFillFn) {
+    const nCols = headers.length;
+    const META_ROWS = 5; // title, client, period, date, blank
+    const HDR_ROW   = META_ROWS;     // 0-based index of header row
+    const DATA_START = HDR_ROW + 1;  // first data row
+
+    // Build AOA of styled cells
+    const aoa = [];
+
+    // Row 0: Sheet title
+    const titleRow = [sc(sheetTitle, {font:FONT_TITLE, fill:FILL_TITLE, align:AL_LEFT})];
+    for (let c=1; c<nCols; c++) titleRow.push(sc('', {fill:FILL_TITLE}));
+    aoa.push(titleRow);
+
+    // Row 1: Client
+    const clientRow = [sc(entity ? `Client: ${entity}` : '', {font:FONT_META, align:AL_LEFT})];
+    for (let c=1; c<nCols; c++) clientRow.push(sc(''));
+    aoa.push(clientRow);
+
+    // Row 2: Period comparison
+    const perRow = [sc(`Comparison: ${p1}  vs  ${p2}`, {font:FONT_META, align:AL_LEFT})];
+    for (let c=1; c<nCols; c++) perRow.push(sc(''));
+    aoa.push(perRow);
+
+    // Row 3: Date
+    const dateRow = [sc(`Generated: ${today}`, {font:FONT_META, align:AL_LEFT})];
+    for (let c=1; c<nCols; c++) dateRow.push(sc(''));
+    aoa.push(dateRow);
+
+    // Row 4: blank spacer
+    aoa.push(Array(nCols).fill(sc('')));
+
+    // Row 5: Header (navy)
+    aoa.push(headers.map(h => sc(h, {font:FONT_HDR, fill:FILL_HDR, border:BORDER_HDR, align:AL_CENT})));
+
+    // Data rows
+    dataRows.forEach((row, ri) => {
+      const fill = rowFillFn ? rowFillFn(ri) : (ri%2===1 ? FILL_ALT : null);
+      aoa.push(row.map((v, ci) => {
+        const isNum   = typeof v === 'number';
+        const isPct   = (ci === headers.length - 2 && headers[headers.length-2].includes('%'));
+        const nfmt    = isPct ? PCT_FMT : (isNum ? NUM_FMT : undefined);
+        const align   = (ci === 0) ? AL_LEFT : AL_RIGHT;
+        return sc(v, {font:FONT, fill, numFmt:nfmt, align, border:BORDER_THIN});
+      }));
+    });
+
+    // Convert to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = colWidths.map(w => ({wch:w}));
+
+    // Merge title row
+    ws['!merges'] = [{s:{r:0,c:0}, e:{r:0,c:nCols-1}}];
+
+    // Add Excel Table (ref covers header + data rows)
+    if (dataRows.length > 0) {
+      const lastDataRow = DATA_START + dataRows.length - 1; // 0-based
+      const lastCol     = nCols - 1;
+      const colLetter   = n => { let s=''; while(n>=0){s=String.fromCharCode(65+(n%26))+s; n=Math.floor(n/26)-1;} return s; };
+      const ref = `A${HDR_ROW+1}:${colLetter(lastCol)}${lastDataRow+1}`; // 1-based for Excel ref
+      ws['!autofilter'] = { ref };
+      ws['!tables'] = ws['!tables'] || [];
+      ws['!tables'].push({
+        name: `Table${Math.random().toString(36).slice(2,7)}`,
+        ref,
+        headerRow: true,
+        totalsRow: false,
+        tableStyleInfo: { name:'TableStyleMedium2', showFirstColumn:false, showLastColumn:false, showRowStripes:true }
+      });
+    }
+
+    // Freeze panes at header + 1
+    ws['!freeze'] = { xSplit:0, ySplit:DATA_START+1 };
+
+    return ws;
+  }
+
+  // ── Row fill functions per sheet ──
+  const fillByFlag = (rows) => (ri) => flagFill(rows[ri]?.flag);
+  const fillAlt    = ()     => (ri) => ri%2===1 ? FILL_ALT : null;
+
+  // ── Column configs ──
+  const STD_COLS = [50,22,20,22,20,14,28];
+  const STD_HDR  = ['Ledger Account', `${p1} — Closing`, `${p2} — Opening`, `${p2} — Closing`, 'Absolute Variance', 'Variance %', 'Audit Flag'];
+  const stdRow   = (r, note) => [
+    r.particulars, nv(r.oldClose), nv(r.newOpen), nv(r.newClose), nv(r.varAbs),
+    r.varPct!==null ? Number(r.varPct.toFixed(4)) : (r.flag==='new'?'New':r.flag==='detailed'?'∞':''),
+    note || ''
+  ];
+
+  // ── Sheet 1: Full P&L Analysis ──
+  const allDataRows = analysisRows.map(r => stdRow(r,
+    r.dropped ? 'Dropped Ledger' :
+    r.flag==='new'      ? 'New Ledger — not in prior period' :
+    r.flag==='nomove'   ? 'No movement / nil balance' :
+    r.flag==='quick'    ? 'Quick Review Needed (10–20%)' :
+    r.flag==='detailed' ? 'Detailed Review Required (>20%)' :
+    'Within Threshold (<10%)'));
+  const ws1 = makeSheet(`P&L Variance Analysis — Full — ${p1} vs ${p2}`, STD_HDR, allDataRows, STD_COLS, fillByFlag(analysisRows));
+  XLSX.utils.book_append_sheet(wb, ws1, '1. Full P&L Analysis');
+
+  // ── Sheet 2: Detailed Review >20% ──
+  const detAR  = analysisRows.filter(r => r.flag==='detailed');
+  const det2H  = ['Ledger Account', `${p1} — Closing`, `${p2} — Closing`, 'Absolute Variance', 'Variance %', 'Direction', 'Priority'];
+  const det2D  = detAR.map(r => [
+    r.particulars, nv(r.oldClose), nv(r.newClose), nv(r.varAbs),
+    r.varPct!==null ? Number(r.varPct.toFixed(4)) : '∞',
+    r.varAbs!==null ? (r.varAbs>0 ? 'Increase' : 'Decrease') : '',
+    'HIGH'
+  ]);
+  const ws2 = makeSheet(`Detailed Review Required (>20%) — ${p2} vs ${p1}`, det2H, det2D, [50,22,22,20,14,14,12], () => FILL_DETAIL);
+  XLSX.utils.book_append_sheet(wb, ws2, '2. Detailed Review (>20%)');
+
+  // ── Sheet 3: Quick Review 10–20% ──
+  const qAR = analysisRows.filter(r => r.flag==='quick');
+  const q3H = ['Ledger Account', `${p1} — Closing`, `${p2} — Closing`, 'Absolute Variance', 'Variance %', 'Direction'];
+  const q3D = qAR.map(r => [
+    r.particulars, nv(r.oldClose), nv(r.newClose), nv(r.varAbs),
+    r.varPct!==null ? Number(r.varPct.toFixed(4)) : '',
+    r.varAbs!==null ? (r.varAbs>0 ? 'Increase' : 'Decrease') : ''
+  ]);
+  const ws3 = makeSheet(`Quick Review Needed (10%–20%) — ${p2} vs ${p1}`, q3H, q3D, [50,22,22,20,14,14], () => FILL_QUICK);
+  XLSX.utils.book_append_sheet(wb, ws3, '3. Quick Review (10-20%)');
+
+  // ── Sheet 4: Within Threshold <10% ──
+  const okAR = analysisRows.filter(r => r.flag==='ok');
+  const ok4H = ['Ledger Account', `${p1} — Closing`, `${p2} — Closing`, 'Absolute Variance', 'Variance %'];
+  const ok4D = okAR.map(r => [
+    r.particulars, nv(r.oldClose), nv(r.newClose), nv(r.varAbs),
+    r.varPct!==null ? Number(r.varPct.toFixed(4)) : ''
+  ]);
+  const ws4 = makeSheet(`Within Threshold (<10%) — ${p2} vs ${p1}`, ok4H, ok4D, [50,22,22,20,14], fillAlt());
+  XLSX.utils.book_append_sheet(wb, ws4, '4. Within Threshold (<10%)');
+
+  // ── Sheet 5: New Ledgers ──
+  const nwAR = analysisRows.filter(r => r.flag==='new');
+  const nw5H = ['Ledger Account', `${p2} — Opening`, `${p2} — Closing`, 'Remark', 'Scope'];
+  const nw5D = nwAR.map(r => [r.particulars, nv(r.newOpen), nv(r.newClose), r.scope==='P&L'?`New P&L ledger — not in prior period ${p1}`:`New — not present in ${p1}`, r.scope||'TB-wide']);
+  const ws5  = makeSheet(`New Ledgers — Entire TB — Present in ${p2} Only`, nw5H, nw5D, [50,22,22,44,14], () => FILL_NEW);
+  XLSX.utils.book_append_sheet(wb, ws5, '5. New Ledgers');
+
+  // ── Sheet 6: No Movement / Dropped ──
+  const nmAR = analysisRows.filter(r => r.flag==='nomove');
+  const nm6H = ['Ledger Account', `${p1} — Closing`, `${p2} — Closing`, 'Remark', 'Scope'];
+  const nm6D = nmAR.map(r => [
+    r.particulars, nv(r.oldClose), nv(r.newClose),
+    r.dropped ? `Dropped — present in ${p1}, absent in ${p2}` : 'Nil / zero closing balance in current period',
+    r.scope || 'TB-wide'
+  ]);
+  const ws6 = makeSheet(`No Movement / Dropped — Entire TB`, nm6H, nm6D, [50,22,22,52,14], () => FILL_NOMOVE);
+  XLSX.utils.book_append_sheet(wb, ws6, '6. No Movement');
+
+  // ── Sheet 7: OB Reconciliation ──
+  const oldMapAll = {};
+  state[1].parsed.forEach(r => { oldMapAll[r.particulars.toLowerCase()] = r; });
+  const obDiffs = [];
+  state[2].parsed.forEach(nr => {
+    if (nr.opening===null) return;
+    const key = nr.particulars.toLowerCase();
+    const or  = oldMapAll[key];
+    if (!or || or.closing===null) return;
+    const diff = nr.opening - or.closing;
+    if (Math.abs(diff) > 0.5) obDiffs.push([nr.particulars, nv(or.closing), nv(nr.opening), Number(diff.toFixed(2)), 'Investigate — OB mismatch']);
+  });
+  const ob7H = ['Ledger Account', `${p1} — Closing (A)`, `${p2} — Opening (B)`, 'Difference (B − A)', 'Remark'];
+  const ob7D = obDiffs.length ? obDiffs : [['No exceptions found','','','', '✓ All opening balances agree with prior period closing']];
+  const ws7  = makeSheet(`Opening Balance Reconciliation — ${p2} vs ${p1}`, ob7H, ob7D, [50,26,26,22,44],
+    obDiffs.length ? () => FILL_DETAIL : fillAlt());
+  XLSX.utils.book_append_sheet(wb, ws7, '7. OB Reconciliation');
+
+  // ── File name: ClientName_P&L Variance Analysis_date ──
+  const safe    = s => s.trim().replace(/[^a-zA-Z0-9 _\-]/g,'').replace(/\s+/g,'_');
+  const client  = safe(entity || 'Client');
+  XLSX.writeFile(wb, `${client}_PL_Variance_Analysis_${isoDate}.xlsx`);
+}
+
+// ════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════
+function toNum(v) {
+  if (v===null||v===undefined||v==='') return null;
+  if (typeof v==='number') return v;
+  const n = parseFloat(String(v).replace(/,/g,'').trim());
+  return isNaN(n) ? null : n;
+}
+function numFmt(v) {
+  if (v===null||v===undefined||isNaN(v)) return '—';
+  return Number(v).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function pctFmt(v) {
+  if (v===null) return '—';
+  return (v>0?'+':'') + v.toFixed(2) + '%';
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Init keyword list on load
+window.onload = () => renderKeywords();
+</script>
+</body>
+</html>

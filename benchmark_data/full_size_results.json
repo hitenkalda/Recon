@@ -1,0 +1,42 @@
+{
+  "gst_100k": {
+    "started": "Wed Sep 23 15:31:01 2026",
+    "finished": "Wed Sep 23 17:01:15 2026",
+    "load_time_s": 175.8,
+    "match_time_s": 5238.4,
+    "total_time_s": 5414.2,
+    "total_candidates": 15957244,
+    "matched": 99803,
+    "unmatched_a": 197,
+    "unmatched_b": 5209,
+    "candidates_per_a_row": 159.6,
+    "candidates_per_sec": 3046,
+    "peak_ram_mb": 1444.0,
+    "tier_breakdown": {
+      "Exact invoice + amount": 91959,
+      "Identical amount": 6064,
+      "Amount + date within tolerance": 906,
+      "Fuzzy invoice match": 32,
+      "Vendor similarity + amount": 578,
+      "Amount within tolerance": 264
+    },
+    "ground_truth_matchable": 98012,
+    "delta": 1791
+  },
+  "bank_100k": {
+    "started": "Earlier session",
+    "match_time_s": 1482.1,
+    "total_time_s": 1624.3,
+    "total_candidates": 10545780,
+    "matched": 101784,
+    "candidates_per_a_row": 100.4,
+    "peak_ram_mb": 1273.8,
+    "tier_breakdown": {
+      "Amount + date within tolerance": 99829,
+      "Amount + counterparty similarity": 26,
+      "Amount within tolerance": 1929
+    },
+    "ground_truth_matchable": 101000,
+    "delta": 784
+  }
+}
